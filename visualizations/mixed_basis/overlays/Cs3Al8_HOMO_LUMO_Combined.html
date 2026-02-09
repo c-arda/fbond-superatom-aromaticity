@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Cs3Al8⁻ HOMO + LUMO Combined Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin-bottom: 10px;
+        }
+        .info {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .info-card {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+        }
+        .info-card strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .plot-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .plot-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .plot-box h2 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 4px;
+        }
+        .instructions {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        .instructions h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        .instructions ul {
+            margin-left: 20px;
+            color: #856404;
+        }
+        .instructions li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Cs₃Al₈⁻ Frontier Molecular Orbitals Analysis</h1>
+        <p>Interactive 3D visualization of HOMO-LUMO orbital overlap</p>
+    </div>
+    
+    <div class="info">
+        <h2>Understanding the Visualization</h2>
+        <div class="info-grid">
+            <div class="info-card">
+                <strong>HOMO (Highest Occupied Molecular Orbital)</strong>
+                The highest energy orbital containing electrons. Shows where electrons currently reside and indicates potential nucleophilic sites.
+            </div>
+            <div class="info-card">
+                <strong>LUMO (Lowest Unoccupied Molecular Orbital)</strong>
+                The lowest energy unoccupied orbital. Indicates where incoming electrons would go and reveals electrophilic sites.
+            </div>
+            <div class="info-card">
+                <strong>Orbital Overlap Significance</strong>
+                Regions where HOMO and LUMO overlap indicate possible bonding interactions and are critical for understanding molecular reactivity.
+            </div>
+        </div>
+    </div>
+    
+    <div class="plot-container">
+        <div class="plot-box">
+            <h2>🔵 HOMO (Occupied)</h2>
+            <iframe src="Cs3Al8_HOMO.html"></iframe>
+        </div>
+        <div class="plot-box">
+            <h2>⚪ LUMO (Unoccupied)</h2>
+            <iframe src="Cs3Al8_LUMO.html"></iframe>
+        </div>
+    </div>
+    
+    <div class="instructions">
+        <h3>📋 Instructions for Viewing Combined Orbitals:</h3>
+        <ul>
+            <li><strong>Rotation:</strong> Click and drag to rotate both orbitals</li>
+            <li><strong>Zoom:</strong> Scroll to zoom in/out</li>
+            <li><strong>Pan:</strong> Shift+drag to pan the view</li>
+            <li><strong>Compare:</strong> Use the side-by-side view to identify overlap regions</li>
+            <li><strong>Note:</strong> Due to the complexity of the 3D orbital data, the plots are shown side-by-side for best visualization</li>
+        </ul>
+        <p style="margin-top: 10px;"><em>Tip: Look for regions where both HOMO and LUMO show significant electron density - these are key interaction sites!</em></p>
+    </div>
+    
+    <div class="info" style="margin-top: 20px;">
+        <h3>About this Calculation</h3>
+        <p>
+            This visualization represents the frontier molecular orbitals of the Cs₃Al₈⁻ cluster, 
+            calculated using quantum chemical methods. The HOMO-LUMO gap and orbital shapes provide 
+            insights into the electronic structure, stability, and reactivity of this organometallic system.
+        </p>
+    </div>
+</body>
+</html>
