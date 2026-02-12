@@ -1,4 +1,29 @@
-# F_bond Analysis of Cs₃Al_n⁻ Superatom Clusters
+# F_bond: A Quantum Entanglement Descriptor for Superatom Analysis
+
+> **This repository contains computational workflows for analyzing superatomic systems using the F_bond quantum entanglement descriptor.**
+
+## Publications in This Repository
+
+### 1. Cs₃Al_n⁻ Superatom Clusters | Published
+**Status:** Preprint submitted to ChemRxiv (Feb 2026)  
+**Directory:** Current main directory  
+**Paper:** Size-Independent Quantum Entanglement Signatures in Cs₃Al_n⁻ Superatom Clusters
+
+### 2. Al₄²⁻/Al₄⁴⁻ Aromatic vs Antiaromatic Clusters | In Progress
+**Status:** Calculations in progress  
+**Expected:** Feb 2026  
+**Directory:** Coming soon
+
+### 3. Boron Clusters (2D→3D Transition) | Planned
+**Expected:** March 2026
+
+### 4. Au₂₅(SR)₁₈⁻ Ligand-Protected Nanoclusters | Planned
+**Expected:** April 2026
+
+---
+
+## Current Work: Cs₃Al_n⁻ Superatom Clusters
+
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
