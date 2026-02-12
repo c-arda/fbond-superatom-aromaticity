@@ -20,8 +20,8 @@ Analysis scripts for computing F_bond quantum descriptors on cesium-aluminum sup
 
 ##  Key Findings
 
-- **F_bond = 0.01270** for Cs₃Al₈⁻ (40 valence electrons)
-- **F_bond = 0.01280** for Cs₃Al₁₂⁻ (56 valence electrons)
+- **F_bond = 0.01270** for Cs₃Al₈⁻ (28 valence electrons)
+- **F_bond = 0.01280** for Cs₃Al₁₂⁻ (40 valence electrons)
 - **0.87% difference** despite 36% size increase
 - **Compensating trends:** +24% HOMO-LUMO gap, -19% entanglement entropy
 - **Universal signature:** F_bond captures intrinsic superatom aromaticity
@@ -225,17 +225,16 @@ Recommended isovalue: ±0.03 a.u.
 | Cs₃Al₈⁻ | 132 | ~8 hours | 16-24 GB |
 | Cs₃Al₁₂⁻ | 184 | ~34 hours | 24-32 GB |
 
-*Times for single-core CPU. Parallel execution reduces by 2-4×.*
-
+Wall-clock times measured on an AMD Ryzen workstation (using default multi-threading).
 ---
 
 ##  Results Summary
 
 | System | Valence e⁻ | O_MOS (Ha) | S_E,max (nats) | **F_bond** |
 |--------|-----------|------------|----------------|-----------|
-| Cs₃Al₈⁻ | 40 | 0.0890 | 0.2853 | **0.01270** |
-| Cs₃Al₁₂⁻ | 56 | 0.1106 | 0.2316 | **0.01280** |
-| **Change** | +40% | +24% | -19% | **+0.87%** |
+| Cs₃Al₈⁻ | 28 | 0.0890 | 0.2853 | **0.01270** |
+| Cs₃Al₁₂⁻ | 40 | 0.1106 | 0.2316 | **0.01280** |
+| **Change** | +43% | +24% | -19% | **+0.87%** |
 
 **Key insight:** Opposite trends in gap (+24%) and entanglement (-19%) compensate to yield constant F_bond, suggesting it captures an intrinsic property of Cs₃Al_n⁻ superatom aromaticity.
 
