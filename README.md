@@ -164,22 +164,37 @@ Opens interactive 3D orbital viewer in your browser.
 
 ##  Output Files
 
-### JSON Data (`fbond_results.json`)
+### JSON Data (`fbond_results_combined`)
 
 ```json
 {
-  "system": "Cs3Al8",
-  "n_electrons": 132,
-  "n_atoms": 11,
-  "E_HF": -1994.282,
-  "E_CCSD": -1995.118,
-  "E_corr": -0.836,
-  "eps_HOMO": -0.027336,
-  "eps_LUMO": 0.061674,
-  "O_MOS": 0.089010,
-  "S_E_max": 0.285297,
-  "F_bond": 0.012697
-}
+    "system": "Cs3Al8",
+    "n_electrons": 132,
+    "n_atoms": 11,
+    "n_frozen": 8,
+    "E_HF": -1994.28201636,
+    "E_CCSD": -1995.11803399,
+    "E_corr": -0.836018,
+    "eps_HOMO": -0.027336,
+    "eps_LUMO": 0.061674,
+    "O_MOS": 0.08901,
+    "S_E_max": 0.285297,
+    "F_bond": 0.012697
+  },
+  {
+    "system": "Cs3Al12",
+    "n_electrons": 184,
+    "n_atoms": 15,
+    "n_frozen": 12,
+    "E_HF": -2961.6809520885317,
+    "E_CCSD": -2962.8645027209636,
+    "E_corr": -1.1835506324319196,
+    "eps_HOMO": -0.056543158660645194,
+    "eps_LUMO": 0.05405601837507121,
+    "O_MOS": 0.1105991770357164,
+    "S_E_max": 0.2315978742252688,
+    "F_bond": 0.012807267146268042
+  }
 ```
 
 ### Cube Files
@@ -272,8 +287,8 @@ Contributions welcome! Please:
 
 **Celal Arda**  
 Independent Researcher  
-📧 celal.arda@outlook.de  
-🔗 [ORCID: 0009-0006-4563-8325](https://orcid.org/0009-0006-4563-8325)
+ celal.arda@outlook.de  
+ [ORCID: 0009-0006-4563-8325](https://orcid.org/0009-0006-4563-8325)
 
 ---
 
