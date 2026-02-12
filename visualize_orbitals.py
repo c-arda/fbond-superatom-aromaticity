@@ -2,6 +2,32 @@
 """
 Cube File Orbital Visualizer
 Reads Gaussian/PySCF cube files and creates 3D isosurface visualization
+
+USAGE:
+    python visualize_orbitals.py <cube_file> [isovalue] [output.html]
+
+EXAMPLES:
+    # Basic usage (uses default isovalue 0.03)
+    python visualize_orbitals.py Cs3Al8_HOMO_NO.cube
+
+    # Custom isovalue
+    python visualize_orbitals.py Cs3Al8_HOMO_NO.cube 0.05
+
+    # Custom isovalue and output filename
+    python visualize_orbitals.py Cs3Al8_HOMO_NO.cube 0.03 Cs3Al8_HOMO.html
+
+    # Visualize LUMO
+    python visualize_orbitals.py Cs3Al12_LUMO_NO.cube 0.03 Cs3Al12_LUMO.html
+
+OUTPUT:
+    - Interactive HTML file with 3D orbital visualization
+    - Red surface: positive orbital lobe
+    - Blue surface: negative orbital lobe
+    - Gold/silver spheres: Cs/Al atoms
+    - Open in web browser to rotate/zoom
+
+REQUIREMENTS:
+    pip install numpy plotly scikit-image
 """
 import numpy as np
 import plotly.graph_objects as go
