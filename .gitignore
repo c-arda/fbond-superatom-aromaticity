@@ -3,6 +3,9 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+# PySCF Checkpoint files (Large binary files)
+*_checkpoint_*.pkl
+
 # C extensions
 *.so
 
