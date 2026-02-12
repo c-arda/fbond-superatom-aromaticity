@@ -85,7 +85,7 @@ fbond-superatom-aromaticity/
 
 ---
 
-## 💻 Usage
+##  Usage
 
 ### Quick Start: Reproduce Published Results
 
@@ -105,6 +105,9 @@ python automated_fbond_workflow.py --system Cs3Al12 --geometry example_output/Cs
 **Runtime:**
 - Cs₃Al₈⁻: ~8-10 hours (132 electrons, CCSD)
 - Cs₃Al₁₂⁻: ~30-36 hours (184 electrons, CCSD)
+
+**Resumable Calculations:**
+The workflow automatically saves checkpoints (HF, CCSD, Natural Orbitals). If the long-running CCSD calculation is interrupted, simply re-run the script to resume from the last saved state.
 
 ### Step-by-Step Workflow
 
