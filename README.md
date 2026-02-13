@@ -37,7 +37,7 @@ Analysis scripts for computing F_bond quantum descriptors on cesium-aluminum sup
 
 **Authors:** Celal Arda
 
-**Preprint:** [ChemRxiv DOI: XXX] Code supporting preprint submitted to ChemRxiv (under review, DOI pending)
+**Preprint:** 10.26434/chemrxiv.15000063/v1 submitted to ChemRxiv
 
 **Abstract:** We demonstrate that the F_bond quantum descriptor exhibits remarkable size independence in cesium-aluminum superatom clusters, with values differing by only 0.87% (0.01270 vs 0.01280) despite a 36% increase in cluster size. This constancy emerges from compensating trends: the HOMO-LUMO gap increases by 24% while entanglement entropy decreases by 19%, suggesting F_bond ≈ 0.0127 is a characteristic signature of Cs₃Al_n⁻ aromaticity.
 
