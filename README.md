@@ -1,371 +1,179 @@
-# F_bond: A Quantum Entanglement Descriptor for Superatom Analysis
-
-> **This repository contains computational workflows for analyzing superatomic systems using the F_bond quantum entanglement descriptor.**
-
-## Publications in This Repository
-
-### 1. Cs₃Al_n⁻ Superatom Clusters | Published
-**Status:** Preprint submitted to ChemRxiv (Feb 2026)  
-**Directory:** Current main directory  
-**Paper:** Size-Independent Quantum Entanglement Signatures in Cs₃Al_n⁻ Superatom Clusters
-
-### 2. Al₄²⁻/Al₄⁴⁻ Aromatic vs Antiaromatic Clusters | In Progress
-**Status:** Calculations in progress  
-**Expected:** Feb 2026  
-**Directory:** Coming soon
-
-### 3. Boron Clusters (2D→3D Transition) | Planned
-**Expected:** March 2026
-
-### 4. Au₂₅(SR)₁₈⁻ Ligand-Protected Nanoclusters | Planned
-**Expected:** April 2026
-
----
-
-## Current Work: Cs₃Al_n⁻ Superatom Clusters
-
+# F<sub>bond</sub>: A Unified Measure of Electron Correlation on Classical and Quantum Processors
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![PySCF](https://img.shields.io/badge/PySCF-2.12+-green.svg)](https://pyscf.org/)
 
-Analysis scripts for computing F_bond quantum descriptors on cesium-aluminum superatom clusters (Cs₃Al₈⁻ and Cs₃Al₁₂⁻).
-
-##  Associated Publication
-
-**Title:** Size-Independent Quantum Entanglement Signatures in Cs₃Al_n⁻ Superatom Clusters: An F_bond Analysis
-
-**Authors:** Celal Arda
-
-**Preprint:** 10.26434/chemrxiv.15000063/v1 submitted to ChemRxiv
-
-**Abstract:** We demonstrate that the F_bond quantum descriptor exhibits remarkable size independence in cesium-aluminum superatom clusters, with values differing by only 0.87% (0.01270 vs 0.01280) despite a 36% increase in cluster size. This constancy emerges from compensating trends: the HOMO-LUMO gap increases by 24% while entanglement entropy decreases by 19%, suggesting F_bond ≈ 0.0127 is a characteristic signature of Cs₃Al_n⁻ aromaticity.
+**Repository for:**
+> *F<sub>bond</sub> as a Unified Measure of Electron Correlation: From Aromatic Clusters to Metallic Superatoms on Classical and Quantum Processors*
+>
+> Celal Arda — Submitted to ACS Omega (2026)
 
 ---
 
-##  Key Findings
+## Overview
 
-- **F_bond = 0.01270** for Cs₃Al₈⁻ (28 valence electrons)
-- **F_bond = 0.01280** for Cs₃Al₁₂⁻ (40 valence electrons)
-- **0.87% difference** despite 36% size increase
-- **Compensating trends:** +24% HOMO-LUMO gap, -19% entanglement entropy
-- **Universal signature:** F_bond captures intrinsic superatom aromaticity
+This repository contains all computational scripts, raw data, and reproducibility materials for the F<sub>bond</sub> framework paper. The framework introduces two complementary measures of electron correlation:
+
+- **F<sub>bond</sub><sup>(A)</sup>** (intensive, frontier-based): Captures HOMO–LUMO entanglement.
+- **F<sub>bond</sub><sup>(B)</sup>** (extensive, total): Measures total deviation from idempotency across the **complete** natural orbital space.
+- **f<sub>e</sub>** (per-electron correlation density): Enables meaningful comparison across systems of different sizes.
+
+### Key Findings
+
+| System | N<sub>e</sub> | F<sub>bond</sub><sup>(B)</sup> | f<sub>e</sub> |
+|--------|------|------|------|
+| Al₄²⁻ (aromatic) | 54 | 3.84 | 0.071 |
+| Al₄⁴⁻ (antiaromatic) | 56 | 4.03 | 0.072 |
+| B₁₂ (planar) | 60 | 4.42 | 0.074 |
+| B₁₂ (icosahedral) | 60 | 4.99 | 0.083 |
+| B₆N₆ (planar) | 72 | 5.11 | 0.071 |
+| Cs₃Al₈⁻ | 132 | 5.58 | 0.042 |
+| Cs₃Al₁₂⁻ | 184 | 7.10 | 0.039 |
+
+**Two distinct correlation regimes:** small clusters (f<sub>e</sub> ≈ 0.07) vs. metallic superatoms (f<sub>e</sub> ≈ 0.04).
+
+### Quantum Hardware Validation
+
+We validated the F<sub>bond</sub> framework using **analog quantum simulation** on a Pasqal neutral-atom processor (MPS emulator). The quantum entanglement topology reproduces the chemical bonding character:
+
+| System | Classical S<sub>E,max</sub> | Quantum S<sub>E</sub><sup>Q</sup> |
+|--------|------|------|
+| Al₄²⁻ (aromatic) | 0.028 | 0.514 |
+| Al₄⁴⁻ (antiaromatic) | 0.019 | 0.611 |
+| B₁₂ (planar) | 0.030 | 0.593 |
+| B₆N₆ (planar) | 0.035 | 0.577 |
+| Cs₃Al₈⁻ (superatom) | 0.013 | 0.674 |
 
 ---
 
-##  Repository Structure
+## Repository Structure
 
 ```
 fbond-superatom-aromaticity/
 ├── README.md                          # This file
 ├── LICENSE                            # MIT License
 ├── requirements.txt                   # Python dependencies
+│
 ├── automated_fbond_workflow.py        # Main CCSD/F_bond calculation
 ├── optimize_geometry.py               # B3LYP geometry optimization
-├── visualize_orbitals.py             # Generate orbital cube files and HTML
-├── example_output/
-│   ├── fbond_results_combined.json   # Complete results for both systems
-│   ├── Cs3Al8_structure.xyz          # Optimized geometry
-│   └── Cs3Al12_structure.xyz         # Optimized geometry
-└── docs/
-    └── calculation_workflow.md        # Detailed methodology
-
+├── visualize_orbitals.py              # Generate orbital cube files and HTML
+│
+├── quantum/                           # Quantum hardware validation
+│   ├── fbond_pasqal.py                # Pasqal neutral-atom simulation script
+│   └── plot_pasqal_results.py         # Visualization of quantum results
+│
+├── data/                              # Raw computational data
+│   └── fbond_pasqal_results_final.json# Quantum simulation results (500 shots)
+│
+├── example_output/                    # Classical calculation outputs
+│   ├── fbond_results_combined.json    # Complete F_bond results
+│   ├── Cs3Al8_structure.xyz           # Optimized Cs₃Al₈⁻ geometry
+│   └── Cs3Al12_structure.xyz          # Optimized Cs₃Al₁₂⁻ geometry
+│
+└── manuscript/                        # Supporting Information
+    ├── Supporting_Information.tex      # SI LaTeX source
+    └── Supporting_Information.pdf      # Compiled SI
 ```
 
 ---
 
-##  Installation
+## Installation
 
 ### Prerequisites
-
-- Python 3.11 or later
-- 32 GB RAM recommended (minimum 16 GB)
-- Linux or macOS (Windows via WSL)
+- Python ≥ 3.11
+- PySCF 2.12.1
+- Pasqal Pulser SDK (for quantum validation)
 
 ### Setup
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/unearthlyimprint/fbond-superatom-aromaticity.git
-   cd fbond-superatom-aromaticity
-   ```
-
-2. **Create a conda environment:**
-   ```bash
-   conda create -n fbond python=3.11
-   conda activate fbond
-   ```
-
-3. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-   Key packages:
-   - `pyscf>=2.12.1` - Quantum chemistry calculations
-   - `numpy>=1.24.0` - Numerical arrays
-   - `scipy>=1.11.0` - Scientific computing
-   - `matplotlib>=3.7.0` - Visualization
-   - `geometric>=1.0` - Geometry optimization
-
----
-
-##  Usage
-
-### Quick Start: Reproduce Published Results
-
 ```bash
-# Run complete workflow for Cs₃Al₈⁻
-python automated_fbond_workflow.py --system Cs3Al8 --geometry example_output/Cs3Al8_structure.xyz
-
-# Run complete workflow for Cs₃Al₁₂⁻
-python automated_fbond_workflow.py --system Cs3Al12 --geometry example_output/Cs3Al12_structure.xyz
+git clone https://github.com/unearthlyimprint/fbond-superatom-aromaticity.git
+cd fbond-superatom-aromaticity
+pip install -r requirements.txt
 ```
 
-**Expected output:**
-- JSON file with F_bond components
-- Natural orbital cube files (HOMO, LUMO)
-- Checkpoint files for restart capability
+---
 
-**Runtime:**
-- Cs₃Al₈⁻: ~8-10 hours (132 electrons, CCSD)
-- Cs₃Al₁₂⁻: ~30-36 hours (184 electrons, CCSD)
+## Usage
 
-**Resumable Calculations:**
-The workflow automatically saves checkpoints (HF, CCSD, Natural Orbitals). If the long-running CCSD calculation is interrupted, simply re-run the script to resume from the last saved state.
-
-### Step-by-Step Workflow
-
-#### 1. Geometry Optimization (Optional)
-
-If starting from scratch:
-
+### Classical F<sub>bond</sub> Calculation
 ```bash
-python optimize_geometry.py --system Cs3Al8 --output optimized.xyz
+# Full CCSD workflow (geometry optimization → CCSD → F_bond)
+python automated_fbond_workflow.py
 ```
 
-**Method:** B3LYP/def2-SVP with def2-ECP for Cs
-
-**Convergence:** Gradient RMS < 3×10⁻⁴ Ha/bohr
-
-#### 2. F_bond Calculation
-
+### Quantum Hardware Validation
 ```bash
-python automated_fbond_workflow.py \
-    --system Cs3Al8 \
-    --geometry optimized.xyz \
-    --basis def2-svp \
-    --frozen-core 8 \
-    --output results/
+# Local simulation (no cloud credentials needed)
+python quantum/fbond_pasqal.py --mode local --shots 100
+
+# Cloud simulation via Pasqal SDK (requires credentials)
+export PASQAL_PROJECT_ID="your-project-id"
+export PASQAL_USERNAME="your-username"
+export PASQAL_PASSWORD="your-password"
+python quantum/fbond_pasqal.py --mode cloud --emulator EMU_MPS --shots 500
+
+# Plot results
+python quantum/plot_pasqal_results.py
 ```
 
-**Options:**
-- `--system`: System identifier (Cs3Al8 or Cs3Al12)
-- `--geometry`: XYZ coordinate file
-- `--basis`: Basis set (default: def2-svp)
-- `--frozen-core`: Number of frozen core orbitals
-- `--output`: Output directory
+---
 
-**Workflow:**
-1. Hartree-Fock calculation
-2. Frozen-core CCSD (T-amplitudes)
-3. Lambda-CCSD (density matrix)
-4. Natural orbital extraction
-5. F_bond computation
-6. Cube file generation
+## Computational Details
 
-#### 3. Visualization
+### Classical Methods
+- **Level of theory:** CCSD/def2-SVP (frozen core)
+- **Software:** PySCF 2.12.1
+- **Key insight:** Complete natural orbital space retention is essential.
+  Truncating to a small active space underestimates F<sub>bond</sub><sup>(B)</sup>
+  by up to 6,200×.
 
-```bash
-python visualize_orbitals.py \
-    --cube-homo results/Cs3Al8_HOMO_NO.cube \
-    --cube-lumo results/Cs3Al8_LUMO_NO.cube \
-    --output orbital_visualization.html
-```
-
-Opens interactive 3D orbital viewer in your browser.
+### Quantum Methods
+- **Platform:** Pasqal neutral-atom processor (MPS emulator)
+- **Protocol:** Adiabatic Rydberg blockade evolution
+- **Backend:** Matrix Product State (MPS), 500 shots per system
+- **Mapping:** Force-directed 2D layout preserving bonding topology (R > 5 μm)
 
 ---
 
-##  Output Files
+## Citation
 
-### JSON Data (`fbond_results_combined`)
-
-```json
-{
-    "system": "Cs3Al8",
-    "n_electrons": 132,
-    "n_atoms": 11,
-    "n_frozen": 8,
-    "E_HF": -1994.28201636,
-    "E_CCSD": -1995.11803399,
-    "E_corr": -0.836018,
-    "eps_HOMO": -0.027336,
-    "eps_LUMO": 0.061674,
-    "O_MOS": 0.08901,
-    "S_E_max": 0.285297,
-    "F_bond": 0.012697
-  },
-  {
-    "system": "Cs3Al12",
-    "n_electrons": 184,
-    "n_atoms": 15,
-    "n_frozen": 12,
-    "E_HF": -2961.6809520885317,
-    "E_CCSD": -2962.8645027209636,
-    "E_corr": -1.1835506324319196,
-    "eps_HOMO": -0.056543158660645194,
-    "eps_LUMO": 0.05405601837507121,
-    "O_MOS": 0.1105991770357164,
-    "S_E_max": 0.2315978742252688,
-    "F_bond": 0.012807267146268042
-  }
-```
-
-### Cube Files
-
-Gaussian CUBE format for visualization:
-- `Cs3Al8_HOMO_NO.cube` - HOMO natural orbital
-- `Cs3Al8_LUMO_NO.cube` - LUMO natural orbital
-
-Grid spacing: 0.2 Bohr  
-Recommended isovalue: ±0.03 a.u.
-
-**Visualization tools:**
-- [Avogadro](https://avogadro.cc/)
-- [VMD](https://www.ks.uiuc.edu/Research/vmd/)
-- [PyMOL](https://pymol.org/)
-- Provided HTML script (interactive web-based)
-
----
-
-##  Computational Details
-
-### Basis Sets
-
-- **Aluminum (Al):** def2-SVP [3s2p1d]
-- **Cesium (Cs):** def2-SVP with def2-ECP (46-electron pseudopotential)
-
-### Frozen Core Approximation
-
-- **Cs₃Al₈⁻:** 8 Al 1s electrons frozen
-- **Cs₃Al₁₂⁻:** 12 Al 1s electrons frozen
-- Cs core electrons handled by ECP
-
-### Convergence Criteria
-
-| Property | Threshold |
-|----------|-----------|
-| SCF energy | 1×10⁻⁹ Ha |
-| CCSD energy | 1×10⁻⁷ Ha |
-| CCSD amplitudes | 1×10⁻⁵ |
-| Lambda amplitudes | 1×10⁻⁵ |
-
-### System Requirements
-
-| System | Electrons | CCSD Time | RAM Usage |
-|--------|-----------|-----------|-----------|
-| Cs₃Al₈⁻ | 132 | ~8 hours | 16-24 GB |
-| Cs₃Al₁₂⁻ | 184 | ~34 hours | 24-32 GB |
-
-Wall-clock times measured on an AMD Ryzen workstation (using default multi-threading).
----
-
-##  Results Summary
-
-| System | Valence e⁻ | O_MOS (Ha) | S_E,max (nats) | **F_bond** |
-|--------|-----------|------------|----------------|-----------|
-| Cs₃Al₈⁻ | 28 | 0.0890 | 0.2853 | **0.01270** |
-| Cs₃Al₁₂⁻ | 40 | 0.1106 | 0.2316 | **0.01280** |
-| **Change** | +43% | +24% | -19% | **+0.87%** |
-
-**Key insight:** Opposite trends in gap (+24%) and entanglement (-19%) compensate to yield constant F_bond, suggesting it captures an intrinsic property of Cs₃Al_n⁻ superatom aromaticity.
-
----
-
-##  References
-
-**Primary reference for F_bond methodology:**
-> Arda, C. "Quantum entanglement signatures of aromaticity..." (2025) [Previous F_bond paper]
-
-**Superatom chemistry:**
-> Li, X. et al. "Observation of all-metal aromatic clusters..." *Science* (2012)
-
-**PySCF software:**
-> Sun, Q. et al. "PySCF: The Python-based simulations of chemistry framework" *WIREs Comput. Mol. Sci.* (2018)
-
----
-
-##  Contributing
-
-Contributions welcome! Please:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/improvement`)
-3. Commit changes (`git commit -am 'Add new feature'`)
-4. Push to branch (`git push origin feature/improvement`)
-5. Open a Pull Request
-
----
-
-##  Contact
-
-**Celal Arda**  
-Independent Researcher  
- celal.arda@outlook.de  
- [ORCID: 0009-0006-4563-8325](https://orcid.org/0009-0006-4563-8325)
-
----
-
-##  Citation
-
-If you use this code in your research, please cite:
+If you use this code or data, please cite:
 
 ```bibtex
-@article{arda2026superatom,
-  title={Size-Independent Quantum Entanglement Signatures in Cs₃Al_n⁻ Superatom Clusters: An F_bond Analysis},
-  author={Arda, Celal},
-  journal={ChemRxiv},
-  year={2026},
-  doi={XXX}  % Add after publication
+@article{arda2026fbond,
+  author  = {Arda, Celal},
+  title   = {F_bond as a Unified Measure of Electron Correlation:
+             From Aromatic Clusters to Metallic Superatoms
+             on Classical and Quantum Processors},
+  journal = {ACS Omega},
+  year    = {2026},
+  note    = {Submitted}
 }
 ```
-
-And the software repository:
-
-```bibtex
-@software{arda2026fbond_code,
-  author={Arda, Celal},
-  title={F_bond Analysis Scripts for Cesium-Aluminum Superatom Clusters},
-  year={2026},
-  url={https://github.com/unearthlyimprint/fbond-superatom-aromaticity}
-}
-```
-
----
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## Acknowledgments
-
-- **PySCF development team** for quantum chemistry software
-- **geomeTRIC** for geometry optimization tools
-- **ChemRxiv** for preprint hosting
 
 ---
 
 ## Version History
 
+### v2.0.0 (2026-02-17)
+- **Major upgrade:** Added quantum hardware validation (Pasqal neutral-atom simulation)
+- Added `quantum/` directory with `fbond_pasqal.py` and `plot_pasqal_results.py`
+- Added `data/fbond_pasqal_results_final.json` (500-shot MPS emulator results)
+- Added `manuscript/Supporting_Information.tex` and `.pdf`
+- Updated README to reflect v4 manuscript (ACS Omega submission)
+- Expanded scope from superatoms-only to unified framework (Al₄, B₁₂, B₆N₆, Cs₃Al_n⁻)
+
 ### v1.0.0 (2026-02-11)
-- Initial release
-- Cs₃Al₈⁻ and Cs₃Al₁₂⁻ calculations
-- def2-SVP/CCSD level of theory
-- Size-independence discovery
+- Initial release: Classical F<sub>bond</sub> workflow for Cs₃Al_n⁻ superatom clusters
+- Automated CCSD/Lambda-CCSD/NOON pipeline
+- Structure optimization and orbital visualization scripts
 
 ---
 
-**Last updated:** February 11, 2026
+## License
+
+MIT License. See [LICENSE](LICENSE) for details.
+
+## Contact
+
+Celal Arda — celal.arda@outlook.de
