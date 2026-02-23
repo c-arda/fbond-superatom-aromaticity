@@ -280,6 +280,7 @@ Table~\ref{tab:main} presents the unified results for all systems studied.
     System & $N_e$ & $N_{\text{corr}}$ & $M$ & $M_{\text{frac}}$ & $|E_{\text{corr}}|$ (Ha)
       & $N_D$ & $f_e$ \\
     \midrule
+    \ce{C6H6} (benzene)            &  42 &  36 & 114 &  75 (66\%) & 0.821 & 2.49 & 0.069 \\
     \ce{Al4^{2-}} (aromatic)       &  54 &  46 &  72 &  49 (68\%) & 0.300 & 3.84 & 0.083 \\
     \ce{Al4^{4-}} (singlet)        &  56 &  48 &  72 &  52 (72\%) & 0.352 & 4.03 & 0.084 \\
     \ce{B12} (planar)              &  60 &  36 & 168 & 102 (61\%) & 1.037 & 4.42 & 0.123 \\
@@ -287,7 +288,9 @@ Table~\ref{tab:main} presents the unified results for all systems studied.
     \ce{B6N6} (planar)             &  72 &  48 & 168 & 115 (68\%) & 1.529 & 5.11 & 0.106 \\
     \ce{Cs3Al8^-}                  & 132 & 116 & 216 & 208 (96\%) & 0.836 & 5.58 & 0.048 \\
     \ce{Al4^{4-}} (triplet)        &  40 &  32 &   6 &   6 (100\%)& 0.364 & 6.00 & 0.188 \\
+    \ce{Au13^-} (icosahedral)      & 248 & 222 & 300 & 121 (40\%) & 1.417 & 6.76 & 0.030 \\
     \ce{Cs3Al_{12}^-}              & 184 & 160 & 288 & 276 (96\%) & 1.184 & 7.10 & 0.044 \\
+    \ce{B12N12} (cage)             & 168 & 144 & 360 & 104 (29\%) & 2.888 & 7.18 & 0.050 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -780,7 +783,7 @@ The key findings are:
 \begin{enumerate}
   \item All systems studied exhibit substantial aggregate correlation
     when the complete natural orbital space is retained, with
-    $N_D$ ranging from 3.84 to 7.10 for closed-shell
+    $N_D$ ranging from 2.49 (benzene) to 7.18 (\ce{B12N12} cage) for closed-shell
     systems. This extensive sum is dominated by the dynamic correlation
     tail over many weakly occupied virtual natural orbitals.
     Previous reports of vanishingly small $N_D$ values
@@ -788,10 +791,11 @@ The key findings are:
     that missed the majority of the dynamic correlation signal.
 
   \item The per-electron correlation density $f_e$ cleanly separates two
-    regimes: small clusters ($f_e \approx 0.08$--$0.14$) and metallic superatoms
-    ($f_e \approx 0.04$--$0.05$). The superatoms exhibit ``wide but shallow''
-    correlation---96\% of orbitals are fractionally occupied, but the
-    per-electron correlation density is roughly half that of small clusters.
+    regimes: small planar clusters ($f_e \approx 0.07$--$0.14$) and
+    large cage or metallic superatoms ($f_e \approx 0.03$--$0.05$).
+    The superatoms and cages exhibit ``wide but shallow''
+    correlation, while the per-electron correlation density of
+    small clusters is 2--4 times higher.
 
   \item $N_D$ scales extensively with system size,
     while $f_e$ converges toward characteristic values for each bonding
