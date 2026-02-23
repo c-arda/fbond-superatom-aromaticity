@@ -51,9 +51,9 @@ cesium--aluminum superatoms \ce{Cs3Al8^-} and \ce{Cs3Al_{12}^-}
 ($5.58$ and $7.10$, respectively). We show that $N_D$ is an
 extensive quantity dominated by the dynamic correlation tail over many
 weakly occupied virtual orbitals, and introduce the per-electron correlation
-density $f_e = N_D/N_e$ as a complementary intensive measure. This
+density $f_e = N_D/N_{\text{corr}}$ as a complementary intensive measure. This
 intensive measure reveals a clear separation: small clusters
-(\ce{Al4}, \ce{B12}, \ce{B6N6}) exhibit $f_e \approx 0.07$, while
+(\ce{Al4}, \ce{B12}, \ce{B6N6}) exhibit $f_e \approx 0.07$--$0.14$, while
 metallic superatoms show $f_e \approx 0.04$, reflecting the diluted
 nature of correlation in large delocalized systems. We demonstrate that
 truncation of the natural orbital space to a small active window
@@ -111,7 +111,7 @@ cluster systems, demonstrating that computed $N_D$ values are highly sensitive
 to orbital space completeness. We show that retaining only a small ``active''
 window of natural orbitals dramatically underestimates the total deviation
 from idempotency, and introduce the per-electron correlation density
-$f_e = N_D/N_e$ as an intensive measure that reveals distinct correlation
+$f_e = N_D/N_{\text{corr}}$ as an intensive measure that reveals distinct correlation
 regimes across bonding families.
 
 In a separate investigation, we explore whether the spatial topology
@@ -139,7 +139,7 @@ Deviations from idempotency directly signal electron correlation.
 \subsection{The $N_D$ Index}
 
 In preliminary work, we termed the occupation-summation measure
-$N_D$.\cite{arda2025fbond} Recognizing its mathematical
+$F_{\text{bond}}$.\cite{arda2025fbond} Recognizing its mathematical
 equivalence to the Takatsuka--Head-Gordon index of effectively
 unpaired electrons,\cite{takatsuka1978,headgordon2003} we adopt the
 standard $N_D$ nomenclature for the remainder of this work:
@@ -320,28 +320,24 @@ reveals a clear and physically meaningful separation into two groups.
 
 \subsection{Two Correlation Regimes Revealed by $f_e$}
 
-The per-electron correlation density $f_e = N_D/N_e$
+The per-electron correlation density $f_e = N_D/N_{\text{corr}}$
 separates the closed-shell systems into two distinct regimes:
 
-\textbf{Small cluster regime} ($f_e \approx 0.07$):
-\ce{Al4^{2-}}, \ce{Al4^{4-}}, \ce{B12} (both isomers), and \ce{B6N6}
-all exhibit per-electron correlation densities clustered tightly around
-$f_e = 0.071$--$0.083$. Despite spanning different elements (Al, B, N),
-different topologies (planar, icosahedral), and different bonding
-characters (aromatic, antiaromatic, electron-deficient),
-these systems share a common intrinsic correlation density.
-The slight outlier is icosahedral \ce{B12} ($f_e = 0.083$),
-The per-electron correlation density $f_e = N_D/N_{\text{corr}}$
-resolves this ambiguity. Small clusters (\ce{Al4}, \ce{B12}, \ce{B6N6})
-exhibit $f_e \approx 0.08$--$0.14$, indicating that roughly 8--14\% of each
-correlated electron's occupation deviates from idempotency. Metallic superatoms,
-by contrast, show $f_e \approx 0.04$--$0.05$, indicating diluted, extensive
+\textbf{Small cluster regime} ($f_e \approx 0.07$--$0.14$):
+\ce{C6H6}, \ce{Al4^{2-}}, \ce{Al4^{4-}}, \ce{B12} (both isomers), and \ce{B6N6}
+exhibit $f_e \approx 0.07$--$0.14$, indicating that roughly 7--14\% of each
+correlated electron's occupation deviates from idempotency.
+The icosahedral \ce{B12} ($f_e = 0.139$) stands out as having
+the highest $f_e$ among closed-shell systems, reflecting the orbital
+degeneracies imposed by $I_h$ symmetry.
+
+\textbf{Superatom/cage regime} ($f_e \approx 0.03$--$0.05$):
+Metallic superatoms and large cage systems show
+$f_e \approx 0.03$--$0.05$, indicating diluted, extensive
 correlation spread over the entire cluster rather than concentrated in a
-few strongly correlated orbitals. The icosahedral \ce{B12} cage
-($f_e = 0.139$) stands out as having the highest $f_e$ among closed-shell
-systems, reflecting the orbital degeneracies imposed by $I_h$ symmetry.
+few strongly correlated orbitals.
 The nearly identical $f_e$ values for
-the two superatoms ($0.048$ vs.\ $0.044$, a 8\% difference) suggest that
+the two superatoms ($0.048$ vs.\ $0.044$, an 8\% difference) suggest that
 $f_e$ converges toward a characteristic value for the \ce{Cs3Al_n^-}
 superatom family.
 
@@ -777,7 +773,7 @@ We have applied the Takatsuka--Head-Gordon index of effectively unpaired
 electrons, $N_D = \sum_i n_i(2-n_i)$,\cite{takatsuka1978,headgordon2003}
 as a systematic measure of total electron correlation across diverse cluster
 systems, and introduced the per-electron correlation density
-$f_e = N_D/N_e$ as a complementary intensive descriptor.
+$f_e = N_D/N_{\text{corr}}$ as a complementary intensive descriptor.
 The key findings are:
 
 \begin{enumerate}
