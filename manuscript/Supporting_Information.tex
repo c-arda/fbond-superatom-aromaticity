@@ -1,8 +1,8 @@
 % ============================================================================
 % Supporting Information
-% For: F_bond as a Unified Measure of Electron Correlation:
-%      From Aromatic Clusters to Metallic Superatoms on Classical
-%      and Quantum Processors
+% For: Natural Orbital Correlation Analysis of Cluster Bonding:
+%      From Aromatic Clusters to Metallic Superatoms
+%      with Quantum Topology Probes
 % ============================================================================
 \documentclass[12pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
@@ -30,13 +30,13 @@
 
 \title{%
   Supporting Information for:\\[6pt]
-  $F_{\text{bond}}$ as a Unified Measure of Electron Correlation:\\
+  Natural Orbital Correlation Analysis of Cluster Bonding:\\
   From Aromatic Clusters to Metallic Superatoms\\
-  on Classical and Quantum Processors%
+  with Quantum Topology Probes%
 }
 
 \author{Celal Arda}
-\date{February 17, 2026}
+\date{February 23, 2026}
 
 \begin{document}
 
@@ -124,20 +124,21 @@ Representative wall-clock times for the largest superatom systems:
   \end{tabular}
 \end{table}
 
-\subsection{Quantum Hardware Simulation Details}
+\subsection{Quantum Topology Simulation Details}
 \label{sec:quantum_si}
 
-Analog quantum simulations were executed to emulate neutral-atom
-Rydberg processors targeting the entanglement topology of the studied
-clusters.
+Analog quantum simulations were performed to investigate whether
+molecular bonding topology generates characteristic entanglement
+signatures on neutral-atom Rydberg processors.
 
 \paragraph{Register Mapping:}
 3D molecular geometries (e.g., \ce{Al4}, \ce{B12}, \ce{B6N6},
-\ce{Cs3Al8^-}) were projected into 2D configurations. A force-directed
-layout mapped these coordinates to neutral-atom register positions,
-strictly respecting the hardware's minimum atomic separation constraint
-($R > \SI{5}{\micro\meter}$) while preserving relative chemical bonding
-topology to prevent unwanted baseline blockade overlaps.
+\ce{Cs3Al8^-}) were mapped to neutral-atom register positions by
+uniformly scaling the physical Cartesian coordinates from PySCF
+(1~\AA{} $\to$ 3~$\mu$m) to satisfy the hardware's minimum
+atom separation constraint ($R > \SI{5}{\micro\meter}$).
+This preserves the true molecular geometry, including unequal
+bond lengths, in the Rydberg interaction graph.
 
 \paragraph{Hamiltonian Protocol:}
 The system was initialized in an unentangled ground product state
@@ -156,37 +157,39 @@ bottleneck inherent to exact state-vector simulators.
 \paragraph{Quantum Entanglement Results:}
 Table~\ref{tab:quantum_results} presents the quantum simulation results
 alongside the corresponding classical $S_{E,\text{max}}$ values.
+Note that $S_E^Q$ arises from the Rydberg spin Hamiltonian, which is
+physically distinct from the electronic Hamiltonian producing $S_E^C$.
 
 \begin{table}[H]
   \centering
   \caption{%
-    Comparison of classical $S_{E,\text{max}}$ and quantum-simulated
+    Classical $S_{E,\text{max}}$ and Rydberg entanglement
     $S_E^{Q}$ (Pasqal MPS emulator, 500 shots) for all studied systems.
+    These quantities arise from fundamentally different Hamiltonians.
   }
   \label{tab:quantum_results}
-  \begin{tabular}{lcccr}
+  \begin{tabular}{lccr}
     \toprule
     System & $S_{E,\text{max}}^{\text{class}}$ (nats)
-      & $S_E^{Q}$ (nats) & Max.\ Mutual Info.\ & Agree.\ (\%) \\
+      & $S_E^{Q}$ (nats) & Max.\ Mutual Info.\ \\
     \midrule
-    \ce{Al4^{2-}} (aromatic)      & 0.028 & 0.514 & 0.024 & 1836 \\
-    \ce{Al4^{4-}} (antiaromatic)  & 0.019 & 0.611 & 0.066 & 3215 \\
-    \ce{B12}      (planar)        & 0.030 & 0.593 & 0.078 & 1977 \\
-    \ce{B6N6}     (planar)        & 0.035 & 0.577 & 0.062 & 1649 \\
-    \ce{Cs3Al8^-} (superatom)     & 0.013 & 0.674 & 0.094 & 5183 \\
+    \ce{Al4^{2-}} (aromatic)      & 0.028 & 0.514 & 0.024 \\
+    \ce{Al4^{4-}} (antiaromatic)  & 0.019 & 0.611 & 0.066 \\
+    \ce{B12}      (planar)        & 0.030 & 0.593 & 0.078 \\
+    \ce{B6N6}     (planar)        & 0.035 & 0.577 & 0.062 \\
+    \ce{Cs3Al8^-} (superatom)     & 0.013 & 0.674 & 0.094 \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-Note: The ``Agreement'' column quantifies the ratio
-$S_E^{Q}/S_{E,\text{max}}^{\text{class}}$, reflecting the fact that the
-quantum simulation drives the system to a maximally entangled Rydberg
+The Rydberg simulation drives each system into a strongly entangled
 regime ($S_E \approx 0.5$--$0.7$ nats), whereas the molecular ground
-states are less strongly correlated ($S_E \approx 0.01$--$0.04$ nats).
+states exhibit weaker frontier-orbital correlation ($S_E \approx 0.01$--$0.04$ nats).
 Despite the absolute scale difference, the \emph{trends} across chemical
 species are remarkably consistent: the superatom \ce{Cs3Al8^-} exhibits
-the highest quantum entanglement, followed by the antiaromatic
-\ce{Al4^{4-}}, confirming the topological mapping.
+the highest Rydberg entanglement, followed by the antiaromatic
+\ce{Al4^{4-}}, confirming that molecular graph topology is
+faithfully encoded in the Rydberg interaction graph.
 
 % ============================================================================
 \section{Electronic Structure Data}
@@ -228,9 +231,8 @@ the highest quantum entanglement, followed by the antiaromatic
     \midrule
     \multicolumn{3}{l}{\emph{Correlation Diagnostics}} \\
     $S_{E,\text{max}}$ (nats)            & 0.285297 & 0.231598 \\
-    $F_{\text{bond}}^{(A)}$ (intensive)  & 0.012697 & 0.012807 \\
-    $F_{\text{bond}}^{(B)}$ (extensive)  & 5.58     & 7.10 \\
-    $f_e$ (per-electron density)         & 0.042    & 0.039 \\
+    $N_D$ (extensive)               & 5.58     & 7.10 \\
+    $f_e$ (per-electron, $N_D/N_{\text{corr}}$) & 0.048 & 0.044 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -259,8 +261,8 @@ Selected CCSD natural orbital occupations near the Fermi level:
 
 Note: While frontier orbitals individually show minimal deviations from
 idempotency, the complete summation across the massive 200+ correlated
-orbital space yields the extensive $F_{\text{bond}}^{(B)}$
-multiconfigurational signature discussed in the main text.
+orbital space yields the extensive $N_D$
+correlation signature discussed in the main text.
 
 \subsection{Entanglement Entropy Values}
 
@@ -340,9 +342,8 @@ Cs    0.000000    0.000000    6.125000
   \item \textbf{JSON Data Files} (\texttt{fbond\_results\_combined.json}):
     Machine-readable array containing complete system identifiers,
     electron counts, CCSD natural orbital occupations $\{n_i\}$ for
-    exact $F_{\text{bond}}^{(B)}$ reproduction, $O_{\text{MOS}}$,
-    $S_{E,\text{max}}$, $F_{\text{bond}}^{(A)}$,
-    $F_{\text{bond}}^{(B)}$, and $f_e$ values.
+    exact $N_D$ reproduction, $O_{\text{MOS}}$,
+    $S_{E,\text{max}}$, $N_D$, and $f_e$ values.
 
   \item \textbf{Quantum Simulation Data}
     (\texttt{fbond\_pasqal\_results\_final.json}):
@@ -385,25 +386,22 @@ and quantum information metrics:
     array of occupation numbers $\{n_i\}$. Critically, all virtual
     natural orbitals are retained to prevent correlation signal loss.
 
-  \item \textbf{Classical $F_{\text{bond}}$ Computation:}
+  \item \textbf{$N_D$ Computation:}
     \begin{itemize}
-      \item \emph{Intensive Formula~A} (Frontier):
-        $F_{\text{bond}}^{(A)} = \tfrac{1}{2}\, O_{\text{MOS}}
-        \cdot S_{E,\text{max}}$.
-      \item \emph{Extensive Formula~B} (Total Correlation):
-        $F_{\text{bond}}^{(B)} = \sum_{i=1}^{M} n_i(2-n_i)$.
+      \item \emph{Takatsuka--Head-Gordon index} (Total Correlation):
+        $N_D = \sum_{i=1}^{M} n_i(2-n_i)$.
       \item \emph{Intensive Normalization:}
-        $f_e = F_{\text{bond}}^{(B)} / N_e$.
+        $f_e = N_D / N_{\text{corr}}$, where $N_{\text{corr}} = N_e - N_{\text{frozen}}$.
     \end{itemize}
 
-  \item \textbf{Quantum Hardware Emulation:}
+  \item \textbf{Quantum Topology Study:}
     \begin{itemize}
-      \item Mapping the molecular graph to a 2D Pulser Register
-        ($> \SI{5}{\micro\meter}$ spacing).
+      \item Mapping molecular coordinates to Rydberg atom registers
+        via uniform spatial scaling ($> \SI{5}{\micro\meter}$ spacing).
       \item Defining adiabatic Rydberg blockade Hamiltonian pulse
         sequences ($\Omega(t)$, $\Delta(t)$).
       \item Simulating via the MPS backend (500 shots per system).
-      \item Extracting hardware-native topological entanglement
+      \item Extracting topology-dependent entanglement
         signatures ($S_E^{Q}$).
     \end{itemize}
 \end{enumerate}
@@ -415,7 +413,7 @@ and quantum information metrics:
 \subsection{Natural Orbital Space Truncation Error}
 
 As demonstrated in the main text, truncating the NOON space to standard
-``active spaces'' artificially suppresses $F_{\text{bond}}^{(B)}$ by up
+``active spaces'' artificially suppresses $N_D$ by up
 to $6{,}200\times$, missing $> 99\%$ of the correlation signal. The
 inclusion of the complete orbital array is strictly enforced in this
 protocol.
@@ -423,18 +421,21 @@ protocol.
 \subsection{Basis Set Effects}
 
 The def2-SVP basis provides a reliable balance for relative trends.
-Expected error in $F_{\text{bond}}^{(B)}$ compared to larger basis sets
+Expected error in $N_D$ compared to larger basis sets
 (e.g., def2-TZVP) is $\sim$10--20\%, which does not impact the
 fundamental differentiation between the small cluster
-($f_e \approx 0.07$) and superatom ($f_e \approx 0.04$) correlation
+($f_e \approx 0.08$--$0.14$) and superatom ($f_e \approx 0.04$--$0.05$) correlation
 regimes.
 
 \subsection{Frozen Core Approximation}
 
 Freezing core orbitals (e.g., Al~$1s$) excludes deep, strongly bound
 electrons that do not deviate from idempotency, having a negligible
-($< 0.1\%$) effect on $F_{\text{bond}}^{(B)}$ while saving significant
-computational resources.
+($< 0.1\%$) effect on $N_D$ while saving significant
+computational resources. Note that $f_e = N_D / N_{\text{corr}}$
+normalizes by the number of \emph{correlated} electrons
+(excluding frozen cores), ensuring that $f_e$ is not artificially
+diluted by electrons that are constrained to $n_i = 2$.
 
 \subsection{Quantum Simulation Uncertainty}
 
@@ -457,11 +458,12 @@ To reproduce these calculations:
     \texttt{.xyz} coordinates.
   \item Perform RHF and frozen-core CCSD/Lambda-CCSD computations.
   \item Extract the \emph{complete} one-particle density matrix to
-    compute $F_{\text{bond}}^{(B)}$.
-  \item Compute $F_{\text{bond}}^{(A)}$, $F_{\text{bond}}^{(B)}$,
-    and $f_e$ using the formulas provided.
-  \item For quantum validation, load the 2D projected atomic coordinates
-    into the Pulser framework and execute the adiabatic sequence using
+    compute $N_D = \sum_i n_i(2-n_i)$.
+  \item Compute $N_D$ and $f_e = N_D / N_{\text{corr}}$
+    using the formulas provided.
+  \item For quantum topology study, load the molecular coordinates
+    into the Pulser framework (uniform spatial scaling) and execute
+    the adiabatic sequence using
     the MPS backend via \texttt{fbond\_pasqal.py}.
 \end{enumerate}
 
