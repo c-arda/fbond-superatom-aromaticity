@@ -390,7 +390,7 @@ consistent with antiaromatic destabilization of the closed-shell configuration.
 
 The \ce{B12} cluster presents an instructive comparison between isomers.
 The icosahedral cage ($N_D = 4.99$) exceeds the planar sheet
-($4.42$) by 13%, despite both having identical electron counts and basis
+($4.42$) by 13\%, despite both having identical electron counts and basis
 set sizes. This difference arises primarily from the icosahedral isomer's
 higher fraction of fractional orbitals (63\% vs.\ 61\%) and its larger
 correlation energy ($|E_{\text{corr}}| = 1.17$ vs.\ 1.04~Ha), reflecting
@@ -724,6 +724,25 @@ differences:
     underscores that the Rydberg and electronic Hamiltonians probe
     fundamentally different physics, even on the same molecular graph.
 \end{itemize}
+
+To test whether the entanglement trends can be predicted from graph
+structure alone, we computed several graph-theoretic metrics for each
+molecular register: the mean coordination number within the Rydberg
+blockade radius, the algebraic connectivity $\lambda_2$ of the
+blockade graph, and the interaction heterogeneity (coefficient of
+variation of pairwise $1/R^6$ interactions). Spearman rank
+correlations between these metrics and $S_E^Q$ are uniformly
+non-significant ($|\rho| < 0.28$, $p > 0.4$ for all metrics; see
+Supporting Information for full data). Notably, even the number of
+qubits shows no correlation with $S_E^Q$ ($\rho = 0.04$, $p = 0.93$).
+This demonstrates that the entanglement ordering is \emph{not} simply
+a function of graph connectivity or system size, but rather reflects
+the specific \emph{chemical bonding character}---aromaticity,
+metallic delocalization, and relativistic effects---encoded in the
+molecular coordinate graph. The topology is necessary (as the
+framework to define the interaction Hamiltonian) but not sufficient;
+the chemical identity of each system modulates how efficiently the
+adiabatic pulse generates entanglement across the graph.
 
 \subsection{Noise Robustness Analysis}
 
