@@ -590,7 +590,11 @@ with implications for method selection:
 
 In this section, we explore whether molecular bonding topology generates
 characteristic entanglement signatures when embedded as interaction graphs
-on a neutral-atom quantum processor. We performed analog quantum
+on a neutral-atom quantum processor. Having established the classical
+correlation landscape via $N_D$ and $f_e$ (Sections~3--4), we now ask
+whether the molecular bonding topology itself---independent of the
+electronic wavefunction---generates characteristic entanglement signatures
+on quantum hardware. We performed analog quantum
 simulations using the Pasqal platform (QutipEmulator locally, EMU\_FREE
 cloud). \textbf{We emphasize that this mapping produces a Rydberg spin
 Hamiltonian governed by van der Waals ($1/R^6$) interactions, which is
@@ -731,10 +735,13 @@ molecular register: the mean coordination number within the Rydberg
 blockade radius, the algebraic connectivity $\lambda_2$ of the
 blockade graph, and the interaction heterogeneity (coefficient of
 variation of pairwise $1/R^6$ interactions). Spearman rank
-correlations between these metrics and $S_E^Q$ are uniformly
-non-significant ($|\rho| < 0.28$, $p > 0.4$ for all metrics; see
-Supporting Information for full data). Notably, even the number of
-qubits shows no correlation with $S_E^Q$ ($\rho = 0.04$, $p = 0.93$).
+correlations reveal that mean coordination number shows no predictive
+power ($\rho = 0.07$, $p = 0.86$), while interaction heterogeneity
+shows a moderate but non-significant positive trend ($\rho = 0.53$,
+$p = 0.14$). Neither metric achieves statistical significance
+($p < 0.05$; see Supporting Information for full data). Notably, even
+the number of qubits shows no correlation with $S_E^Q$
+($\rho = 0.04$, $p = 0.93$).
 This demonstrates that the entanglement ordering is \emph{not} simply
 a function of graph connectivity or system size, but rather reflects
 the specific \emph{chemical bonding character}---aromaticity,
@@ -743,6 +750,24 @@ molecular coordinate graph. The topology is necessary (as the
 framework to define the interaction Hamiltonian) but not sufficient;
 the chemical identity of each system modulates how efficiently the
 adiabatic pulse generates entanglement across the graph.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{figures/fig_graph_connectivity.pdf}
+  \caption{%
+    Spearman rank correlation between graph-theoretic metrics and
+    quantum entanglement $S_E^Q$ across all nine molecular registers.
+    Left: mean coordination number within the Rydberg blockade radius
+    ($\rho = 0.07$, $p = 0.86$). Right: interaction heterogeneity,
+    the coefficient of variation of pairwise $1/R^6$ interaction
+    strengths ($\rho = 0.53$, $p = 0.14$). Although the interaction
+    heterogeneity shows a moderate positive trend, neither metric
+    achieves statistical significance at $p < 0.05$, confirming that
+    chemical bonding character---not mere graph connectivity---determines
+    the entanglement ordering.
+  }
+  \label{fig:graph_connectivity}
+\end{figure}
 
 \subsection{Noise Robustness Analysis}
 
@@ -761,8 +786,8 @@ for three representative systems.
     $S_E^Q$ = maximum single-site entropy;
     $I_{\text{total}}$ = total pairwise quantum mutual information.
     Note: these results were obtained using a local QutipEmulator
-    noisy sweep, distinct from the EMU\_FREE cloud runs in
-    Table~\ref{tab:quantum}. Absolute $S_E^Q$ values differ
+    noisy sweep, distinct from the EMU\_FREE cloud runs reported in
+    Table~\ref{tab:quantum} above. Absolute $S_E^Q$ values differ
     between backends due to different sampling and noise models.
   }
   \label{tab:noise}
@@ -866,10 +891,12 @@ The key findings are:
     entanglement signatures. Because the Rydberg Hamiltonian is physically
     distinct from the electronic Hamiltonian, these results characterize
     the entanglement topology of molecular graphs, not the electronic
-    wavefunction. The observation that entanglement scales with graph
-    connectivity rather than register size suggests that molecular
-    bonding networks encode topological information accessible to
-    analog quantum hardware.
+    wavefunction. The observation that entanglement is not simply a
+    function of register size or graph connectivity metrics, but
+    reflects the chemical bonding character embedded in the molecular
+    coordinate graph, suggests that molecular topology encodes
+    information accessible to analog quantum hardware beyond what
+    simple structural descriptors capture.
 \end{enumerate}
 
 Future work will extend this analysis to additional superatom families

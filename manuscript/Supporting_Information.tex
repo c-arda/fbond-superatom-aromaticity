@@ -166,6 +166,10 @@ physically distinct from the electronic Hamiltonian producing $S_E^C$.
     Classical $S_{E,\text{max}}$ and Rydberg entanglement
     $S_E^{Q}$ (Pasqal MPS emulator, 2000 shots) for all studied systems.
     These quantities arise from fundamentally different Hamiltonians.
+    Note: $S_E^Q$ values here were obtained using the local QutipEmulator
+    (MPS backend) and may differ by $\approx$1--2\% from the EMU\_FREE
+    cloud values reported in the main text Table~4 due to different
+    random sampling seeds and backend implementations.
   }
   \label{tab:quantum_results}
   \begin{tabular}{lccr}
@@ -186,10 +190,11 @@ The Rydberg simulation drives each system into a strongly entangled
 regime ($S_E \approx 0.5$--$0.7$ nats), whereas the molecular ground
 states exhibit weaker frontier-orbital correlation ($S_E \approx 0.01$--$0.04$ nats).
 Despite the absolute scale difference, the \emph{trends} across chemical
-species are remarkably consistent: the superatom \ce{Cs3Al8^-} exhibits
+species show topology-dependent ordering: the superatom \ce{Cs3Al8^-} exhibits
 the highest Rydberg entanglement, followed by the antiaromatic
-\ce{Al4^{4-}}, confirming that molecular graph topology is
-faithfully encoded in the Rydberg interaction graph.
+\ce{Al4^{4-}}, indicating that molecular graph topology influences
+the Rydberg interaction graph, though the detailed orderings differ
+between classical and quantum descriptions.
 
 % ============================================================================
 \section{Electronic Structure Data}
@@ -230,11 +235,21 @@ faithfully encoded in the Rydberg interaction graph.
     $O_{\text{MOS}}$ (HOMO--LUMO gap)    & $0.089010$   & $0.110599$ \\
     \midrule
     \multicolumn{3}{l}{\emph{Correlation Diagnostics}} \\
-    $S_{E,\text{max}}$ (nats)            & 0.285297 & 0.231598 \\
+    $S_{E,\text{max}}$ (nats)\textsuperscript{\emph{a}} & 0.285297 & 0.231598 \\
     $N_D$ (extensive)               & 5.58     & 7.10 \\
     $f_e$ (per-electron, $N_D/N_{\text{corr}}$) & 0.048 & 0.044 \\
     \bottomrule
   \end{tabular}
+
+  \smallskip
+  \noindent\textsuperscript{\emph{a}} $S_{E,\text{max}}$ here is the
+  maximum single-orbital entanglement entropy computed over \emph{all}
+  natural orbitals: $S_E(n_i) = -n_i \ln n_i - (2-n_i)\ln(2-n_i)$.
+  This differs from the frontier-only $S_E^C = S_E(n_{\text{HOMO}})$
+  reported in the main text Table~4 and SI Table~2, which is evaluated
+  from only the HOMO occupation number. The full-space
+  $S_{E,\text{max}}$ is typically much larger because it picks the
+  most deviated orbital across the entire occupation spectrum.
 \end{table}
 
 \subsection{Natural Orbital Occupations}
