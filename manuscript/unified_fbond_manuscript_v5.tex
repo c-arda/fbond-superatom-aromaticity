@@ -283,11 +283,11 @@ Table~\ref{tab:main} presents the unified results for all systems studied.
     \ce{C6H6} (benzene)            &  42 &  36 & 114 &  75 (66\%) & 0.821 & 2.49 & 0.069 \\
     \ce{Al4^{2-}} (aromatic)       &  54 &  46 &  72 &  49 (68\%) & 0.300 & 3.84 & 0.083 \\
     \ce{Al4^{4-}} (singlet)        &  56 &  48 &  72 &  52 (72\%) & 0.352 & 4.03 & 0.084 \\
+    \ce{Al4^{4-}} (triplet)        &  56 &  48 &  72 &  52 (72\%)& 0.342 & 4.17 & 0.087 \\
     \ce{B12} (planar)              &  60 &  36 & 168 & 102 (61\%) & 1.037 & 4.42 & 0.123 \\
     \ce{B12} (icosahedral)         &  60 &  36 & 168 & 106 (63\%) & 1.173 & 4.99 & 0.139 \\
     \ce{B6N6} (planar)             &  72 &  48 & 168 & 115 (68\%) & 1.529 & 5.11 & 0.106 \\
     \ce{Cs3Al8^-}                  & 132 & 116 & 216 & 208 (96\%) & 0.836 & 5.58 & 0.048 \\
-    \ce{Al4^{4-}} (triplet)        &  40 &  32 &   6 &   6 (100\%)& 0.364 & 6.00 & 0.188 \\
     \ce{Au13^-} (icosahedral)      & 248 & 222 & 300 & 121 (40\%) & 1.417 & 6.76 & 0.030 \\
     \ce{Cs3Al_{12}^-}              & 184 & 160 & 288 & 276 (96\%) & 1.184 & 7.10 & 0.044 \\
     \ce{B12N12} (cage)             & 168 & 144 & 360 & 104 (29\%) & 2.888 & 7.18 & 0.050 \\
@@ -341,9 +341,10 @@ the two superatoms ($0.048$ vs.\ $0.044$, an 8\% difference) suggest that
 $f_e$ converges toward a characteristic value for the \ce{Cs3Al_n^-}
 superatom family.
 
-The triplet \ce{Al4^{4-}} ($f_e = 0.188$) stands apart as an open-shell
-system where all six active orbitals are near half-occupation, yielding
-the maximum possible correlation density within its small active space.
+The triplet \ce{Al4^{4-}} ($f_e = 0.087$) falls within the small cluster
+regime despite its open-shell character, confirming that $f_e$ is
+governed by the ratio of aggregate correlation to correlated electron
+count rather than by spin multiplicity.
 
 \begin{figure}[H]
   \centering
@@ -603,7 +604,8 @@ nine systems.
     graphs (QutipEmulator and EMU\_FREE cloud, 2000 shots per system).
     $N_q$ = number of qubits (atoms in the graph);
     $S_E^Q$ = maximum single-site entropy from the Rydberg state;
-    $S_E^C$ = classical CCSD $S_{E,\text{max}}$ for comparison.
+    $S_E^C$ = classical $S_{E,\text{max}}$ from the frontier natural
+    orbital occupation ($S_E(n_{\text{HOMO}})$) for comparison.
     Systems ordered by bonding character. Note that $S_E^Q$ and $S_E^C$
     arise from fundamentally different Hamiltonians.
   }
@@ -635,8 +637,9 @@ nine systems.
     aromatics, main-group clusters, heteroatomic cages, and noble-metal
     superatoms. The number of qubits used for each system is indicated at
     the bottom. Despite the order-of-magnitude difference in absolute scales,
-    the entanglement \emph{trends} are remarkably consistent between
-    classical and quantum descriptions.
+    the entanglement \emph{trends} show topology-dependent ordering: systems with
+    more complex bonding graphs generally exhibit higher entanglement in
+    both classical and quantum descriptions, though the detailed orderings differ.
   }
   \label{fig:pasqal_results}
 \end{figure}
@@ -715,6 +718,10 @@ for three representative systems.
     three representative systems under calibrated noise profiles.
     $S_E^Q$ = maximum single-site entropy;
     $I_{\text{total}}$ = total pairwise quantum mutual information.
+    Note: these results were obtained using a local QutipEmulator
+    noisy sweep, distinct from the EMU\_FREE cloud runs in
+    Table~\ref{tab:quantum}. Absolute $S_E^Q$ values differ
+    between backends due to different sampling and noise models.
   }
   \label{tab:noise}
   \begin{tabular}{llcc}
