@@ -377,9 +377,13 @@ The antiaromatic \ce{Al4^{4-}} singlet has a lower $T_1 = 0.019$,
 near the threshold.
 
 The triplet state of \ce{Al4^{4-}} serves as an important reference:
-with all six active natural orbitals near half-occupation ($n_i \approx 1.0$),
-it yields $N_D = 6.0$---the theoretical maximum for six
-orbitals. This triplet lies \SI{7.5}{\kcal\per\mol} below the singlet,
+with $N_D = 4.17$ and $f_e = 0.087$, it falls squarely within the
+small cluster regime despite its open-shell character. The two
+singly-occupied orbitals ($n_i \approx 1.0$) contribute strongly
+to $N_D$, but because the full 72-orbital CCSD calculation captures
+the complete dynamic correlation tail, the per-electron correlation
+density remains comparable to the closed-shell systems.
+This triplet lies \SI{7.5}{\kcal\per\mol} below the singlet,
 consistent with antiaromatic destabilization of the closed-shell configuration.
 
 \subsection{Boron Clusters: Topology and Composition Effects}
@@ -470,6 +474,24 @@ density is approximately half that of the small clusters, indicating that
 each individual orbital deviates less from idempotency---the correlation
 is ``wide but shallow'' rather than ``narrow but deep.''
 
+The noble-metal cluster \ce{Au13^-} ($N_D = 6.76$, $f_e = 0.030$)
+extends this regime to systems dominated by relativistic effects.
+Despite having the largest $N_D$ among any single-element cluster
+studied, its $f_e$ is the lowest of all systems---only 40\% of its 300
+correlated orbitals are fractionally occupied, in stark contrast to the 96\%
+seen in the Cs-stabilized superatoms. This indicates that the gold cluster's
+high $N_D$ arises primarily from the sheer number of correlated electrons
+($N_{\text{corr}} = 222$) rather than from intrinsically strong per-electron
+correlation.
+
+The \ce{B12N12} cage ($N_D = 7.18$, $f_e = 0.050$, 360 correlated NOs)
+presents a qualitatively distinct correlation profile: only 29\% of its
+orbitals are fractionally occupied---the lowest fraction of any system---yet
+it has the highest $N_D$ overall. This implies that a relatively small
+number of orbitals carry very large individual deviations from idempotency,
+consistent with the strong $\sigma$-bonding framework of the cage structure
+concentrating correlation into specific bonding channels.
+
 \subsection{The Critical Role of Complete Occupation Data}
 \label{sec:truncation}
 
@@ -554,9 +576,10 @@ with implications for method selection:
     of orbitals) represents a qualitatively different regime---``metallic''
     correlation with wide but shallow deviations from idempotency.
 
-  \item $f_e \gg 0.1$:
-    Open-shell systems with strongly occupied singly-occupied orbitals.
-    The triplet \ce{Al4^{4-}} ($f_e = 0.15$) exemplifies this regime.
+  \item $f_e > 0.10$:
+    Observed in systems with high orbital degeneracy (icosahedral \ce{B12},
+    $f_e = 0.139$) or heteroatomic bonding (\ce{B6N6}, $f_e = 0.106$),
+    where symmetry-imposed degeneracies amplify per-electron correlation.
 \end{itemize}
 
 % ============================================================================
@@ -676,7 +699,7 @@ differences:
 
     \item \textbf{Boron Isomer Effect:} The planar \ce{B12} ($S_E^Q = 0.585$)
     slightly exceeds the icosahedral isomer ($S_E^Q = 0.575$), despite the 3D cage
-    having higher classical correlation ($f_e = 0.083$ vs.\ $0.074$). This reversal
+    having higher classical correlation ($f_e = 0.139$ vs.\ $0.123$). This reversal
     arises from the 2D projection required for the neutral-atom register: the planar
     isomer maps directly to the hardware without distortion, while the icosahedral
     geometry loses its three-dimensional connectivity upon projection. The
