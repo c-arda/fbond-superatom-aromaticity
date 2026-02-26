@@ -192,6 +192,11 @@ version 2.12.1.\cite{sun2018pyscf,sun2020recent}
 Coupled-cluster singles and doubles (CCSD) calculations employed
 the def2-SVP basis set\cite{weigend2005balanced} throughout,
 with def2-ECP effective core potentials for cesium and gold atoms.
+PySCF's default Gaussian basis treatment was used; for systems
+containing $d$-functions, this employs Cartesian Gaussians ($6d$),
+yielding slightly more basis functions than the spherical-harmonic
+convention ($5d$). The resulting correlated orbital counts $M$ are
+listed in Table~\ref{tab:main}.
 Core orbitals (Al~1s for aluminum-containing systems, B~1s and N~1s for
 boron/nitrogen systems) were frozen.
 
@@ -271,7 +276,8 @@ Table~\ref{tab:main} presents the unified results for all systems studied.
     $N_D$ values for all systems at the CCSD/def2-SVP level.
     $N_e$ = total electrons; $N_{\text{corr}}$ = correlated electrons
     ($N_e - N_{\text{frozen}}$); $M$ = correlated natural orbitals;
-    $M_{\text{frac}}$ = orbitals with fractional occupation ($0.001 < n_i < 1.999$);
+    $M_{\text{frac}}$ = orbitals deviating from idempotency
+    ($|n_i - 2| > 10^{-6}$ for occupied, $n_i > 10^{-6}$ for virtual);
     $f_e = N_D/N_{\text{corr}}$ = per-electron correlation density.
   }
   \label{tab:main}
@@ -280,7 +286,7 @@ Table~\ref{tab:main} presents the unified results for all systems studied.
     System & $N_e$ & $N_{\text{corr}}$ & $M$ & $M_{\text{frac}}$ & $|E_{\text{corr}}|$ (Ha)
       & $N_D$ & $f_e$ \\
     \midrule
-    \ce{C6H6} (benzene)            &  42 &  36 & 114 &  75 (66\%) & 0.821 & 2.49 & 0.069 \\
+    \ce{C6H6} (benzene)            &  42 &  30 & 114 &  75 (66\%) & 0.821 & 2.49 & 0.083 \\
     \ce{Al4^{2-}} (aromatic)       &  54 &  46 &  72 &  49 (68\%) & 0.300 & 3.84 & 0.083 \\
     \ce{Al4^{4-}} (singlet)        &  56 &  48 &  72 &  52 (72\%) & 0.352 & 4.03 & 0.084 \\
     \ce{Al4^{4-}} (triplet)        &  56 &  48 &  72 &  52 (72\%)& 0.342 & 4.17 & 0.087 \\
@@ -290,7 +296,7 @@ Table~\ref{tab:main} presents the unified results for all systems studied.
     \ce{Cs3Al8^-}                  & 132 & 116 & 216 & 208 (96\%) & 0.836 & 5.58 & 0.048 \\
     \ce{Au13^-} (icosahedral)      & 248 & 222 & 300 & 121 (40\%) & 1.417 & 6.76 & 0.030 \\
     \ce{Cs3Al_{12}^-}              & 184 & 160 & 288 & 276 (96\%) & 1.184 & 7.10 & 0.044 \\
-    \ce{B12N12} (cage)             & 168 & 144 & 360 & 104 (29\%) & 2.888 & 7.18 & 0.050 \\
+    \ce{B12N12} (cage)             & 144 &  96 & 360 & 104 (29\%) & 2.888 & 7.18 & 0.075 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -309,8 +315,10 @@ Table~\ref{tab:main} presents the unified results for all systems studied.
 The most striking finding is that \textbf{all closed-shell systems exhibit
 substantial $N_D$ values} in the range 3.8--7.1 when the
 complete natural orbital space is included. There are no ``weakly correlated''
-systems in this dataset; previous reports of $N_D < 0.001$ for
-aluminum clusters were artifacts of orbital space truncation
+systems in this dataset when total correlation is measured;
+earlier $N_D$ values of $< 0.001$ for aluminum clusters reflect
+the use of small active orbital windows that isolate static correlation
+but exclude the extensive dynamic correlation tail
 (Section~\ref{sec:truncation}).
 
 However, the extensive nature of $N_D$ complicates
@@ -324,15 +332,16 @@ The per-electron correlation density $f_e = N_D/N_{\text{corr}}$
 separates the closed-shell systems into two distinct regimes:
 
 \textbf{Small cluster regime} ($f_e \approx 0.07$--$0.14$):
-\ce{C6H6}, \ce{Al4^{2-}}, \ce{Al4^{4-}}, \ce{B12} (both isomers), and \ce{B6N6}
+\ce{C6H6}, \ce{Al4^{2-}}, \ce{Al4^{4-}}, \ce{B12} (both isomers), \ce{B6N6},
+and \ce{B12N12}
 exhibit $f_e \approx 0.07$--$0.14$, indicating that roughly 7--14\% of each
 correlated electron's occupation deviates from idempotency.
 The icosahedral \ce{B12} ($f_e = 0.139$) stands out as having
 the highest $f_e$ among closed-shell systems, reflecting the orbital
 degeneracies imposed by $I_h$ symmetry.
 
-\textbf{Superatom/cage regime} ($f_e \approx 0.03$--$0.05$):
-Metallic superatoms and large cage systems show
+\textbf{Metallic superatom regime} ($f_e \approx 0.03$--$0.05$):
+Metallic superatoms show
 $f_e \approx 0.03$--$0.05$, indicating diluted, extensive
 correlation spread over the entire cluster rather than concentrated in a
 few strongly correlated orbitals.
@@ -484,10 +493,34 @@ high $N_D$ arises primarily from the sheer number of correlated electrons
 ($N_{\text{corr}} = 222$) rather than from intrinsically strong per-electron
 correlation.
 
-The \ce{B12N12} cage ($N_D = 7.18$, $f_e = 0.050$, 360 correlated NOs)
+\paragraph{Basis-set considerations.}
+Because $N_D$ includes dynamic correlation contributions from
+the virtual orbital space, the ratio of virtual orbitals to correlated
+electrons ($M_{\text{virt}}/N_{\text{corr}}$) can influence both $N_D$
+and $f_e$. In our dataset, light-element systems (\ce{B12}, \ce{B6N6})
+have $M_{\text{virt}}/N_{\text{corr}} \approx 2.0$--$2.5$ with def2-SVP,
+while the ECP-treated superatoms have
+$M_{\text{virt}}/N_{\text{corr}} \approx 1.2$--$1.3$, and
+\ce{Au13^-} has $M_{\text{virt}}/N_{\text{corr}} \approx 0.5$.
+This basis-set imbalance means that a portion of the
+$f_e$ difference between the small-cluster and superatom regimes may
+reflect unequal virtual-space completeness rather than purely physical
+differences in correlation character.
+However, within each bonding family (e.g., \ce{Cs3Al8^-} vs.\
+\ce{Cs3Al_{12}^-}, or planar vs.\ icosahedral \ce{B12}), the
+$M_{\text{virt}}/N_{\text{corr}}$ ratios are comparable,
+so the \emph{within-family} trends in $f_e$ are robust.
+A systematic basis-set convergence study (e.g., def2-TZVP)
+would be needed to establish whether the absolute $f_e$ separation
+between regimes narrows at the complete basis-set limit.
+
+The \ce{B12N12} cage ($N_D = 7.18$, $f_e = 0.075$, 360 correlated NOs)
 presents a qualitatively distinct correlation profile: only 29\% of its
 orbitals are fractionally occupied---the lowest fraction of any system---yet
-it has the highest $N_D$ overall. This implies that a relatively small
+it has the highest $N_D$ overall. Despite its massive size (144 electrons),
+the rigid covalent cage yields $f_e = 0.075$, placing it squarely in the
+small-cluster correlation regime ($f_e \approx 0.08$) rather than the
+metallic regime ($f_e \approx 0.04$). This implies that a relatively small
 number of orbitals carry very large individual deviations from idempotency,
 consistent with the strong $\sigma$-bonding framework of the cage structure
 concentrating correlation into specific bonding channels.
@@ -549,13 +582,20 @@ are included, the system features 49--52 fractionally occupied orbitals,
 yielding $N_D \approx 3.8$--$4.0$. The truncated analysis missed approximately
 $99.98\%$ of the total correlation signal.
 
-This finding has profound implications for NOON-based correlation diagnostics:
-\textbf{restricting analysis to a small ``active space'' of frontier orbitals
-can qualitatively mischaracterize the correlation regime of a system.}
-The many weakly fractional orbitals in the tail of the occupation spectrum
-collectively contribute the majority of $N_D$.
-While each individual tail orbital deviates from idempotency by a small amount,
-the cumulative effect is dominant.
+This finding has important implications for NOON-based correlation diagnostics.
+When the goal is to measure \emph{total} electron correlation ($N_D$, encompassing
+both static and dynamic contributions), restricting analysis to a small
+active space of frontier orbitals can dramatically underestimate the result.
+We emphasize that this does \emph{not} imply that active-space methods are
+flawed for their intended purpose: CASSCF and related multireference methods
+deliberately truncate to a small orbital window precisely to isolate
+\emph{static} (nondynamic) correlation, and a small $N_D^{\text{trunc}}$ from
+an active-space analysis correctly indicates weak \emph{static} correlation
+even when the full-space $N_D^{\text{full}}$ is large.
+The distinction is that $N_D^{\text{full}}$ measures aggregate correlation
+(predominantly dynamic), while active-space $N_D^{\text{trunc}}$ measures
+static correlation---these are complementary diagnostics probing different
+physical quantities.
 
 \subsection{Correlation Regimes from $f_e$}
 
@@ -609,8 +649,13 @@ We mapped the molecular geometries of nine systems---\ce{C6H6} (benzene),
 \ce{B12} (planar and icosahedral), \ce{B12N12} (cage), \ce{Au13^-} (noble-metal
 core), and \ce{Cs3Al8^-} (superatom)---onto neutral-atom registers by
 uniformly scaling the physical Cartesian coordinates from PySCF
-(1~\AA{} $\to$ 3~$\mu$m) to satisfy the hardware's minimum atom
-separation constraint ($R > \SI{5}{\micro\meter}$).
+using a system-dependent scale factor chosen to satisfy the hardware's minimum atom
+separation constraint ($R_{\text{min}} > \SI{5}{\micro\meter}$).
+For systems with short bonds (e.g., \ce{C6H6} with $R_{\text{CC}} = 1.39$~\AA,
+\ce{B12} with $R_{\text{BB}} \approx 1.6$~\AA), a scale factor of 4~$\mu$m/\AA{}
+was used; for systems with larger interatomic distances (\ce{Al4}, \ce{Cs3Al8^-}),
+3~$\mu$m/\AA{} was sufficient (see Supporting Information for per-system
+scaling factors and minimum separations).
 This preserves the true molecular geometry, including unequal bond
 lengths, in the Rydberg interaction graph.
 The systems span a qubit range of 4 (\ce{Al4}) to 16 (\ce{B12N12}),
@@ -629,12 +674,22 @@ nine systems.
   \caption{%
     Entanglement signatures from Rydberg analog simulation on molecular
     graphs (QutipEmulator and EMU\_FREE cloud, 2000 shots per system).
-    $N_q$ = number of qubits (atoms in the graph);
+    $N_q$ = number of qubits (atoms in the register);
     $S_E^Q$ = maximum single-site entropy from the Rydberg state;
-    $S_E^C$ = classical $S_{E,\text{max}}$ from the frontier natural
-    orbital occupation ($S_E(n_{\text{HOMO}})$) for comparison.
+    $S_E^C$ = classical single-orbital entanglement entropy evaluated
+    from the HOMO natural orbital occupation,
+    $S_E^C = -p\ln p - (1-p)\ln(1-p)$ with $p = n_{\text{HOMO}}/2$,
+    representing the \emph{frontier-orbital} entanglement for comparison.
+    Note: this frontier-only $S_E^C$ is distinct from the full-space
+    $S_{E,\text{max}}$ reported in SI Table~4, which evaluates the entropy
+    over \emph{all} natural orbitals and is much larger
+    (e.g., 0.285~nats for \ce{Cs3Al8^-}).
     Systems ordered by bonding character. Note that $S_E^Q$ and $S_E^C$
     arise from fundamentally different Hamiltonians.
+    \textsuperscript{\emph{a}}For \ce{B12N12}, the 24-atom cage was
+    represented by a 16-atom register using only symmetry-unique
+    sites from the $T_d$ structure, preserving the connectivity
+    topology while remaining within emulator constraints.
   }
   \label{tab:quantum}
   \begin{tabular}{llccc}
@@ -647,11 +702,20 @@ nine systems.
     \ce{Al4^{4-}} (T) & Open-shell        &  4 & 0.625 & 0.045 \\
     \ce{B12} (2D)   & Electron-deficient  & 12 & 0.585 & 0.030 \\
     \ce{B12} (3D)   & Strained cage       & 12 & 0.575 & 0.032 \\
-    \ce{B12N12}     & Heteroatomic cage   & 16 & 0.581 & 0.035 \\
+    \ce{B12N12}     & Heteroatomic cage   & 16\textsuperscript{\emph{a}} & 0.581 & 0.035 \\
     \ce{Au13^-}     & Noble-metal core    & 13 & 0.630 & 0.040 \\
-    \ce{Cs3Al8^-}   & Metallic superatom  & 11 & 0.674 & 0.013 \\
+    \ce{Cs3Al8^-}   & Metallic superatom  & 11 & 0.674 & 0.013\textsuperscript{\emph{b}} \\
     \bottomrule
   \end{tabular}
+
+  \smallskip\noindent
+  \textsuperscript{\emph{b}}The numerical coincidence between
+  $S_E^C = 0.013$ and the truncated-space $N_D^{\text{trunc}} = 0.013$
+  (Table~\ref{tab:truncation}) is accidental: $S_E^C$ is a single-orbital
+  entropy evaluated from an orbital with $n_i \approx 1.997$
+  near the Fermi level, while $N_D^{\text{trunc}}$ is a summation over
+  20 frontier orbitals. The full-space $S_{E,\text{max}} = 0.285$~nats
+  (SI Table~4) arises from deep-valence orbitals with $n_i \approx 1.83$.
 \end{table}
 
 \begin{figure}[H]
@@ -706,8 +770,19 @@ differences:
     having higher classical correlation ($f_e = 0.139$ vs.\ $0.123$). This reversal
     arises from the 2D projection required for the neutral-atom register: the planar
     isomer maps directly to the hardware without distortion, while the icosahedral
-    geometry loses its three-dimensional connectivity upon projection. The
-    \ce{B12N12} cage ($S_E^Q = 0.581$, 16 qubits) falls between the two
+    geometry loses its three-dimensional connectivity upon projection.
+    We emphasize that 2D projection of 3D structures necessarily alters
+    the $1/R^6$ interaction graph by collapsing the third spatial dimension,
+    bringing some atom pairs artificially closer together while leaving
+    others relatively unchanged. For icosahedral \ce{B12}, the mean
+    pairwise distance decreases by $\sim$15\% upon projection,
+    distorting the interaction heterogeneity.
+    The $S_E^Q$ values for projected 3D structures should therefore be interpreted
+    as probing the \emph{projected} topology rather than the true 3D molecular graph.
+    This limitation is intrinsic to current 2D neutral-atom register architectures and
+    does not affect the planar systems (\ce{C6H6}, \ce{Al4}, planar \ce{B12}, \ce{B6N6}),
+    which map without distortion.
+    The \ce{B12N12} cage ($S_E^Q = 0.581$, 16 qubits) falls between the two
     \ce{B12} isomers, demonstrating that the framework scales gracefully
     to the largest register size tested.
 
@@ -744,12 +819,17 @@ the number of qubits shows no correlation with $S_E^Q$
 ($\rho = 0.04$, $p = 0.93$).
 This demonstrates that the entanglement ordering is \emph{not} simply
 a function of graph connectivity or system size, but rather reflects
-the specific \emph{chemical bonding character}---aromaticity,
-metallic delocalization, and relativistic effects---encoded in the
-molecular coordinate graph. The topology is necessary (as the
+the specific \emph{geometric encoding of different bonding topologies}---the
+particular spatial arrangement of atoms characteristic of aromatic, metallic,
+and cage-like structures---embedded in the molecular coordinate graph.
+The topology is necessary (as the
 framework to define the interaction Hamiltonian) but not sufficient;
-the chemical identity of each system modulates how efficiently the
+the precise coordinate geometry of each system modulates how efficiently the
 adiabatic pulse generates entanglement across the graph.
+We note that the Rydberg Hamiltonian has no explicit knowledge of
+element types, orbital hybridization, or electron count; any
+topology-dependent signatures arise solely from the distance matrix
+encoded in the $1/R^6$ interactions.
 
 \begin{figure}[H]
   \centering
@@ -763,7 +843,8 @@ adiabatic pulse generates entanglement across the graph.
     strengths ($\rho = 0.53$, $p = 0.14$). Although the interaction
     heterogeneity shows a moderate positive trend, neither metric
     achieves statistical significance at $p < 0.05$, confirming that
-    chemical bonding character---not mere graph connectivity---determines
+    the specific coordinate geometry of different bonding
+    topologies---not mere graph connectivity---determines
     the entanglement ordering.
   }
   \label{fig:graph_connectivity}
@@ -857,13 +938,15 @@ The key findings are:
     systems. This extensive sum is dominated by the dynamic correlation
     tail over many weakly occupied virtual natural orbitals.
     Previous reports of vanishingly small $N_D$ values
-    ($< 0.001$) in aluminum clusters arose from orbital space truncation
-    that missed the majority of the dynamic correlation signal.
+    ($< 0.001$) in aluminum clusters reflect the use of small active
+    orbital windows that capture static correlation but exclude the
+    dynamic correlation tail; the full-space $N_D$ is orders of
+    magnitude larger.
 
   \item The per-electron correlation density $f_e$ cleanly separates two
-    regimes: small planar clusters ($f_e \approx 0.07$--$0.14$) and
-    large cage or metallic superatoms ($f_e \approx 0.03$--$0.05$).
-    The superatoms and cages exhibit ``wide but shallow''
+    regimes: small covalent clusters and cages ($f_e \approx 0.07$--$0.14$) and
+    metallic superatoms ($f_e \approx 0.03$--$0.05$).
+    The superatoms exhibit ``wide but shallow''
     correlation, while the per-electron correlation density of
     small clusters is 2--4 times higher.
 
@@ -893,10 +976,13 @@ The key findings are:
     the entanglement topology of molecular graphs, not the electronic
     wavefunction. The observation that entanglement is not simply a
     function of register size or graph connectivity metrics, but
-    reflects the chemical bonding character embedded in the molecular
-    coordinate graph, suggests that molecular topology encodes
-    information accessible to analog quantum hardware beyond what
-    simple structural descriptors capture.
+    reflects the specific coordinate geometry characteristic of different
+    bonding topologies, suggests that molecular distance matrices encode
+    topological information accessible to analog quantum hardware beyond what
+    simple structural descriptors capture. We note that 2D projection of 3D
+    structures introduces systematic distortions, and that the Rydberg
+    Hamiltonian has no direct knowledge of electronic structure; the observed
+    topology dependence arises solely from the atomic distance matrix.
 \end{enumerate}
 
 Future work will extend this analysis to additional superatom families

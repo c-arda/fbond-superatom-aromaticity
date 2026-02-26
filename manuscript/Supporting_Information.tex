@@ -36,7 +36,7 @@
 }
 
 \author{Celal Arda}
-\date{February 23, 2026}
+\date{\today}
 
 \begin{document}
 
@@ -71,7 +71,8 @@ the Pasqal Cloud SDK Matrix Product State (MPS) backend.
 
 \paragraph{Aluminum (Al), Boron (B), Nitrogen (N):}
 \begin{itemize}
-  \item Basis set: def2-SVP (split-valence polarized).
+  \item Basis set: def2-SVP (split-valence polarized), using PySCF's
+    default Cartesian Gaussian treatment ($6d$).
   \item Frozen core: $1s^2$ core orbitals were frozen for all Al, B,
     and N atoms during CCSD iterations to isolate valence correlation effects.
 \end{itemize}
@@ -113,13 +114,13 @@ Representative wall-clock times for the largest superatom systems:
     \toprule
     Step & \ce{Cs3Al8^-} & \ce{Cs3Al_{12}^-} \\
     \midrule
-    Geometry optimization (B3LYP)  & 57 min    & 9.5 hours \\
+    Geometry optimization (B3LYP)  & 57 min    & 2.5 hours \\
     SCF (HF)                       & 3 min     & 8 min  \\
     CCSD $T$-amplitudes            & 6 hours   & 18 hours \\
     Lambda-CCSD                    & 2 hours   & 6 hours \\
     Natural orbital analysis       & 5 min     & 10 min \\
     \midrule
-    \textbf{Total}                 & $\sim$9 hours & $\sim$34 hours \\
+    \textbf{Total}                 & $\sim$9 hours & $\sim$18 hours \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -135,10 +136,46 @@ signatures on neutral-atom Rydberg processors.
 3D molecular geometries (e.g., \ce{Al4}, \ce{B12}, \ce{B6N6},
 \ce{Cs3Al8^-}) were mapped to neutral-atom register positions by
 uniformly scaling the physical Cartesian coordinates from PySCF
-(1~\AA{} $\to$ 3~$\mu$m) to satisfy the hardware's minimum
-atom separation constraint ($R > \SI{5}{\micro\meter}$).
+using a system-dependent scale factor chosen to ensure that the
+minimum pairwise atom separation exceeds the hardware constraint
+($R_{\text{min}} > \SI{5}{\micro\meter}$).
+For molecules with short interatomic distances (e.g., \ce{C6H6}
+with $R_{\text{CC}} = 1.39$~\AA, requiring a factor of
+4~$\mu$m/\AA{} to achieve $R_{\text{min}} = 5.56~\mu$m),
+a larger scaling factor was applied.
+For systems with inherently larger bond lengths
+(\ce{Al4}, \ce{Cs3Al8^-}), 3~$\mu$m/\AA{} was sufficient.
 This preserves the true molecular geometry, including unequal
 bond lengths, in the Rydberg interaction graph.
+Table~\ref{tab:scaling_factors} lists the scaling factors and resulting
+minimum separations for each system.
+
+\begin{table}[H]
+  \centering
+  \caption{%
+    Register mapping parameters for quantum topology simulations.
+    $R_{\text{min}}^{\text{mol}}$ = minimum interatomic distance in
+    the molecular geometry; Scale = coordinate scaling factor;
+    $R_{\text{min}}^{\text{reg}}$ = resulting minimum separation in the
+    atom register. All systems satisfy $R_{\text{min}}^{\text{reg}} > 5~\mu$m.
+  }
+  \label{tab:scaling_factors}
+  \begin{tabular}{lcrcc}
+    \toprule
+    System & $N_q$ & $R_{\text{min}}^{\text{mol}}$ (\AA) & Scale ($\mu$m/\AA) & $R_{\text{min}}^{\text{reg}}$ ($\mu$m) \\
+    \midrule
+    \ce{C6H6}       & 12 & 1.39 & 4.0 & 5.56 \\
+    \ce{Al4^{2-}}   &  4 & 2.70 & 3.0 & 8.10 \\
+    \ce{Al4^{4-}}   &  4 & 2.55 & 3.0 & 7.65 \\
+    \ce{B12} (2D)   & 12 & 1.59 & 4.0 & 6.36 \\
+    \ce{B12} (3D)   & 12 & 1.73 & 4.0 & 6.92 \\
+    \ce{B6N6}       & 12 & 1.45 & 4.0 & 5.80 \\
+    \ce{B12N12}     & 16 & 1.44 & 4.0 & 5.76 \\
+    \ce{Au13^-}     & 13 & 2.79 & 3.0 & 8.37 \\
+    \ce{Cs3Al8^-}   & 11 & 2.15 & 3.0 & 6.45 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \paragraph{Hamiltonian Protocol:}
 The system was initialized in an unentangled ground product state
@@ -163,9 +200,17 @@ physically distinct from the electronic Hamiltonian producing $S_E^C$.
 \begin{table}[H]
   \centering
   \caption{%
-    Classical $S_{E,\text{max}}$ and Rydberg entanglement
+    Classical frontier-orbital entanglement $S_{E,\text{max}}^{\text{class}}$
+    and Rydberg entanglement
     $S_E^{Q}$ (Pasqal MPS emulator, 2000 shots) for all studied systems.
     These quantities arise from fundamentally different Hamiltonians.
+    The classical values here are evaluated from HOMO-region
+    natural orbital occupations and are much smaller than the full-space
+    $S_{E,\text{max}}$ values in Table~\ref{tab:energy}
+    (e.g., 0.013 vs.\ 0.285 nats for \ce{Cs3Al8^-}), because
+    the most strongly correlated natural orbitals lie deep in the valence
+    shell, not at the HOMO--LUMO frontier (see discussion in
+    Section~2.2).
     Note: $S_E^Q$ values here were obtained using the local QutipEmulator
     (MPS backend) and may differ by $\approx$1--2\% from the EMU\_FREE
     cloud values reported in the main text Table~4 due to different
@@ -195,6 +240,19 @@ the highest Rydberg entanglement, followed by the antiaromatic
 \ce{Al4^{4-}}, indicating that molecular graph topology influences
 the Rydberg interaction graph, though the detailed orderings differ
 between classical and quantum descriptions.
+
+\paragraph{\ce{B12N12} Register Reduction.}
+The \ce{B12N12} cage contains 24 atoms but was simulated using a 16-qubit
+register. This reduction exploits the $T_d$ symmetry of the cage:
+the 24 atomic positions decompose into symmetry-unique orbits, and a
+representative 16-site subgraph was selected to preserve the essential
+connectivity topology (alternating B--N bonding network with both
+hexagonal and square faces) while remaining within the emulator's
+practical qubit limit. This approximation preserves the qualitative
+interaction heterogeneity of the full cage but reduces the total
+number of pairwise interactions. The $S_E^Q$ value for \ce{B12N12}
+should be interpreted with this caveat; a full 24-qubit simulation
+would provide a more faithful representation of the cage topology.
 
 % ============================================================================
 \section{Electronic Structure Data}
@@ -244,10 +302,13 @@ between classical and quantum descriptions.
   \smallskip
   \noindent\textsuperscript{\emph{a}} $S_{E,\text{max}}$ here is the
   maximum single-orbital entanglement entropy computed over \emph{all}
-  natural orbitals: $S_E(n_i) = -n_i \ln n_i - (2-n_i)\ln(2-n_i)$.
+  natural orbitals using the normalized probability form:
+  $S_E(n_i) = -\frac{n_i}{2} \ln \frac{n_i}{2}
+  - \bigl(1-\frac{n_i}{2}\bigr)\ln\bigl(1-\frac{n_i}{2}\bigr)$,
+  where $n_i \in [0,2]$ is the spatial natural orbital occupation.
   This differs from the frontier-only $S_E^C = S_E(n_{\text{HOMO}})$
-  reported in the main text Table~4 and SI Table~2, which is evaluated
-  from only the HOMO occupation number. The full-space
+  reported in the main text Table~4 and SI Table~\ref{tab:quantum_results},
+  which is evaluated from only the HOMO occupation number. The full-space
   $S_{E,\text{max}}$ is typically much larger because it picks the
   most deviated orbital across the entire occupation spectrum.
 \end{table}
@@ -278,6 +339,20 @@ Note: While frontier orbitals individually show minimal deviations from
 idempotency, the complete summation across the massive 200+ correlated
 orbital space yields the extensive $N_D$
 correlation signature discussed in the main text.
+The most strongly deviating natural orbitals are \emph{not} located at the
+HOMO--LUMO frontier, but rather deep in the valence shell.
+For \ce{Cs3Al8^-}, the most correlated natural orbitals have occupations
+$n_i \approx 1.83$--$1.88$ (contributing $n_i(2-n_i) \approx 0.22$--$0.30$
+each), occurring roughly 20--30 orbitals below the HOMO in the natural
+orbital ordering.
+In the virtual manifold, orbitals with $n_i \approx 0.06$--$0.09$
+contribute comparably.
+The frontier orbitals listed above
+(Table~\ref{tab:noons}) are presented because they correspond to the
+conventional HOMO--LUMO gap region; they are \emph{not} the orbitals
+primarily responsible for $N_D$.
+Complete occupation arrays are provided in the supplementary JSON files
+for independent verification.
 
 \subsection{Entanglement Entropy Values}
 
@@ -427,11 +502,16 @@ and quantum information metrics:
 
 \subsection{Natural Orbital Space Truncation Error}
 
-As demonstrated in the main text, truncating the NOON space to standard
-``active spaces'' artificially suppresses $N_D$ by up
-to $6{,}200\times$, missing $> 99\%$ of the correlation signal. The
-inclusion of the complete orbital array is strictly enforced in this
-protocol.
+As demonstrated in the main text, restricting the natural orbital space
+to a small ``active'' window when computing $N_D$ yields values
+up to $6{,}200\times$ smaller than the full-space result, because
+the dynamic correlation tail distributed over many weakly occupied virtual
+orbitals is excluded. This is expected behavior for active-space methods,
+which are designed to isolate static correlation. However, when the goal
+is to measure \emph{total} correlation (static + dynamic) via $N_D$,
+complete retention of the orbital array is essential.
+The inclusion of all correlated natural orbitals is strictly enforced
+in this protocol.
 
 \subsection{Basis Set Effects}
 
@@ -441,6 +521,29 @@ Expected error in $N_D$ compared to larger basis sets
 fundamental differentiation between the small cluster
 ($f_e \approx 0.08$--$0.14$) and superatom ($f_e \approx 0.04$--$0.05$) correlation
 regimes.
+
+Because $N_D$ is extensive and dominated by dynamic correlation in
+the virtual space, the ratio of virtual orbitals to correlated electrons
+($M_{\text{virt}}/N_{\text{corr}}$) varies across systems: light-element
+clusters have $\sim$2.0--2.5 virtual orbitals per correlated electron,
+while ECP-treated superatoms have $\sim$1.2--1.3, and \ce{Au13^-} has
+$\sim$0.5. This means that a portion of the inter-regime $f_e$ difference
+may reflect basis-set imbalance rather than purely physical correlation
+differences. However, the standard def2-SVP basis was used with PySCF's default
+Gaussian treatment; for \ce{B12N12}, this yields $M = 360$ correlated
+natural orbitals consistent with the use of Cartesian $d$-functions
+($6d$ rather than $5d$), adding one extra function per atom
+relative to the spherical-harmonic convention ($M = 336$).
+This provides a modestly larger virtual space for \ce{B12N12}
+compared to the spherical-harmonic count, but the effect on $N_D$
+and $f_e$ is expected to be small ($< 5\%$) and does not
+qualitatively affect the regime classification.
+The \emph{within-family} $f_e$ comparisons (e.g.,
+\ce{Cs3Al8^-} vs.\ \ce{Cs3Al_{12}^-}; planar vs.\ icosahedral \ce{B12})
+are unaffected by this issue, as basis-set ratios are comparable within
+each family. A systematic basis-set convergence study at the
+def2-TZVP level is warranted to establish absolute $f_e$ regime
+boundaries at the complete basis-set limit.
 
 \subsection{Frozen Core Approximation}
 
@@ -459,6 +562,19 @@ entanglement structure of the register. Statistical uncertainty from
 finite shot counts (2000 shots) is $\delta S_E \approx \pm 0.01$~nats,
 which does not affect the qualitative trend ordering across chemical
 species.
+
+\paragraph{2D Projection Limitation.}
+For three-dimensional molecular structures (icosahedral \ce{B12},
+\ce{B12N12} cage, \ce{Au13^-}), projection onto the 2D neutral-atom
+register plane necessarily alters the pairwise distance matrix and
+therefore the $1/R^6$ interaction graph. Mean pairwise distances
+typically decrease by 10--20\% upon projection, and the interaction
+heterogeneity changes accordingly. The $S_E^Q$ values for projected
+3D structures should be interpreted as characterizing the
+\emph{projected} molecular topology, not the full 3D interaction graph.
+Planar systems (\ce{C6H6}, \ce{Al4}, planar \ce{B12}, \ce{B6N6})
+are unaffected by this limitation. Future 3D register architectures
+would eliminate this systematic distortion.
 
 % ============================================================================
 \section{Reproducibility Checklist}
