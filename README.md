@@ -2,6 +2,15 @@
 
 **From Aromatic Clusters to Metallic Superatoms with Quantum Topology Probes**
 
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/downloads/)
+[![PySCF](https://img.shields.io/badge/PySCF-2.12-2C6DAC.svg)](https://pyscf.org)
+[![Pasqal](https://img.shields.io/badge/Pasqal-Neutral_Atom-00C7B7.svg)](https://www.pasqal.com)
+[![PennyLane](https://img.shields.io/badge/PennyLane-0.44-6C2DC7.svg)](https://pennylane.ai)
+[![NumPy](https://img.shields.io/badge/NumPy-2.x-013243.svg?logo=numpy&logoColor=white)](https://numpy.org)
+[![SciPy](https://img.shields.io/badge/SciPy-1.x-8CAAE6.svg?logo=scipy&logoColor=white)](https://scipy.org)
+[![Matplotlib](https://img.shields.io/badge/Matplotlib-3.x-11557C.svg)](https://matplotlib.org)
+[![LaTeX](https://img.shields.io/badge/LaTeX-Manuscript-008080.svg?logo=latex&logoColor=white)](https://www.latex-project.org)
+[![ACS Omega](https://img.shields.io/badge/ACS_Omega-Submitted-B31B1B.svg)](https://pubs.acs.org/journal/acsodf)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Overview
