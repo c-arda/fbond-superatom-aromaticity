@@ -11,6 +11,7 @@
 [![Matplotlib](https://img.shields.io/badge/Matplotlib-3.x-11557C.svg)](https://matplotlib.org)
 [![LaTeX](https://img.shields.io/badge/LaTeX-Manuscript-008080.svg?logo=latex&logoColor=white)](https://www.latex-project.org)
 [![ACS Omega](https://img.shields.io/badge/ACS_Omega-Submitted-B31B1B.svg)](https://pubs.acs.org/journal/acsodf)
+[![ChemRxiv](https://img.shields.io/badge/ChemRxiv-10.26434/chemrxiv.15000134-B31B1B.svg)](https://chemrxiv.org/doi/full/10.26434/chemrxiv.15000134/v5)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Overview
