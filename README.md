@@ -92,7 +92,7 @@ fbond-superatom-aromaticity/
 
 ### Setup
 ```bash
-git clone https://github.com/unearthlyimprint/fbond-superatom-aromaticity.git
+git clone https://github.com/c-arda/fbond-superatom-aromaticity.git
 cd fbond-superatom-aromaticity
 pip install -r requirements.txt
 ```
@@ -144,6 +144,24 @@ If you use this code or data, please cite:
 
 ## Version History
 
+### v5.0.0 (2026-03-17)
+- **ACS Omega resubmission**: Cover letter, final manuscript polish
+- **Manuscript renamed**: `unified_fbond_manuscript_v5.tex` → `nd_cluster_bonding_v5.tex`
+- **Figure fixes**: Corrected stale $f_e$ labels (benzene 0.069→0.083, B₁₂N₁₂ 0.050→0.075)
+- **Graph connectivity analysis**: Added `graph_connectivity_analysis.py` and correlation figure
+- **SI updates**: QutipEmulator vs EMU_FREE footnotes, full-space vs frontier $S_E$, wallclock times
+- **µm encoding fix**: Replaced `\SI{5}{\micro\meter}` with `$\mu$m`
+- **Badges**: Added technology stack (PySCF, Pasqal, PennyLane, NumPy, SciPy, Matplotlib, LaTeX)
+- **ChemRxiv DOI badge**: [10.26434/chemrxiv.15000134/v5](https://chemrxiv.org/doi/full/10.26434/chemrxiv.15000134/v5)
+
+### v4.0.0 (2026-02-28)
+- **Critical review fixes**: Triplet data reconciliation, shot count consistency
+- **Spearman statistics**: Corrected $\rho$=0.53 for heterogeneity in Section 5.2
+- **Conclusion rewrite**: Point 6 — entanglement NOT explained by graph metrics alone
+- **SI computational cost table**: Fixed swapped columns
+- **Bridge paragraph**: Added Section 5 connection between classical and quantum analysis
+- **Noise table footnote**: Added clarification
+
 ### v3.0.0 (2026-02-23)
 - **Major revision**: Adopted standard $N_D$ (Takatsuka–Head-Gordon) nomenclature
 - **Physics fix**: $f_e$ now uses $N_{\text{corr}}$ (correlated electrons) instead of $N_e$ (total electrons)
@@ -167,4 +185,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-**Celal Arda** — [GitHub](https://github.com/unearthlyimprint)
+**Celal Arda** — [GitHub](https://github.com/c-arda) · [ORCID 0009-0006-4563-8325](https://orcid.org/0009-0006-4563-8325)
