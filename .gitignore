@@ -210,3 +210,8 @@ marimo/_lsp/
 __marimo__/
 cover_letter*
 Cover.*
+*.docx
+*.odt
+*.odg
+*draft*
+*Next Steps*
