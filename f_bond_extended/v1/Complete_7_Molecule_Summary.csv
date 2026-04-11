@@ -1,0 +1,8 @@
+Molecule,Bond_Type,Basis,Method,Active_Space,E_HF_Ha,E_corr_mHa,O_MOS_Ha,O_MOS_eV,S_E_max_nats,F_bond,Classification,Regime
+H2,H-H σ,STO-3G,Full FCI,(2e,2o),-1.117,-20.2,1.248,33.9,0.0681,0.0425,Weak correlation,DFT/MP2
+N2,N≡N (σ+2π),STO-3G,Frozen-core FCI,(10e,10o),-107.496,-153.1,0.820,22.3,0.1626,0.0667,Strong correlation,CCSD+
+NH3,N-H σ (3×),STO-3G,VQE/FCI,N/A,-55.436,N/A,0.922,25.1,0.00113,0.000522,True mean-field,HF
+H2O,O-H σ (2×),6-31G,VQE/FCI,N/A,-75.984,N/A,0.705,19.2,0.00273,0.000961,True mean-field,HF
+CH4,C-H σ (4×),STO-3G,Frozen-core FCI,(8e,8o),-39.727,-78.5,1.235,33.6,0.0647,0.0400,Weak correlation,DFT/MP2
+C2H4,C=C (σ+π),STO-3G,Frozen-core FCI,(12e,13o),-77.072,-162.5,0.641,17.4,0.2243,0.0718,Strong correlation,CCSD+
+C2H2,C≡C (σ+2π),STO-3G,Frozen-core FCI,(10e,11o),-75.853,-171.1,0.745,20.3,0.1747,0.0651,Strong correlation,CCSD+
