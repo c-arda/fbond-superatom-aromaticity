@@ -10,7 +10,7 @@
 [![SciPy](https://img.shields.io/badge/SciPy-1.x-8CAAE6.svg?logo=scipy&logoColor=white)](https://scipy.org)
 [![Matplotlib](https://img.shields.io/badge/Matplotlib-3.x-11557C.svg)](https://matplotlib.org)
 [![LaTeX](https://img.shields.io/badge/LaTeX-Manuscript-008080.svg?logo=latex&logoColor=white)](https://www.latex-project.org)
-[![ACS Omega](https://img.shields.io/badge/ACS_Omega-Submitted-B31B1B.svg)](https://pubs.acs.org/journal/acsodf)
+[![PCCP](https://img.shields.io/badge/PCCP-Submitted-B31B1B.svg)](https://pubs.rsc.org/en/journals/journalissues/cp)
 [![ChemRxiv](https://img.shields.io/badge/ChemRxiv-10.26434/chemrxiv.15000134-B31B1B.svg)](https://chemrxiv.org/doi/full/10.26434/chemrxiv.15000134/v5)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -68,6 +68,12 @@ fbond-superatom-aromaticity/
 │   ├── fbond_pasqal.py              # Pasqal neutral-atom simulation script
 │   └── plot_pasqal_results.py       # Visualization of Rydberg results
 │
+├── basis_set_validation/            # def2-TZVP validation (ESI Table S6)
+│   ├── benzene_tzvp_comparison.py   # C₆H₆ CCSD/def2-TZVP
+│   ├── C6H6_benzene_def2tzvp_results.json
+│   ├── al4_tzvp_comparison.py       # Al₄²⁻ CCSD/def2-TZVP
+│   └── Al4_2minus_def2tzvp_results.json
+│
 ├── data/                            # Raw computational data
 │   └── fbond_pasqal_results_final.json  # Quantum simulation results
 │
@@ -76,8 +82,8 @@ fbond-superatom-aromaticity/
 │   ├── Cs3Al8_structure.xyz         # Optimized Cs₃Al₈⁻ geometry
 │   └── Cs3Al12_structure.xyz        # Optimized Cs₃Al₁₂⁻ geometry
 │
-└── manuscript/                      # Manuscript sources
-    ├── unified_fbond_manuscript_v5.tex  # Main manuscript (revised)
+└── manuscript/                      # Manuscript sources (v5)
+    ├── unified_fbond_manuscript_v5.tex  # Main manuscript
     ├── references_unified.bib           # Bibliography
     ├── Supporting_Information.tex       # SI LaTeX source
     └── Supporting_Information.pdf       # Compiled SI
@@ -136,13 +142,22 @@ If you use this code or data, please cite:
   title   = {Natural Orbital Correlation Analysis of Cluster Bonding:
              From Aromatic Clusters to Metallic Superatoms with
              Quantum Topology Probes},
-  journal = {Preprint},
+  journal = {Phys. Chem. Chem. Phys.},
   year    = {2026},
-  note    = {In preparation}
+  note    = {Submitted},
+  doi     = {10.26434/chemrxiv-2025-bnp0l-v2}
 }
 ```
 
 ## Version History
+
+### v6.0.0 (2026-04-14)
+- **PCCP submission**: Reformatted for RSC Physical Chemistry Chemical Physics
+- **Basis-set validation**: CCSD/def2-TZVP calculations for benzene (+7% $f_e$) and Al₄²⁻ (−24% $f_e$; $T_1$ drops 0.039→0.012), confirming regime classification is physical
+- **Au₁₃⁻ clarification**: Corrected ECP/frozen-core accounting — 13 lowest MOs (5s/5p, 26e) frozen in CCSD
+- **ESI Table S6**: Two-system basis-set comparison (benzene + Al₄²⁻)
+- **Reference [20]**: Added ChemRxiv DOI
+- **New directory**: `basis_set_validation/` with TZVP scripts and results
 
 ### v5.0.0 (2026-03-17)
 - **ACS Omega resubmission**: Cover letter, final manuscript polish
