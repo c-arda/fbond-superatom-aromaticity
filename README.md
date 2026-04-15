@@ -31,7 +31,7 @@ where $N_{\text{corr}}$ is the number of electrons in the CCSD correlation treat
 
 ### Molecular Topology on Quantum Hardware
 
-In a separate investigation, we explore whether molecular bonding topology generates characteristic entanglement signatures when embedded as interaction graphs on a **Pasqal neutral-atom quantum processor**. We emphasize that the Rydberg spin Hamiltonian is physically distinct from the electronic Hamiltonian—results are interpreted as a study of molecular graph topology, not electronic wavefunctions.
+In a complementary investigation, we explore whether molecular bonding topology can serve as a **low-cost prescreening tool** for correlation character. Molecular coordinate graphs are embedded as interaction graphs on a **Pasqal neutral-atom quantum processor**, asking whether the molecular graph alone encodes sufficient bonding information to distinguish correlation regimes—potentially providing a rapid topological oracle before expensive classical quantum chemistry calculations. We emphasize that the Rydberg spin Hamiltonian ($1/R^6$ van der Waals) is physically distinct from the electronic Hamiltonian—results are interpreted as a study of molecular graph topology, not electronic wavefunctions.
 
 Key topology findings across 9 molecular systems (4–16 qubits):
 - Different chemical topology classes (aromatic, antiaromatic, cage, metallic) produce systematically distinct entanglement signatures
