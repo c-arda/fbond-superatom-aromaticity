@@ -161,7 +161,7 @@ If you use this code or data, please cite:
 
 ### v6.0.0 (2026-04-14)
 - **PCCP submission**: Reformatted for RSC Physical Chemistry Chemical Physics
-- **Basis-set validation**: CCSD/def2-TZVP calculations for benzene (+7% $f_e$) and Al₄²⁻ (−24% $f_e$; $T_1$ drops 0.039→0.012), confirming regime classification is physical
+- **Basis-set validation**: CCSD/def2-TZVP calculations for benzene (+7% $f_e$) and Al₄²⁻ (−24% $f_e$; $T_1$ drops 0.039→0.012); both systems remain firmly in the small cluster regime ($f_e \geq 0.06$), well above the superatom regime (~0.03–0.05), supporting that regime classification is robust to basis set choice
 - **Au₁₃⁻ clarification**: Corrected ECP/frozen-core accounting — 13 lowest MOs (5s/5p, 26e) frozen in CCSD
 - **ESI Table S6**: Two-system basis-set comparison (benzene + Al₄²⁻)
 - **Reference [20]**: Added ChemRxiv DOI
