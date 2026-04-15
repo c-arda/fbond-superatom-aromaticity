@@ -5,7 +5,6 @@
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![PySCF](https://img.shields.io/badge/PySCF-2.12-2C6DAC.svg)](https://pyscf.org)
 [![Pasqal](https://img.shields.io/badge/Pasqal-Neutral_Atom-00C7B7.svg)](https://www.pasqal.com)
-[![PennyLane](https://img.shields.io/badge/PennyLane-0.44-6C2DC7.svg)](https://pennylane.ai)
 [![NumPy](https://img.shields.io/badge/NumPy-2.x-013243.svg?logo=numpy&logoColor=white)](https://numpy.org)
 [![SciPy](https://img.shields.io/badge/SciPy-1.x-8CAAE6.svg?logo=scipy&logoColor=white)](https://scipy.org)
 [![Matplotlib](https://img.shields.io/badge/Matplotlib-3.x-11557C.svg)](https://matplotlib.org)
@@ -27,7 +26,7 @@ where $N_{\text{corr}}$ is the number of electrons in the CCSD correlation treat
 ### Key Findings
 
 - **Two distinct correlation regimes**: small clusters ($f_e \approx 0.08\text{--}0.14$) vs. metallic superatoms ($f_e \approx 0.04\text{--}0.05$)
-- **Orbital space completeness is critical**: truncating to a small active window underestimates $N_D$ by up to 6,200×
+- **Orbital space completeness is critical**: truncating to a small active window underestimates $N_D$ by up to 6,400×
 - **$N_D$ is dominated by dynamic correlation**: the virtual orbital tail contributes the majority of the signal
 
 ### Molecular Topology on Quantum Hardware
@@ -43,14 +42,17 @@ Key topology findings across 9 molecular systems (4–16 qubits):
 
 | System | $N_D$ | $f_e$ | Character |
 |--------|-------|-------|-----------|
+| C₆H₆ (benzene) | 2.49 | 0.083 | Organic aromatic |
 | Al₄²⁻ (aromatic) | 3.84 | 0.083 | Metal aromatic |
 | Al₄⁴⁻ (singlet) | 4.03 | 0.084 | Metal antiaromatic |
+| Al₄⁴⁻ (triplet) | 4.17 | 0.087 | Open-shell |
 | B₁₂ (planar) | 4.42 | 0.123 | Electron-deficient |
 | B₁₂ (icosahedral) | 4.99 | 0.139 | Strained cage |
 | B₆N₆ | 5.11 | 0.106 | Heteroatomic |
 | Cs₃Al₈⁻ | 5.58 | 0.048 | Metallic superatom |
-| Al₄⁴⁻ (triplet) | 6.00 | 0.188 | Open-shell |
+| Au₁₃⁻ | 6.76 | 0.030 | Noble-metal cluster |
 | Cs₃Al₁₂⁻ | 7.10 | 0.044 | Metallic superatom |
+| B₁₂N₁₂ (cage) | 7.18 | 0.075 | Heteroatomic cage |
 
 ## Repository Structure
 
@@ -63,6 +65,7 @@ fbond-superatom-aromaticity/
 ├── automated_fbond_workflow.py      # Main CCSD/N_D calculation pipeline
 ├── optimize_geometry.py             # B3LYP geometry optimization
 ├── visualize_orbitals.py            # Generate orbital cube files and HTML
+├── regenerate_figures.py            # Regenerate all manuscript figures
 │
 ├── quantum/                         # Quantum topology study
 │   ├── fbond_pasqal.py              # Pasqal neutral-atom simulation script
@@ -77,16 +80,21 @@ fbond-superatom-aromaticity/
 ├── data/                            # Raw computational data
 │   └── fbond_pasqal_results_final.json  # Quantum simulation results
 │
-├── example_output/                  # Classical calculation outputs
-│   ├── fbond_results_combined.json  # Complete N_D results
-│   ├── Cs3Al8_structure.xyz         # Optimized Cs₃Al₈⁻ geometry
-│   └── Cs3Al12_structure.xyz        # Optimized Cs₃Al₁₂⁻ geometry
+├── structures/                      # Optimized geometries (.xyz)
+│   ├── C6H6_benzene_structure.xyz   # Benzene (D6h)
+│   ├── Al4_2minus_structure.xyz     # Al₄²⁻ aromatic (D4h)
+│   ├── Al4_4minus_structure.xyz     # Al₄⁴⁻ antiaromatic singlet (D2h)
+│   ├── Al4_4minus_triplet_structure.xyz  # Al₄⁴⁻ triplet
+│   ├── B12_planar_structure.xyz     # Planar B₁₂ (D3h)
+│   ├── B12_icosahedral_structure.xyz # Icosahedral B₁₂ (Ih)
+│   ├── B6N6_planar_structure.xyz    # Planar B₆N₆
+│   ├── B12N12_cage_structure.xyz    # B₁₂N₁₂ cage (Td)
+│   ├── Au13_minus_structure.xyz     # Au₁₃⁻ icosahedral
+│   ├── Cs3Al8_structure.xyz         # Cs₃Al₈⁻ superatom
+│   └── Cs3Al12_structure.xyz        # Cs₃Al₁₂⁻ superatom
 │
-└── manuscript/                      # Manuscript sources (v5)
-    ├── unified_fbond_manuscript_v5.tex  # Main manuscript
-    ├── references_unified.bib           # Bibliography
-    ├── Supporting_Information.tex       # SI LaTeX source
-    └── Supporting_Information.pdf       # Compiled SI
+└── example_output/                  # Classical calculation outputs
+    └── fbond_results_combined.json  # Complete N_D results (all 11 systems)
 ```
 
 ## Installation
