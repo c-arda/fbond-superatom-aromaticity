@@ -4,7 +4,7 @@
 
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![PySCF](https://img.shields.io/badge/PySCF-2.12-2C6DAC.svg)](https://pyscf.org)
-[![Pasqal](https://img.shields.io/badge/Pasqal-Neutral_Atom-00C7B7.svg)](https://www.pasqal.com)
+[![Pulser](https://img.shields.io/badge/Pulser-0.17+-00C7B7.svg)](https://github.com/pasqal-io/Pulser)
 [![NumPy](https://img.shields.io/badge/NumPy-2.x-013243.svg?logo=numpy&logoColor=white)](https://numpy.org)
 [![SciPy](https://img.shields.io/badge/SciPy-1.x-8CAAE6.svg?logo=scipy&logoColor=white)](https://scipy.org)
 [![Matplotlib](https://img.shields.io/badge/Matplotlib-3.x-11557C.svg)](https://matplotlib.org)
