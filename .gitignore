@@ -219,3 +219,4 @@ Cover.*
 *.zip
 f_bond_extended/v2/Complete_7_Molecule_Summary_v2.csv
 f_bond_extended/v2/F_bond_v2.pdf
+*.npz
