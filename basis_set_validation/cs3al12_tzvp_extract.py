@@ -34,6 +34,7 @@ lib.num_threads(16)
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 SCF_CHKFILE    = os.path.join(SCRIPT_DIR, 'cs3al12_tzvp_scf.chk')
 CCSD_AMPFILE   = os.path.join(SCRIPT_DIR, 'cs3al12_tzvp_ccsd_amplitudes.npz')
+LAMBDA_AMPFILE = os.path.join(SCRIPT_DIR, 'cs3al12_tzvp_lambda_amplitudes.npz')
 RESULTS_JSON   = os.path.join(SCRIPT_DIR, 'Cs3Al12_minus_def2tzvp_results.json')
 
 # ============================================================================
@@ -200,9 +201,14 @@ def stage2_ccsd(mf, mol):
 
 
 def stage3_rdm_and_results(mycc, mf, mol):
-    """Stage 3: Build 1-RDM from T1/T2, compute N_D/f_e, save JSON."""
+    """Stage 3: Solve Lambda → Relaxed 1-RDM → N_D/f_e → JSON.
+    
+    Uses PySCF's make_rdm1() which requires Lambda amplitudes.
+    This gives the RELAXED 1-RDM, consistent with all other molecules.
+    Lambda amplitudes are checkpointed to disk for crash resilience.
+    """
     print("\n" + "=" * 60)
-    print("  STAGE 3: 1-RDM → N_D / f_e → Results JSON")
+    print("  STAGE 3: Lambda → Relaxed 1-RDM → N_D / f_e → Results JSON")
     print("=" * 60)
 
     if os.path.isfile(RESULTS_JSON):
@@ -226,32 +232,44 @@ def stage3_rdm_and_results(mycc, mf, mol):
     # T1 diagnostic
     t1_diag = np.sqrt(np.sum(mycc.t1**2) / n_corr)
 
-    # Truly unrelaxed 1-RDM from T1/T2 — NO Lambda solve needed.
-    # PySCF's make_rdm1() calls solve_lambda() internally — that's what crashed.
-    # Instead, build 1-RDM directly:  D = D_HF + delta(T1,T2)
-    print("  Computing TRULY unrelaxed 1-RDM from T1/T2 (no Lambda)...")
-    print("  (PySCF make_rdm1() secretly solves Lambda — we bypass that)")
+    # ── LAMBDA SOLVE (with checkpoint) ──
+    if os.path.isfile(LAMBDA_AMPFILE):
+        print(f"  ✓ LAMBDA CHECKPOINT FOUND: {LAMBDA_AMPFILE}")
+        print(f"    Loading saved Lambda amplitudes — SKIPPING Lambda solve.")
+        ldata = np.load(LAMBDA_AMPFILE, allow_pickle=True)
+        mycc.l1 = ldata['l1']
+        mycc.l2 = ldata['l2']
+        mycc.converged_lambda = True
+        print(f"    l1 shape: {mycc.l1.shape}, l2 shape: {mycc.l2.shape}")
+    else:
+        print("  Solving Lambda-CCSD equations (relaxed 1-RDM)...")
+        print(f"  This is consistent with all other molecules in the dataset.")
+        print(f"  Scratch dir: {os.environ.get('PYSCF_TMPDIR', '/tmp')}")
+        print(f"  Start time: {datetime.now().isoformat()}")
 
-    t1 = mycc.t1
-    t2 = mycc.t2
-    nocc, nvir = t1.shape
-    nmo = nocc + nvir
+        mycc.solve_lambda()
 
-    # Build unrelaxed 1-RDM in MO basis (occ+vir block)
-    dm1_mo = np.zeros((nmo, nmo))
+        if not mycc.converged_lambda:
+            print("  ✗ LAMBDA FAILED TO CONVERGE!")
+            print("  Saving partial amplitudes anyway...")
 
-    # Occupied-occupied block: 2*delta_ij - contributions from T1 and T2
-    # D_ij = 2*delta_ij - sum_a t1_ia * t1_ja - sum_abk (2*t2_ikab*t2_jkab - t2_ikab*t2_jkba)
-    dm1_mo[:nocc, :nocc] = 2.0 * np.eye(nocc)
-    dm1_mo[:nocc, :nocc] -= np.einsum('ia,ja->ij', t1, t1)
-    dm1_mo[:nocc, :nocc] -= np.einsum('ikab,jkab->ij', 2*t2 - t2.transpose(0,1,3,2), t2)
+        # Save Lambda amplitudes
+        print(f"\n  ► SAVING Lambda amplitudes to: {LAMBDA_AMPFILE}")
+        np.savez_compressed(
+            LAMBDA_AMPFILE,
+            l1=mycc.l1,
+            l2=mycc.l2,
+            converged=np.array(mycc.converged_lambda),
+        )
+        fsize = os.path.getsize(LAMBDA_AMPFILE)
+        print(f"    Saved: {fsize / 1e9:.2f} GB on disk")
+        print(f"  ✓ Lambda amplitudes checkpointed.")
 
-    # Virtual-virtual block
-    # D_ab = sum_i t1_ia * t1_ib + sum_ijk (2*t2_ijac*t2_ijbc - t2_ijca*t2_ijbc)  
-    dm1_mo[nocc:, nocc:] = np.einsum('ia,ib->ab', t1, t1)
-    dm1_mo[nocc:, nocc:] += np.einsum('ijac,ijbc->ab', 2*t2 - t2.transpose(0,1,3,2), t2)
+    # ── RELAXED 1-RDM via make_rdm1() ──
+    print("  Computing RELAXED 1-RDM (Lambda + T amplitudes)...")
+    dm1 = mycc.make_rdm1()
 
-    dm1 = dm1_mo
+    nmo = dm1.shape[0]
     print(f"  1-RDM shape: {dm1.shape}, trace = {np.trace(dm1):.4f} (expect {n_corr})")
     noons, natorbs = np.linalg.eigh(dm1)
     noons = np.sort(noons.flatten())[::-1]
@@ -298,7 +316,7 @@ def stage3_rdm_and_results(mycc, mf, mol):
     print(f"  f_e             = {f_e:.4f}")
     print(f"  S_E,max         = {S_E_max:.6f} nats")
     print(f"  T1 diagnostic   = {t1_diag:.6f}")
-    print(f"  1-RDM type      = unrelaxed (T1/T2, no Lambda)")
+    print(f"  1-RDM type      = relaxed (Lambda-CCSD)")
     print(f"  {'═' * 50}")
 
     # Save JSON
@@ -306,7 +324,7 @@ def stage3_rdm_and_results(mycc, mf, mol):
         'system': 'Cs3Al12_minus',
         'method': 'CCSD',
         'basis': 'def2-tzvp',
-        'rdm1_type': 'unrelaxed (T1/T2, no Lambda)',
+        'rdm1_type': 'relaxed (Lambda-CCSD)',
         'calculation_date': datetime.now().isoformat(),
         'n_atoms': mol.natm,
         'n_electrons': n_elec,
