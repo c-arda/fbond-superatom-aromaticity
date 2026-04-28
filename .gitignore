@@ -220,3 +220,21 @@ Cover.*
 f_bond_extended/v2/Complete_7_Molecule_Summary_v2.csv
 f_bond_extended/v2/F_bond_v2.pdf
 *.npz
+
+# ── Infrastructure & Deployment (PRIVATE — not for public repo) ──
+# Planning docs, cost estimates, cluster architecture
+docs/
+
+# Kubernetes manifests, GKE deployment scripts
+k8s/
+
+# Batch dispatch (internal cluster tooling)
+batch_runner.py
+
+# Docker build files (container strategy is private)
+Dockerfile
+.dockerignore
+
+# Geometry inputs (contain molecular coordinates — shared via manuscript ESI)
+# geometries/
+
