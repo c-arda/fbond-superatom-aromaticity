@@ -1,0 +1,11 @@
+{
+  "name": "B6N6_planar",
+  "geometry": "B 1.450000 0.000000 0.000000\nN 0.725000 1.255737 0.000000\nB -0.725000 1.255737 0.000000\nN -1.450000 0.000000 0.000000\nB -0.725000 -1.255737 0.000000\nN 0.725000 -1.255737 0.000000\nN 2.175000 1.255737 0.000000\nB 0.000000 2.511474 0.000000\nN -2.175000 1.255737 0.000000\nB -2.175000 -1.255737 0.000000\nN -0.000000 -2.511474 0.000000\nB 2.175000 -1.255737 0.000000",
+  "charge": 0,
+  "spin": 0,
+  "basis": "def2-SVP",
+  "notes": "Borazine-like B6N6 ring, isoelectronic to benzene.",
+  "source_xyz": "/home/ardac/Projects/Chemistry/Quantum Chemistry/Chemical Bonding Framework/fbond-superatom-aromaticity/structures/B6N6_planar_structure.xyz",
+  "source_comment": "B6N6_planar",
+  "n_atoms": 12
+}
