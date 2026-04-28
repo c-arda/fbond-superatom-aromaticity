@@ -1,0 +1,11 @@
+{
+  "name": "B12_planar",
+  "geometry": "B 0.952050 0.000000 0.000000\nB -0.476025 0.824499 0.000000\nB -0.476025 -0.824499 0.000000\nB 2.290078 0.833520 0.000000\nB 1.218525 2.110547 0.000000\nB -0.423189 2.400026 0.000000\nB -1.866889 1.566506 0.000000\nB -2.437050 0.000000 0.000000\nB -1.866889 -1.566506 0.000000\nB -0.423189 -2.400026 0.000000\nB 1.218525 -2.110547 0.000000\nB 2.290078 -0.833520 0.000000",
+  "charge": 0,
+  "spin": 0,
+  "basis": "def2-SVP",
+  "notes": "D3h planar B12, quasi-planar boron sheet.",
+  "source_xyz": "/home/ardac/Projects/Chemistry/Quantum Chemistry/Chemical Bonding Framework/fbond-superatom-aromaticity/structures/B12_planar_structure.xyz",
+  "source_comment": "B12_planar",
+  "n_atoms": 12
+}

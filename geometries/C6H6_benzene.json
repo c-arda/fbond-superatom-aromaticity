@@ -1,0 +1,11 @@
+{
+  "name": "C6H6_benzene",
+  "geometry": "C     1.207482    0.697186    0.000000\nC     1.207482   -0.697186    0.000000\nC     0.000000   -1.394372    0.000000\nC    -1.207482   -0.697186    0.000000\nC    -1.207482    0.697186    0.000000\nC     0.000000    1.394372    0.000000\nH     2.146221    1.239026    0.000000\nH     2.146221   -1.239026    0.000000\nH     0.000000   -2.478053    0.000000\nH    -2.146221   -1.239026    0.000000\nH    -2.146221    1.239026    0.000000\nH     0.000000    2.478053    0.000000",
+  "charge": 0,
+  "spin": 0,
+  "basis": "def2-SVP",
+  "notes": "Reference aromatic: benzene (D6h).",
+  "source_xyz": "/home/ardac/Projects/Chemistry/Quantum Chemistry/Chemical Bonding Framework/fbond-superatom-aromaticity/structures/C6H6_benzene_structure.xyz",
+  "source_comment": "C6H6 benzene optimized structure (B3LYP/def2-SVP)",
+  "n_atoms": 12
+}

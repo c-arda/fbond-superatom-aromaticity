@@ -1,0 +1,11 @@
+{
+  "name": "Al4_4minus_triplet",
+  "geometry": "Al    -2.551130    -2.078699     0.000000\nAl     2.551130    -2.078699     0.000000\nAl     2.551130     2.078699     0.000000\nAl    -2.551130     2.078699     0.000000",
+  "charge": -4,
+  "spin": 2,
+  "basis": "def2-SVP",
+  "notes": "D2h rectangular, antiaromatic triplet state.",
+  "source_xyz": "/home/ardac/Projects/Chemistry/Quantum Chemistry/Chemical Bonding Framework/fbond-superatom-aromaticity/structures/Al4_4minus_triplet_structure.xyz",
+  "source_comment": "Rectangular Al4(4-) (D2h, antiaromatic)",
+  "n_atoms": 4
+}

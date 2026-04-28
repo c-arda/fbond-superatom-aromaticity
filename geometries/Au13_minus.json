@@ -1,0 +1,11 @@
+{
+  "name": "Au13_minus",
+  "geometry": "Au    0.000000    0.000000    0.000000\nAu    2.790000    0.000000    0.000000\nAu   -2.790000    0.000000    0.000000\nAu    0.000000    2.790000    0.000000\nAu    0.000000   -2.790000    0.000000\nAu    0.000000    0.000000    2.790000\nAu    0.000000    0.000000   -2.790000\nAu    1.724000    1.724000    1.724000\nAu   -1.724000    1.724000    1.724000\nAu    1.724000   -1.724000    1.724000\nAu    1.724000    1.724000   -1.724000\nAu   -1.724000   -1.724000    1.724000\nAu   -1.724000    1.724000   -1.724000",
+  "charge": -1,
+  "spin": 0,
+  "basis": "def2-SVP",
+  "notes": "Au13\u207b icosahedral cluster. Requires def2-ECP for Au.",
+  "source_xyz": "/home/ardac/Projects/Chemistry/Quantum Chemistry/Chemical Bonding Framework/fbond-superatom-aromaticity/structures/Au13_minus_structure.xyz",
+  "source_comment": "Au13- icosahedral cluster optimized structure (B3LYP/def2-SVP with def2-ECP)",
+  "n_atoms": 13
+}

@@ -1,0 +1,11 @@
+{
+  "name": "B12_icosahedral",
+  "geometry": "B 0.000000 -0.850000 -1.375329\nB -1.375329 0.000000 -0.850000\nB -0.850000 -1.375329 0.000000\nB 0.000000 -0.850000 1.375329\nB 1.375329 0.000000 -0.850000\nB -0.850000 1.375329 0.000000\nB 0.000000 0.850000 -1.375329\nB -1.375329 0.000000 0.850000\nB 0.850000 -1.375329 0.000000\nB 0.000000 0.850000 1.375329\nB 1.375329 0.000000 0.850000\nB 0.850000 1.375329 0.000000",
+  "charge": 0,
+  "spin": 0,
+  "basis": "def2-SVP",
+  "notes": "B12 icosahedral cage, Wade's rules.",
+  "source_xyz": "/home/ardac/Projects/Chemistry/Quantum Chemistry/Chemical Bonding Framework/fbond-superatom-aromaticity/structures/B12_icosahedral_structure.xyz",
+  "source_comment": "B12_icosahedral",
+  "n_atoms": 12
+}

@@ -1,0 +1,11 @@
+{
+  "name": "B12N12_cage",
+  "geometry": "B 0.000000 -0.750000 -1.213525\nN -1.213525 0.000000 -0.750000\nB -0.750000 -1.213525 0.000000\nN 0.000000 -0.750000 1.213525\nB 1.213525 0.000000 -0.750000\nN -0.750000 1.213525 0.000000\nB 0.000000 0.750000 -1.213525\nN -1.213525 0.000000 0.750000\nB 0.750000 -1.213525 0.000000\nN 0.000000 0.750000 1.213525\nB 1.213525 0.000000 0.750000\nN 0.750000 1.213525 0.000000",
+  "charge": 0,
+  "spin": 0,
+  "basis": "def2-SVP",
+  "notes": "B12N12 cage (fulborene). Note: XYZ may list only 12 atoms if BN alternating.",
+  "source_xyz": "/home/ardac/Projects/Chemistry/Quantum Chemistry/Chemical Bonding Framework/fbond-superatom-aromaticity/structures/B12N12_cage_structure.xyz",
+  "source_comment": "B12N12_cage",
+  "n_atoms": 12
+}
