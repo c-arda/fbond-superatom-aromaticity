@@ -23,9 +23,15 @@ set -euo pipefail
 
 # ─── Arguments ────────────────────────────────────────────────────────────────
 
-SYSTEM_NAME="${1:?Usage: $0 <geometry_name> [basis] [machine_type]}"
+SYSTEM_NAME="${1:?Usage: $0 <geometry_name> [basis] [machine_type] [spot|ondemand]}"
 BASIS="${2:-def2-SVP}"
-MACHINE_TYPE="${3:-c2-highmem-16}"
+MACHINE_TYPE="${3:-n2-highmem-16}"
+PROV_ARG="${4:-spot}"
+if [[ "$PROV_ARG" == "ondemand" ]]; then
+    PROVISIONING_MODEL="STANDARD"
+else
+    PROVISIONING_MODEL="SPOT"
+fi
 
 # ─── Configuration ────────────────────────────────────────────────────────────
 
@@ -63,7 +69,7 @@ fi
 # ─── RAM heuristic ────────────────────────────────────────────────────────────
 # Override machine type for large basis sets if not explicitly set
 
-if [[ "$BASIS" == "def2-TZVP" && "$MACHINE_TYPE" == "c2-highmem-16" ]]; then
+if [[ "$BASIS" == "def2-TZVP" && "$MACHINE_TYPE" == "n2-highmem-16" ]]; then
     echo "[!] def2-TZVP requires more RAM — auto-upgrading to n2-highmem-32 (256 GB)"
     MACHINE_TYPE="n2-highmem-32"
 fi
@@ -78,25 +84,30 @@ sed \
     -e "s|__SYSTEM_NAME__|${SYSTEM_NAME}|g" \
     -e "s|__BASIS__|${BASIS}|g" \
     -e "s|__MACHINE_TYPE__|${MACHINE_TYPE}|g" \
+    -e "s|__PROVISIONING_MODEL__|${PROVISIONING_MODEL}|g" \
     -e "s|__RESULTS_BUCKET__|${RESULTS_BUCKET}|g" \
     -e "s|__CHECKPOINTS_BUCKET__|${CHECKPOINTS_BUCKET}|g" \
     "$TEMPLATE" > "$TMPJOB"
 
-# Adjust memory request based on machine type
-case "$MACHINE_TYPE" in
-    c2-highmem-16)
-        sed -i 's/"cpuMilli": [0-9]*/"cpuMilli": 16000/' "$TMPJOB"
-        sed -i 's/"memoryMib": [0-9]*/"memoryMib": 122880/' "$TMPJOB"
-        ;;
-    n2-highmem-32)
-        sed -i 's/"cpuMilli": [0-9]*/"cpuMilli": 32000/' "$TMPJOB"
-        sed -i 's/"memoryMib": [0-9]*/"memoryMib": 245760/' "$TMPJOB"
-        ;;
-    n2-highmem-64)
-        sed -i 's/"cpuMilli": [0-9]*/"cpuMilli": 64000/' "$TMPJOB"
-        sed -i 's/"memoryMib": [0-9]*/"memoryMib": 491520/' "$TMPJOB"
-        ;;
-esac
+# Auto-detect vCPU count from machine type name (e.g., n2-highmem-16 → 16)
+VCPUS=$(echo "$MACHINE_TYPE" | grep -oE '[0-9]+$')
+if [[ -z "$VCPUS" ]]; then
+    echo "ERROR: Cannot extract vCPU count from machine type: $MACHINE_TYPE"
+    exit 1
+fi
+CPU_MILLI=$((VCPUS * 1000))
+
+# Memory heuristic: highmem = 8 GB/vCPU, standard = 4 GB/vCPU
+if [[ "$MACHINE_TYPE" == *"highmem"* ]]; then
+    MEM_MIB=$((VCPUS * 8 * 1024 - 2048))   # 8 GB/vCPU minus 2 GB overhead
+else
+    MEM_MIB=$((VCPUS * 4 * 1024 - 2048))   # 4 GB/vCPU minus 2 GB overhead
+fi
+
+sed -i "s/\"cpuMilli\": [0-9]*/\"cpuMilli\": ${CPU_MILLI}/" "$TMPJOB"
+sed -i "s/\"memoryMib\": [0-9]*/\"memoryMib\": ${MEM_MIB}/" "$TMPJOB"
+
+echo "[i] Compute: ${VCPUS} vCPUs, $((MEM_MIB / 1024)) GB memory"
 
 # ─── Print summary ────────────────────────────────────────────────────────────
 
@@ -107,7 +118,7 @@ echo "  Job name:      ${JOB_NAME}"
 echo "  System:        ${SYSTEM_NAME}"
 echo "  Basis:         ${BASIS}"
 echo "  Machine:       ${MACHINE_TYPE}"
-echo "  VM type:       Spot (preemptible)"
+echo "  VM type:       ${PROVISIONING_MODEL} (${PROV_ARG})"
 echo "  Image:         ${IMAGE_URI}"
 echo "  Results:       gs://${RESULTS_BUCKET}/"
 echo "  Checkpoints:   gs://${CHECKPOINTS_BUCKET}/"
@@ -117,9 +128,10 @@ echo "============================================"
 # ─── Cost estimate ────────────────────────────────────────────────────────────
 
 case "$MACHINE_TYPE" in
-    c2-highmem-16)   echo "  Est. cost:     ~\$0.24/hr × 4-6h = \$1.00-1.50" ;;
-    n2-highmem-32)   echo "  Est. cost:     ~\$0.55/hr × 6-10h = \$3.30-5.50" ;;
-    n2-highmem-64)   echo "  Est. cost:     ~\$1.10/hr × 8-12h = \$8.80-13.20" ;;
+    c2-standard-30)  echo "  Est. cost:     ~\$0.30/hr Spot (30 vCPU, 120 GB, AVX-512)" ;;
+    n2-highmem-16)   echo "  Est. cost:     ~\$0.24/hr Spot (16 vCPU, 128 GB)" ;;
+    n2-highmem-32)   echo "  Est. cost:     ~\$0.55/hr Spot (32 vCPU, 256 GB)" ;;
+    c2-standard-60)  echo "  Est. cost:     ~\$0.60/hr Spot (60 vCPU, 240 GB, AVX-512)" ;;
     *)               echo "  Est. cost:     (unknown machine type)" ;;
 esac
 

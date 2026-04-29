@@ -10,13 +10,12 @@
                 "--system-file", "/app/geometries/__SYSTEM_NAME__.json",
                 "--output-dir", "/output",
                 "--checkpoint-dir", "/checkpoints",
-                "--scratch-dir", "/scratch",
+                "--scratch-dir", "/tmp/pyscf_scratch",
                 "--basis", "__BASIS__"
               ],
               "volumes": [
                 "/output",
-                "/checkpoints",
-                "/scratch"
+                "/checkpoints"
               ]
             }
           }
@@ -37,12 +36,6 @@
               "remotePath": "__CHECKPOINTS_BUCKET__"
             },
             "mountPath": "/checkpoints"
-          },
-          {
-            "mountPath": "/scratch",
-            "tmpfs": {
-              "sizeGb": 100
-            }
           }
         ],
         "maxRunDuration": "86400s",
@@ -57,7 +50,7 @@
       {
         "policy": {
           "machineType": "__MACHINE_TYPE__",
-          "provisioningModel": "SPOT"
+          "provisioningModel": "__PROVISIONING_MODEL__"
         }
       }
     ],

@@ -200,11 +200,49 @@ def calculate_fbond(system_name, geometry, charge, spin, basis=DEFAULT_BASIS):
         max_memory=int(os.environ.get('PYSCF_MAX_MEMORY', DEFAULT_MAX_MEMORY_MB))
     )
 
-    n_al = geometry.upper().count('\nAL') + (1 if geometry.strip().upper().startswith('AL') else 0)
-    # Count Al atoms more robustly
-    n_al = sum(1 for line in geometry.strip().split('\n')
-               if line.strip().split()[0].upper() == 'AL') if geometry.strip() else 0
-    n_frozen = n_al
+    # ── Frozen core: freeze 1s orbital per atom ─────────────────────────
+    # Convention: freeze the 1s (innermost) spatial orbital for each atom
+    # that does NOT use an ECP. For ECP atoms (Cs, Ba), the ECP already
+    # replaces the deep core, so n_frozen = 0.
+    # Special: Au with ECP60MDF still has 5s/5p semi-core → freeze 1 MO/atom.
+    #
+    # This matches the original local results:
+    #   C6H6:     6 × C 1s  = 6 frozen (12 core electrons)
+    #   Al4²⁻:   4 × Al 1s = 4 frozen (8 core electrons)
+    #   B12:     12 × B 1s  = 12 frozen (24 core electrons)
+    #   Au13⁻:  13 × Au     = 13 frozen (26 core electrons, 5s/5p semi-core)
+    #   Cs3Al8:   8 × Al 1s = 8 frozen (Cs: ECP, 0 frozen)
+    FROZEN_CORE_1S = {
+        # Row 1 — no core
+        'H': 0, 'HE': 0,
+        # Row 2 — freeze 1s (1 spatial orbital)
+        'LI': 1, 'BE': 1, 'B': 1, 'C': 1, 'N': 1, 'O': 1, 'F': 1, 'NE': 1,
+        # Row 3 — freeze 1s (1 spatial orbital)
+        'NA': 1, 'MG': 1, 'AL': 1, 'SI': 1, 'P': 1, 'S': 1, 'CL': 1, 'AR': 1,
+        # Row 4 — freeze 1s (1 spatial orbital)
+        'K': 1, 'CA': 1, 'SC': 1, 'TI': 1, 'V': 1, 'CR': 1, 'MN': 1,
+        'FE': 1, 'CO': 1, 'NI': 1, 'CU': 1, 'ZN': 1,
+        'GA': 1, 'GE': 1, 'AS': 1, 'SE': 1, 'BR': 1, 'KR': 1,
+        # Row 5 — ECP typically used; freeze 1 for valence-core MO
+        'RB': 0, 'SR': 0, 'Y': 0, 'ZR': 0, 'NB': 0, 'MO': 0,
+        'RU': 0, 'RH': 0, 'PD': 0, 'AG': 0, 'CD': 0,
+        'IN': 0, 'SN': 0, 'SB': 0, 'TE': 0, 'I': 0, 'XE': 0,
+        # Row 6 — ECP replaces deep core
+        'CS': 0, 'BA': 0,
+        # Au: ECP60MDF replaces 60e, but 5s/5p semi-core (13 lowest MOs)
+        # should still be frozen → 1 per atom
+        'AU': 1,
+        'PT': 1, 'IR': 1, 'OS': 1, 'RE': 1, 'W': 1,
+        'HG': 1, 'TL': 1, 'PB': 1, 'BI': 1,
+    }
+
+    n_frozen = 0
+    for line in geometry.strip().split('\n'):
+        parts = line.strip().split()
+        if parts:
+            el = parts[0].upper()
+            n_frozen += FROZEN_CORE_1S.get(el, 0)
+    print(f"  Frozen core orbitals: {n_frozen}")
 
     # ========================================================================
     # STAGE 1: HF CALCULATION (or resume from checkpoint)
@@ -212,17 +250,22 @@ def calculate_fbond(system_name, geometry, charge, spin, basis=DEFAULT_BASIS):
 
     hf_checkpoint = load_checkpoint(system_name, 'hf')
 
+    # Choose RHF or UHF based on spin multiplicity
+    is_open_shell = (spin > 0)
+    SCF_CLASS = scf.UHF if is_open_shell else scf.RHF
+    scf_label = 'UHF' if is_open_shell else 'RHF'
+
     if hf_checkpoint is not None:
-        print("\n[RESUME] Using saved HF results from checkpoint")
-        mf = scf.RHF(mol)
+        print(f"\n[RESUME] Using saved {scf_label} results from checkpoint")
+        mf = SCF_CLASS(mol)
         mf.mo_coeff = hf_checkpoint['mo_coeff']
         mf.mo_energy = hf_checkpoint['mo_energy']
         mf.mo_occ = hf_checkpoint['mo_occ']
         mf.e_tot = hf_checkpoint['e_tot']
         mf.converged = True
     else:
-        print("\n[1/3] Running Hartree-Fock...")
-        mf = scf.RHF(mol)
+        print(f"\n[1/3] Running {scf_label}...")
+        mf = SCF_CLASS(mol)
         mf.conv_tol = 1e-10
         mf.kernel()
 
@@ -244,18 +287,26 @@ def calculate_fbond(system_name, geometry, charge, spin, basis=DEFAULT_BASIS):
 
     ccsd_checkpoint = load_checkpoint(system_name, 'ccsd')
 
+    # Choose CCSD or UCCSD based on spin
+    CC_CLASS = cc.UCCSD if is_open_shell else cc.CCSD
+    cc_label = 'UCCSD' if is_open_shell else 'CCSD'
+
     if ccsd_checkpoint is not None:
-        print("\n[RESUME] Using saved CCSD results from checkpoint")
-        mycc = cc.CCSD(mf, frozen=n_frozen)
+        print(f"\n[RESUME] Using saved {cc_label} results from checkpoint")
+        mycc = CC_CLASS(mf, frozen=n_frozen)
         mycc.e_corr = ccsd_checkpoint['e_corr']
-        mycc.e_tot = ccsd_checkpoint['e_tot']
+        # UCCSD.e_tot is a read-only property; set the private attr instead
+        try:
+            mycc.e_tot = ccsd_checkpoint['e_tot']
+        except AttributeError:
+            mycc._e_tot = ccsd_checkpoint['e_tot']
         mycc.t1 = ccsd_checkpoint['t1']
         mycc.t2 = ccsd_checkpoint['t2']
         mycc.converged = True
         dm1 = ccsd_checkpoint['dm1']
     else:
-        print(f"\n[2/3] Running CCSD with {n_frozen} frozen core orbitals...")
-        mycc = cc.CCSD(mf, frozen=n_frozen)
+        print(f"\n[2/3] Running {cc_label} with {n_frozen} frozen core orbitals...")
+        mycc = CC_CLASS(mf, frozen=n_frozen)
         mycc.conv_tol = 1e-8
         mycc.kernel()
 
@@ -281,20 +332,34 @@ def calculate_fbond(system_name, geometry, charge, spin, basis=DEFAULT_BASIS):
 
     print("\n[3/3] Computing natural orbitals and F_bond...")
 
+    # For open-shell (UCCSD), dm1 is a tuple (dm1_alpha, dm1_beta).
+    # Sum them to get the total 1-RDM for natural orbital analysis.
+    if isinstance(dm1, (tuple, list)):
+        print("  Open-shell: summing alpha + beta density matrices")
+        dm1_total = dm1[0] + dm1[1]
+    else:
+        dm1_total = dm1
+
     # Diagonalize 1-RDM to get natural occupations
-    natocc, natorb = np.linalg.eigh(dm1)
+    natocc, natorb = np.linalg.eigh(dm1_total)
     natocc = natocc[::-1]
     natorb = natorb[:, ::-1]
 
     # Transform to AO basis
-    natorb_ao = mf.mo_coeff @ natorb
+    # UHF: mo_coeff is shape (2, nao, nmo) ndarray OR (coeff_a, coeff_b) tuple; use alpha
+    mo_coeff_arr = np.asarray(mf.mo_coeff)
+    mo_coeff_for_no = mo_coeff_arr[0] if mo_coeff_arr.ndim == 3 else mo_coeff_arr
+    natorb_ao = mo_coeff_for_no @ natorb
 
     # HOMO-LUMO gap from HF
+    # UHF: mo_energy is shape (2, nmo) ndarray OR (energy_a, energy_b) tuple; use alpha
+    mo_energy_arr = np.asarray(mf.mo_energy)
+    mo_energy = mo_energy_arr[0] if mo_energy_arr.ndim == 2 else mo_energy_arr
     nelec = mol.nelectron
     homo_idx_hf = nelec // 2 - 1
     lumo_idx_hf = nelec // 2
-    eps_homo = mf.mo_energy[homo_idx_hf]
-    eps_lumo = mf.mo_energy[lumo_idx_hf]
+    eps_homo = mo_energy[homo_idx_hf]
+    eps_lumo = mo_energy[lumo_idx_hf]
     O_MOS = eps_lumo - eps_homo
 
     # Entanglement entropy
