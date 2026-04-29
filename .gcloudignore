@@ -1,0 +1,15 @@
+# =============================================================================
+# Cloud Build — Include Dockerfile + source files needed for the build
+# =============================================================================
+# Cloud Build needs the Dockerfile (unlike docker build which reads it first).
+# This mirrors .dockerignore but adds the Dockerfile itself.
+# =============================================================================
+
+# Exclude everything
+*
+
+# Include Dockerfile and source files
+!Dockerfile
+!automated_fbond_workflow.py
+!geometries/
+!geometries/*.json

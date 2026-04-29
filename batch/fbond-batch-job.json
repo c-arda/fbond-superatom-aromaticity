@@ -1,0 +1,76 @@
+{
+  "taskGroups": [
+    {
+      "taskSpec": {
+        "runnables": [
+          {
+            "container": {
+              "imageUri": "__IMAGE_URI__",
+              "commands": [
+                "--system-file", "/app/geometries/__SYSTEM_NAME__.json",
+                "--output-dir", "/output",
+                "--checkpoint-dir", "/checkpoints",
+                "--scratch-dir", "/scratch",
+                "--basis", "__BASIS__"
+              ],
+              "volumes": [
+                "/output",
+                "/checkpoints",
+                "/scratch"
+              ]
+            }
+          }
+        ],
+        "computeResource": {
+          "cpuMilli": 16000,
+          "memoryMib": 122880
+        },
+        "volumes": [
+          {
+            "gcs": {
+              "remotePath": "__RESULTS_BUCKET__"
+            },
+            "mountPath": "/output"
+          },
+          {
+            "gcs": {
+              "remotePath": "__CHECKPOINTS_BUCKET__"
+            },
+            "mountPath": "/checkpoints"
+          },
+          {
+            "mountPath": "/scratch",
+            "tmpfs": {
+              "sizeGb": 100
+            }
+          }
+        ],
+        "maxRunDuration": "86400s",
+        "maxRetryCount": 3
+      },
+      "taskCount": 1,
+      "parallelism": 1
+    }
+  ],
+  "allocationPolicy": {
+    "instances": [
+      {
+        "policy": {
+          "machineType": "__MACHINE_TYPE__",
+          "provisioningModel": "SPOT"
+        }
+      }
+    ],
+    "location": {
+      "allowedLocations": [
+        "zones/us-central1-a",
+        "zones/us-central1-b",
+        "zones/us-central1-c",
+        "zones/us-central1-f"
+      ]
+    }
+  },
+  "logsPolicy": {
+    "destination": "CLOUD_LOGGING"
+  }
+}
