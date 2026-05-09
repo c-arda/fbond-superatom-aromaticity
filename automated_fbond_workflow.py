@@ -176,17 +176,20 @@ def calculate_fbond(system_name, geometry, charge, spin, basis=DEFAULT_BASIS):
     print(f"{'='*70}")
 
     # Build molecule
-    # Determine unique elements for basis/ECP assignment
+    # Determine unique elements and count atoms for basis/ECP/frozen-core
     elements = set()
+    element_counts = {}
     for line in geometry.strip().split('\n'):
         parts = line.strip().split()
         if parts:
-            elements.add(parts[0])
+            el = parts[0]
+            elements.add(el)
+            element_counts[el] = element_counts.get(el, 0) + 1
 
     basis_dict = {el: basis for el in elements}
     ecp_dict = {}
-    # Apply ECP for heavy elements (Cs, Rb, etc.)
-    heavy_elements = {'Cs', 'Rb', 'Ba', 'Sr', 'K'}
+    # Apply ECP for heavy elements (Cs, Rb, Au, etc.)
+    heavy_elements = {'Cs', 'Rb', 'Ba', 'Sr', 'K', 'Au', 'Ag', 'Pt', 'Pd'}
     for el in elements & heavy_elements:
         ecp_dict[el] = basis
 
@@ -200,11 +203,22 @@ def calculate_fbond(system_name, geometry, charge, spin, basis=DEFAULT_BASIS):
         max_memory=int(os.environ.get('PYSCF_MAX_MEMORY', DEFAULT_MAX_MEMORY_MB))
     )
 
-    n_al = geometry.upper().count('\nAL') + (1 if geometry.strip().upper().startswith('AL') else 0)
-    # Count Al atoms more robustly
-    n_al = sum(1 for line in geometry.strip().split('\n')
-               if line.strip().split()[0].upper() == 'AL') if geometry.strip() else 0
-    n_frozen = n_al
+    # ── Element-aware frozen core ──
+    # Number of orbitals to freeze per atom (1s for 2nd-row, etc.)
+    # For ECP-treated atoms: freeze semi-core shells beyond what the ECP covers
+    FROZEN_PER_ATOM = {
+        'H': 0, 'He': 0,
+        'B': 1, 'C': 1, 'N': 1, 'O': 1, 'F': 1, 'Ne': 1,       # 1s
+        'Al': 1, 'Si': 1, 'P': 1, 'S': 1, 'Cl': 1, 'Ar': 1,     # 1s (2s2p kept for correlation)
+        'Cs': 0, 'Rb': 0, 'Ba': 0, 'Sr': 0, 'K': 0,              # ECP handles all core
+        'Au': 4,  # ECP keeps 5s²5p⁶5d¹⁰6s¹ → freeze 5s5p = 4 orbitals
+        'Ag': 4,  # Similar to Au
+        'Pt': 4, 'Pd': 4,
+    }
+    n_frozen = sum(FROZEN_PER_ATOM.get(el, 0) * count
+                   for el, count in element_counts.items())
+    print(f"  Frozen core: {n_frozen} orbitals "
+          f"({', '.join(f'{el}×{FROZEN_PER_ATOM.get(el,0)}' for el in sorted(element_counts) if FROZEN_PER_ATOM.get(el,0) > 0)})")
 
     # ========================================================================
     # STAGE 1: HF CALCULATION (or resume from checkpoint)
@@ -255,9 +269,21 @@ def calculate_fbond(system_name, geometry, charge, spin, basis=DEFAULT_BASIS):
         dm1 = ccsd_checkpoint['dm1']
     else:
         print(f"\n[2/3] Running CCSD with {n_frozen} frozen core orbitals...")
+        print(f"       Correlated space: {mol.nelectron//2 - n_frozen} occ × "
+              f"{mol.nao - mol.nelectron//2} virt")
+        sys.stdout.flush()
         mycc = cc.CCSD(mf, frozen=n_frozen)
         mycc.conv_tol = 1e-8
-        mycc.kernel()
+
+        try:
+            mycc.kernel()
+        except Exception as e:
+            print(f"\n[CCSD CRASH] {type(e).__name__}: {e}")
+            import traceback
+            traceback.print_exc()
+            sys.stdout.flush()
+            sys.stderr.flush()
+            raise
 
         if not mycc.converged:
             raise RuntimeError(f"CCSD did not converge for {system_name}")

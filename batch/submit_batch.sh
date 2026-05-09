@@ -25,7 +25,7 @@ set -euo pipefail
 
 SYSTEM_NAME="${1:?Usage: $0 <geometry_name> [basis] [machine_type]}"
 BASIS="${2:-def2-SVP}"
-MACHINE_TYPE="${3:-c2-highmem-16}"
+MACHINE_TYPE="${3:-n2-highmem-16}"
 
 # ─── Configuration ────────────────────────────────────────────────────────────
 
@@ -63,7 +63,7 @@ fi
 # ─── RAM heuristic ────────────────────────────────────────────────────────────
 # Override machine type for large basis sets if not explicitly set
 
-if [[ "$BASIS" == "def2-TZVP" && "$MACHINE_TYPE" == "c2-highmem-16" ]]; then
+if [[ "$BASIS" == "def2-TZVP" && "$MACHINE_TYPE" == "n2-highmem-16" ]]; then
     echo "[!] def2-TZVP requires more RAM — auto-upgrading to n2-highmem-32 (256 GB)"
     MACHINE_TYPE="n2-highmem-32"
 fi
@@ -84,7 +84,7 @@ sed \
 
 # Adjust memory request based on machine type
 case "$MACHINE_TYPE" in
-    c2-highmem-16)
+    n2-highmem-16)
         sed -i 's/"cpuMilli": [0-9]*/"cpuMilli": 16000/' "$TMPJOB"
         sed -i 's/"memoryMib": [0-9]*/"memoryMib": 122880/' "$TMPJOB"
         ;;
@@ -117,7 +117,7 @@ echo "============================================"
 # ─── Cost estimate ────────────────────────────────────────────────────────────
 
 case "$MACHINE_TYPE" in
-    c2-highmem-16)   echo "  Est. cost:     ~\$0.24/hr × 4-6h = \$1.00-1.50" ;;
+    n2-highmem-16)   echo "  Est. cost:     ~\$0.28/hr × 4-6h = \$1.12-1.68" ;;
     n2-highmem-32)   echo "  Est. cost:     ~\$0.55/hr × 6-10h = \$3.30-5.50" ;;
     n2-highmem-64)   echo "  Est. cost:     ~\$1.10/hr × 8-12h = \$8.80-13.20" ;;
     *)               echo "  Est. cost:     (unknown machine type)" ;;

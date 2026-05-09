@@ -1,0 +1,11 @@
+{
+  "name": "B12N12_fulborene",
+  "geometry": "B  0.000000  1.018234  2.036468\nB  0.000000  1.018234 -2.036468\nB  0.000000 -1.018234  2.036468\nB  0.000000 -1.018234 -2.036468\nN  0.000000  2.036468  1.018234\nN  0.000000 -2.036468  1.018234\nN  0.000000  2.036468 -1.018234\nN  0.000000 -2.036468 -1.018234\nN  1.018234  0.000000  2.036468\nN  1.018234  0.000000 -2.036468\nN -1.018234  0.000000  2.036468\nN -1.018234  0.000000 -2.036468\nB  2.036468  0.000000  1.018234\nB -2.036468  0.000000  1.018234\nB  2.036468  0.000000 -1.018234\nB -2.036468  0.000000 -1.018234\nB  1.018234  2.036468  0.000000\nB  1.018234 -2.036468  0.000000\nB -1.018234  2.036468  0.000000\nB -1.018234 -2.036468  0.000000\nN  2.036468  1.018234  0.000000\nN -2.036468  1.018234  0.000000\nN  2.036468 -1.018234  0.000000\nN -2.036468 -1.018234  0.000000",
+  "charge": 0,
+  "spin": 0,
+  "basis": "def2-SVP",
+  "notes": "B12N12 truncated octahedron cage (Th symmetry), true fulborene. 24 atoms, 144 electrons. B-N = 1.44 Angstrom. Frozen core: 24 (12×1 B + 12×1 N).",
+  "source_xyz": "/home/ardac/Projects/Chemistry/Quantum Chemistry/Chemical Bonding Framework/molecular_F_bond_structure/Bn-clusters-2D-3D-transition/scripts/rerun/B12N12_cage_24atom.xyz",
+  "source_comment": "B12N12 truncated octahedron cage (Th symmetry), B-N = 1.44 A",
+  "n_atoms": 24
+}

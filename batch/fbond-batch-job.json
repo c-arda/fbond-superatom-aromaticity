@@ -8,15 +8,15 @@
               "imageUri": "__IMAGE_URI__",
               "commands": [
                 "--system-file", "/app/geometries/__SYSTEM_NAME__.json",
-                "--output-dir", "/output",
-                "--checkpoint-dir", "/checkpoints",
-                "--scratch-dir", "/scratch",
+                "--output-dir", "/mnt/disks/output",
+                "--checkpoint-dir", "/mnt/disks/checkpoints",
+                "--scratch-dir", "/mnt/disks/scratch",
                 "--basis", "__BASIS__"
               ],
               "volumes": [
-                "/output",
-                "/checkpoints",
-                "/scratch"
+                "/mnt/disks/output:/mnt/disks/output:rw",
+                "/mnt/disks/checkpoints:/mnt/disks/checkpoints:rw",
+                "/mnt/disks/scratch:/mnt/disks/scratch:rw"
               ]
             }
           }
@@ -30,22 +30,21 @@
             "gcs": {
               "remotePath": "__RESULTS_BUCKET__"
             },
-            "mountPath": "/output"
+            "mountPath": "/mnt/disks/output"
           },
           {
             "gcs": {
               "remotePath": "__CHECKPOINTS_BUCKET__"
             },
-            "mountPath": "/checkpoints"
+            "mountPath": "/mnt/disks/checkpoints"
           },
           {
-            "mountPath": "/scratch",
-            "tmpfs": {
-              "sizeGb": 100
-            }
+            "deviceName": "scratch-ssd",
+            "mountPath": "/mnt/disks/scratch",
+            "mountOptions": ["rw"]
           }
         ],
-        "maxRunDuration": "86400s",
+        "maxRunDuration": "259200s",
         "maxRetryCount": 3
       },
       "taskCount": 1,
@@ -57,7 +56,16 @@
       {
         "policy": {
           "machineType": "__MACHINE_TYPE__",
-          "provisioningModel": "SPOT"
+          "provisioningModel": "SPOT",
+          "disks": [
+            {
+              "newDisk": {
+                "type": "pd-ssd",
+                "sizeGb": 200
+              },
+              "deviceName": "scratch-ssd"
+            }
+          ]
         }
       }
     ],
