@@ -186,7 +186,7 @@ def calculate_fbond(system_name, geometry, charge, spin, basis=DEFAULT_BASIS):
     basis_dict = {el: basis for el in elements}
     ecp_dict = {}
     # Apply ECP for heavy elements (Cs, Rb, etc.)
-    heavy_elements = {'Cs', 'Rb', 'Ba', 'Sr', 'K'}
+    heavy_elements = {'Cs', 'Rb', 'Ba', 'Sr', 'K', 'Au', 'Ag', 'Pt', 'Hg', 'Pb', 'Bi'}
     for el in elements & heavy_elements:
         ecp_dict[el] = basis
 
@@ -295,15 +295,12 @@ def calculate_fbond(system_name, geometry, charge, spin, basis=DEFAULT_BASIS):
         print(f"\n[RESUME] Using saved {cc_label} results from checkpoint")
         mycc = CC_CLASS(mf, frozen=n_frozen)
         mycc.e_corr = ccsd_checkpoint['e_corr']
-        # UCCSD.e_tot is a read-only property; set the private attr instead
-        try:
-            mycc.e_tot = ccsd_checkpoint['e_tot']
-        except AttributeError:
-            mycc._e_tot = ccsd_checkpoint['e_tot']
         mycc.t1 = ccsd_checkpoint['t1']
         mycc.t2 = ccsd_checkpoint['t2']
         mycc.converged = True
         dm1 = ccsd_checkpoint['dm1']
+        # Store e_tot directly — the CCSD.e_tot property may fail if e_hf is not set
+        ccsd_e_tot = ccsd_checkpoint['e_tot']
     else:
         print(f"\n[2/3] Running {cc_label} with {n_frozen} frozen core orbitals...")
         mycc = CC_CLASS(mf, frozen=n_frozen)
@@ -315,11 +312,12 @@ def calculate_fbond(system_name, geometry, charge, spin, basis=DEFAULT_BASIS):
 
         # Compute density matrix
         dm1 = mycc.make_rdm1()
+        ccsd_e_tot = mycc.e_tot
 
         # Save CCSD checkpoint (THE MOST IMPORTANT ONE - 20 hours of work!)
         ccsd_data = {
             'e_corr': mycc.e_corr,
-            'e_tot': mycc.e_tot,
+            'e_tot': ccsd_e_tot,
             't1': mycc.t1,
             't2': mycc.t2,
             'dm1': dm1
@@ -346,6 +344,8 @@ def calculate_fbond(system_name, geometry, charge, spin, basis=DEFAULT_BASIS):
     natorb = natorb[:, ::-1]
 
     # Transform to AO basis
+    # Note: UCCSD make_rdm1() returns the 1-RDM in the FULL MO basis (including
+    # frozen core), so we use the full MO coefficient matrix — no slicing needed.
     # UHF: mo_coeff is shape (2, nao, nmo) ndarray OR (coeff_a, coeff_b) tuple; use alpha
     mo_coeff_arr = np.asarray(mf.mo_coeff)
     mo_coeff_for_no = mo_coeff_arr[0] if mo_coeff_arr.ndim == 3 else mo_coeff_arr
@@ -356,8 +356,14 @@ def calculate_fbond(system_name, geometry, charge, spin, basis=DEFAULT_BASIS):
     mo_energy_arr = np.asarray(mf.mo_energy)
     mo_energy = mo_energy_arr[0] if mo_energy_arr.ndim == 2 else mo_energy_arr
     nelec = mol.nelectron
-    homo_idx_hf = nelec // 2 - 1
-    lumo_idx_hf = nelec // 2
+    # For open-shell systems, use alpha electron count for HOMO index
+    if is_open_shell:
+        nelec_a, nelec_b = mol.nelec  # (n_alpha, n_beta)
+        homo_idx_hf = nelec_a - 1
+        lumo_idx_hf = nelec_a
+    else:
+        homo_idx_hf = nelec // 2 - 1
+        lumo_idx_hf = nelec // 2
     eps_homo = mo_energy[homo_idx_hf]
     eps_lumo = mo_energy[lumo_idx_hf]
     O_MOS = eps_lumo - eps_homo
@@ -410,7 +416,7 @@ def calculate_fbond(system_name, geometry, charge, spin, basis=DEFAULT_BASIS):
         'n_frozen': n_frozen,
         'basis': basis,
         'E_HF': float(mf.e_tot),
-        'E_CCSD': float(mycc.e_tot),
+        'E_CCSD': float(ccsd_e_tot),
         'E_corr': float(mycc.e_corr),
         'eps_HOMO': float(eps_homo),
         'eps_LUMO': float(eps_lumo),
@@ -429,7 +435,7 @@ def calculate_fbond(system_name, geometry, charge, spin, basis=DEFAULT_BASIS):
     print(f"{'='*70}")
     print(f"  Basis         = {basis}")
     print(f"  E(HF)         = {mf.e_tot:.8f} Ha")
-    print(f"  E(CCSD)       = {mycc.e_tot:.8f} Ha")
+    print(f"  E(CCSD)       = {ccsd_e_tot:.8f} Ha")
     print(f"  E_corr        = {mycc.e_corr*1000:.3f} mHa")
     print(f"  ε_HOMO        = {eps_homo:.6f} Ha")
     print(f"  ε_LUMO        = {eps_lumo:.6f} Ha")
