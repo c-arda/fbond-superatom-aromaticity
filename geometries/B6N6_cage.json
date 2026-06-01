@@ -1,0 +1,11 @@
+{
+  "name": "B6N6_cage",
+  "geometry": "B 0.000000 -0.750000 -1.213525\nN -1.213525 0.000000 -0.750000\nB -0.750000 -1.213525 0.000000\nN 0.000000 -0.750000 1.213525\nB 1.213525 0.000000 -0.750000\nN -0.750000 1.213525 0.000000\nB 0.000000 0.750000 -1.213525\nN -1.213525 0.000000 0.750000\nB 0.750000 -1.213525 0.000000\nN 0.000000 0.750000 1.213525\nB 1.213525 0.000000 0.750000\nN 0.750000 1.213525 0.000000",
+  "charge": 0,
+  "spin": 0,
+  "basis": "def2-SVP",
+  "notes": "B6N6 icosahedral cage (6B + 6N = 12 atoms, 72 electrons). Previously mislabeled as B12N12. Alternating B-N in icosahedral symmetry. All bonds ~1.50 Angstrom.",
+  "source_xyz": "/home/ardac/Projects/Chemistry/Quantum Chemistry/Chemical Bonding Framework/fbond-superatom-aromaticity/structures/B12N12_cage_structure.xyz",
+  "source_comment": "B6N6 icosahedral cage (renamed from B12N12_cage for clarity)",
+  "n_atoms": 12
+}
