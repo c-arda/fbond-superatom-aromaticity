@@ -13,4 +13,3 @@
 !automated_fbond_workflow.py
 !geometries/
 !geometries/*.json
-!debug_au13.py

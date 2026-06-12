@@ -8,15 +8,14 @@
               "imageUri": "__IMAGE_URI__",
               "commands": [
                 "--system-file", "/app/geometries/__SYSTEM_NAME__.json",
-                "--output-dir", "/mnt/disks/output",
-                "--checkpoint-dir", "/mnt/disks/checkpoints",
-                "--scratch-dir", "/mnt/disks/scratch",
+                "--output-dir", "/output",
+                "--checkpoint-dir", "/checkpoints",
+                "--scratch-dir", "/tmp/pyscf_scratch",
                 "--basis", "__BASIS__"
               ],
               "volumes": [
-                "/mnt/disks/output:/mnt/disks/output:rw",
-                "/mnt/disks/checkpoints:/mnt/disks/checkpoints:rw",
-                "/mnt/disks/scratch:/mnt/disks/scratch:rw"
+                "/output",
+                "/checkpoints"
               ]
             }
           }
@@ -30,21 +29,16 @@
             "gcs": {
               "remotePath": "__RESULTS_BUCKET__"
             },
-            "mountPath": "/mnt/disks/output"
+            "mountPath": "/output"
           },
           {
             "gcs": {
               "remotePath": "__CHECKPOINTS_BUCKET__"
             },
-            "mountPath": "/mnt/disks/checkpoints"
-          },
-          {
-            "deviceName": "scratch-ssd",
-            "mountPath": "/mnt/disks/scratch",
-            "mountOptions": ["rw"]
+            "mountPath": "/checkpoints"
           }
         ],
-        "maxRunDuration": "259200s",
+        "maxRunDuration": "86400s",
         "maxRetryCount": 3
       },
       "taskCount": 1,
@@ -56,16 +50,7 @@
       {
         "policy": {
           "machineType": "__MACHINE_TYPE__",
-          "provisioningModel": "SPOT",
-          "disks": [
-            {
-              "newDisk": {
-                "type": "pd-ssd",
-                "sizeGb": 200
-              },
-              "deviceName": "scratch-ssd"
-            }
-          ]
+          "provisioningModel": "__PROVISIONING_MODEL__"
         }
       }
     ],
