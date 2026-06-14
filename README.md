@@ -1,48 +1,47 @@
-# F<sub>bond</sub>: A Unified Measure of Electron Correlation on Classical and Quantum Processors
+# Natural Orbital Correlation Analysis of Cluster Bonding
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 
 **Repository for:**
-> *F<sub>bond</sub> as a Unified Measure of Electron Correlation: From Aromatic Clusters to Metallic Superatoms on Classical and Quantum Processors*
+> *Natural Orbital Correlation Analysis of Cluster Bonding: From Aromatic Clusters to Metallic Superatoms with Quantum Topology Probes*
 >
-> Celal Arda — Submitted to ACS Omega (2026)
+> Celal Arda — ACS Omega, manuscript ao-2026-06677s (2026)
 
 ---
 
 ## Overview
 
-This repository contains all computational scripts, raw data, and reproducibility materials for the F<sub>bond</sub> framework paper. The framework introduces two complementary measures of electron correlation:
+This repository contains all computational scripts, raw data, and reproducibility materials for the paper. The analysis uses two correlation measures computed from CCSD natural orbital occupations:
 
-- **F<sub>bond</sub><sup>(A)</sup>** (intensive, frontier-based): Captures HOMO–LUMO entanglement.
-- **F<sub>bond</sub><sup>(B)</sup>** (extensive, total): Measures total deviation from idempotency across the **complete** natural orbital space.
-- **f<sub>e</sub>** (per-electron correlation density): Enables meaningful comparison across systems of different sizes.
+- **N<sub>D</sub>** (Takatsuka–Head-Gordon index, extensive): total deviation from idempotency, N<sub>D</sub> = Σ n<sub>i</sub>(2 − n<sub>i</sub>), summed over the **complete** natural orbital space.
+- **f<sub>e</sub> = N<sub>D</sub> / N<sub>corr</sub>** (per-electron correlation density, intensive): enables comparison across systems of different sizes.
 
 ### Key Findings
 
-| System | N<sub>e</sub> | F<sub>bond</sub><sup>(B)</sup> | f<sub>e</sub> |
+| System | N<sub>e</sub> | N<sub>D</sub> | f<sub>e</sub> |
 |--------|------|------|------|
-| Al₄²⁻ (aromatic) | 54 | 3.84 | 0.071 |
-| Al₄⁴⁻ (antiaromatic) | 56 | 4.03 | 0.072 |
-| B₁₂ (planar) | 60 | 4.42 | 0.074 |
-| B₁₂ (icosahedral) | 60 | 4.99 | 0.083 |
-| B₆N₆ (planar) | 72 | 5.11 | 0.071 |
-| Cs₃Al₈⁻ | 132 | 5.58 | 0.042 |
-| Cs₃Al₁₂⁻ | 184 | 7.10 | 0.039 |
+| Al₄²⁻ (aromatic) | 54 | 3.84 | 0.083 |
+| Al₄⁴⁻ (antiaromatic) | 56 | 4.03 | 0.084 |
+| B₁₂ (planar) | 60 | 4.42 | 0.123 |
+| B₁₂ (icosahedral) | 60 | 4.99 | 0.139 |
+| B₆N₆ (planar) | 72 | 5.11 | 0.106 |
+| Cs₃Al₈⁻ | 132 | 5.58 | 0.048 |
+| Cs₃Al₁₂⁻ | 184 | 7.10 | 0.044 |
 
-**Two distinct correlation regimes:** small clusters (f<sub>e</sub> ≈ 0.07) vs. metallic superatoms (f<sub>e</sub> ≈ 0.04).
+**Correlation-density trend:** small clusters show a higher per-electron correlation density (f<sub>e</sub> ≈ 0.08–0.14) than metallic superatoms (f<sub>e</sub> ≈ 0.04–0.05); presented as a trend (clearest at the extremes and in matched-element comparisons), not a sharp two-regime boundary.
 
-### Quantum Hardware Validation
+### Quantum Topology Probes (Exploratory)
 
-We validated the F<sub>bond</sub> framework using **analog quantum simulation** on a Pasqal neutral-atom processor (MPS emulator). The quantum entanglement topology reproduces the chemical bonding character:
+As a complementary, hypothesis-generating study, the molecular bonding topologies are embedded as interaction graphs on Pasqal neutral-atom (Rydberg) **cloud emulators** (EMU_FREE; EMU_TN for the largest registers; 500 shots per system), and topology-dependent entanglement signatures are examined. No single graph metric reaches statistical significance, so this is presented as exploratory, not as a validation of the classical results.
 
-| System | Classical S<sub>E,max</sub> | Quantum S<sub>E</sub><sup>Q</sup> |
-|--------|------|------|
-| Al₄²⁻ (aromatic) | 0.028 | 0.514 |
-| Al₄⁴⁻ (antiaromatic) | 0.019 | 0.611 |
-| B₁₂ (planar) | 0.030 | 0.593 |
-| B₆N₆ (planar) | 0.035 | 0.577 |
-| Cs₃Al₈⁻ (superatom) | 0.013 | 0.674 |
+| System | Quantum S<sub>E</sub><sup>Q</sup> (nats) |
+|--------|------|
+| Al₄²⁻ (aromatic) | 0.503 |
+| Al₄⁴⁻ (antiaromatic) | 0.621 |
+| B₁₂ (planar) | 0.585 |
+| B₆N₆ (planar) | 0.577 |
+| Cs₃Al₈⁻ (superatom) | 0.674 |
 
 ---
 
@@ -110,7 +109,7 @@ python quantum/fbond_pasqal.py --mode local --shots 100
 export PASQAL_PROJECT_ID="your-project-id"
 export PASQAL_USERNAME="your-username"
 export PASQAL_PASSWORD="your-password"
-python quantum/fbond_pasqal.py --mode cloud --emulator EMU_MPS --shots 500
+python quantum/fbond_pasqal.py --mode cloud --emulator EMU_FREE --shots 500
 
 # Plot results
 python quantum/plot_pasqal_results.py
@@ -124,13 +123,13 @@ python quantum/plot_pasqal_results.py
 - **Level of theory:** CCSD/def2-SVP (frozen core)
 - **Software:** PySCF 2.12.1
 - **Key insight:** Complete natural orbital space retention is essential.
-  Truncating to a small active space underestimates F<sub>bond</sub><sup>(B)</sup>
-  by up to 6,200×.
+  Truncating to a small active space underestimates N<sub>D</sub>
+  by up to 8,200×.
 
 ### Quantum Methods
-- **Platform:** Pasqal neutral-atom processor (MPS emulator)
+- **Platform:** Pasqal neutral-atom (Rydberg) cloud emulators
 - **Protocol:** Adiabatic Rydberg blockade evolution
-- **Backend:** Matrix Product State (MPS), 500 shots per system
+- **Backend:** EMU_FREE (≤12-qubit registers) and EMU_TN tensor-network (largest registers), 500 shots per system
 - **Mapping:** Force-directed 2D layout preserving bonding topology (R > 5 μm)
 
 ---
@@ -142,9 +141,9 @@ If you use this code or data, please cite:
 ```bibtex
 @article{arda2026fbond,
   author  = {Arda, Celal},
-  title   = {F_bond as a Unified Measure of Electron Correlation:
+  title   = {Natural Orbital Correlation Analysis of Cluster Bonding:
              From Aromatic Clusters to Metallic Superatoms
-             on Classical and Quantum Processors},
+             with Quantum Topology Probes},
   journal = {ACS Omega},
   year    = {2026},
   note    = {Submitted}

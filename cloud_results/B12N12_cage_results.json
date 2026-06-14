@@ -1,0 +1,32 @@
+{
+  "system": "B12N12_cage",
+  "common_name": "fulborene",
+  "symmetry": "Th",
+  "description": "B12N12 truncated-octahedron cage (Th), 24-atom heteroatomic insulating cluster",
+  "method": "CCSD/def2-SVP, full natural-orbital space (no active-space truncation)",
+  "basis": "def2-SVP",
+  "n_atoms": 24,
+  "n_electrons": 144,
+  "n_frozen_core": 48,
+  "n_correlated_electrons": 96,
+  "n_correlated_orbitals_M": 336,
+  "n_fractional_orbitals": 104,
+  "fraction_fractional": 0.31,
+  "E_scf_Ha": -947.0564,
+  "E_ccsd_total_Ha": -949.9442,
+  "E_corr_Ha": -2.8878,
+  "N_D": 7.18,
+  "N_D_from_run_log": 7.1833,
+  "f_e": 0.075,
+  "geometry_xyz_file": "Bn-clusters-2D-3D-transition/scripts/rerun/B12N12_cage_24atom.xyz",
+  "provenance": {
+    "status": "CORRECTED 2026-06-06; energies VERIFIED against the converged 24-atom production run log retrieved from laptop32. Full per-orbital occupation array not retained (only top-20 contributions were saved at runtime).",
+    "matches_manuscript_row": "nd_cluster_bonding_v6.tex:309 -> N_e=144, N_corr=96, M=336, 104 (31%), E_corr=2.888, N_D=7.18, f_e=0.075",
+    "primary_source_on_host": "fbond-superatom-aromaticity/example_output/fbond_results_combined.json (N_D=7.18, f_e=0.075, E_corr=-2.888; that file lists M=360 under Cartesian 6d)",
+    "verified_from_run_log": "Bn-clusters-2D-3D-transition/scripts/checkpoints/b12n12_rerun_laptop32.log (retrieved from laptop32 2026-06-06): 24 atoms, 144 e, 336 AOs, SCF=-947.056375, CCSD converged E=-949.944217, E_corr=-2.887842, F_bond(B)=7.183323, 104 fractional NOs. Matches manuscript.",
+    "supersedes": "B12N12_cage_results.json.OLD_truncated12atom",
+    "superseded_run_was": "non-converged 12-atom/72-electron truncation (status=ccsd_progress): unphysical natural-orbital occupation 2.026>2, F_bond=-0.053; NOT the production cage",
+    "raw_data_location": "converged run LOG retrieved to checkpoints/b12n12_rerun_laptop32.log; this is the depositable reproducibility record for B12N12. The raw CCSD wavefunction checkpoint was written at runtime but is NOT retained on laptop32 or this host (only the log + top-20 contributions survive), so unlike the other systems there is no .pkl to deposit. Options: deposit the log on Zenodo 10.5281/zenodo.20493151 and note 'raw amplitudes not retained', or re-run to regenerate a checkpoint.",
+    "M_convention_note": "manuscript uses M=336 (spherical 5d) -> 31% fractional; the extension-paper combined file uses M=360 (Cartesian 6d) -> 29%. N_D=7.18 and the 104 fractional NOs are identical; only the denominator/percentage differs."
+  }
+}
