@@ -2,6 +2,9 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20493151.svg)](https://doi.org/10.5281/zenodo.20493151)
+[![Preprint: ChemRxiv](https://img.shields.io/badge/Preprint-ChemRxiv-orange.svg)](https://doi.org/10.26434/chemrxiv-2025-bnp0l-v2)
+[![ACS Omega: ao-2026-06677s](https://img.shields.io/badge/ACS%20Omega-ao--2026--06677s-b30000.svg)](https://pubs.acs.org/journal/acsodf)
 
 **Repository for:**
 > *Natural Orbital Correlation Analysis of Cluster Bonding: From Aromatic Clusters to Metallic Superatoms with Quantum Topology Probes*
@@ -21,15 +24,16 @@ This repository contains all computational scripts, raw data, and reproducibilit
 
 | System | N<sub>e</sub> | N<sub>D</sub> | f<sub>e</sub> |
 |--------|------|------|------|
-| Al₄²⁻ (aromatic) | 54 | 3.84 | 0.083 |
-| Al₄⁴⁻ (antiaromatic) | 56 | 4.03 | 0.084 |
+| Al₄²⁻ (aromatic) | 54 | 2.54 | 0.055 |
+| Al₄⁴⁻ (antiaromatic, singlet) | 56 | 2.53 | 0.053 |
+| Al₄⁴⁻ (triplet) | 56 | 4.34 | 0.090 |
 | B₁₂ (planar) | 60 | 4.42 | 0.123 |
 | B₁₂ (icosahedral) | 60 | 4.99 | 0.139 |
 | B₆N₆ (planar) | 72 | 5.11 | 0.106 |
 | Cs₃Al₈⁻ | 132 | 5.58 | 0.048 |
 | Cs₃Al₁₂⁻ | 184 | 7.10 | 0.044 |
 
-**Correlation-density trend:** small clusters show a higher per-electron correlation density (f<sub>e</sub> ≈ 0.08–0.14) than metallic superatoms (f<sub>e</sub> ≈ 0.04–0.05); presented as a trend (clearest at the extremes and in matched-element comparisons), not a sharp two-regime boundary.
+**Correlation-density trend:** small covalent clusters (C₆H₆, B₁₂, B₆N₆) show a higher per-electron correlation density (f<sub>e</sub> ≈ 0.08–0.14) than metallic superatoms (f<sub>e</sub> ≈ 0.03–0.05). The aromatic/antiaromatic aluminium clusters (Al₄²⁻, Al₄⁴⁻ singlet) fall at the boundary between these groups (f<sub>e</sub> ≈ 0.05, with multireference character), while the open-shell Al₄⁴⁻ triplet (f<sub>e</sub> = 0.090) sits with the covalent clusters — so f<sub>e</sub> tracks the *character* of correlation rather than system size. The separation is clearest at the regime extremes, so this is presented as a trend, not a sharp two-regime boundary.
 
 ### Quantum Topology Probes (Exploratory)
 
@@ -153,6 +157,14 @@ If you use this code or data, please cite:
 ---
 
 ## Version History
+
+### v2.1.0 (2026-06-16)
+- **Reproducibility deposit:** added `cloud_results/` (complete CCSD natural-orbital occupation arrays + `extract_fe_from_checkpoints.py`) and `cloud_results/PROVENANCE_NOTES.md`, so the full N<sub>D</sub> / f<sub>e</sub> column reproduces from the deposited wavefunctions.
+- **Correction — Al₄ geometry units:** the three Al₄ structures were stored in Bohr but read as Ångström, stretching the clusters ~1.9×. Recomputed at the equilibrium geometry: Al₄²⁻ N<sub>D</sub> 3.84 → 2.54 (f<sub>e</sub> 0.083 → 0.055), Al₄⁴⁻ singlet 4.03 → 2.53 (0.084 → 0.053), Al₄⁴⁻ triplet 4.17 → 4.34 (0.087 → 0.090). All other systems are genuine Ångström and unchanged.
+- **Reframed** the correlation-density trend accordingly: the Al₄ singlets are now an informative **boundary** case (superatom-like f<sub>e</sub> with multireference character); the trend rests on the regime extremes, and the earlier "matched-element ≈2×" comparison was removed.
+- Added multireference characterization (CASSCF / AVAS active space, leading-weight analysis) to the Supporting Information.
+- Raw CCSD checkpoints archived on Zenodo (DOI [10.5281/zenodo.20493151](https://doi.org/10.5281/zenodo.20493151)).
+- Added DOI, preprint, and journal-status banners.
 
 ### v2.0.0 (2026-02-17)
 - **Major upgrade:** Added quantum hardware validation (Pasqal neutral-atom simulation)
