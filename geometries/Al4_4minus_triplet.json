@@ -1,11 +1,12 @@
 {
   "name": "Al4_4minus_triplet",
-  "geometry": "Al    -2.551130    -2.078699     0.000000\nAl     2.551130    -2.078699     0.000000\nAl     2.551130     2.078699     0.000000\nAl    -2.551130     2.078699     0.000000",
+  "geometry": "Al  -1.350000  -1.100000  0.000000\nAl  1.350000  -1.100000  0.000000\nAl  1.350000  1.100000  0.000000\nAl  -1.350000  1.100000  0.000000",
+  "unit": "angstrom",
   "charge": -4,
   "spin": 2,
   "basis": "def2-SVP",
-  "notes": "D2h rectangular, antiaromatic triplet state.",
-  "source_xyz": "/home/ardac/Projects/Chemistry/Quantum Chemistry/Chemical Bonding Framework/fbond-superatom-aromaticity/structures/Al4_4minus_triplet_structure.xyz",
-  "source_comment": "Rectangular Al4(4-) (D2h, antiaromatic)",
+  "notes": "D2h rectangular, antiaromatic triplet state (same nuclear geometry as the singlet). Coordinates in Angstrom (corrected 2026-06; the originals were Bohr stored unlabeled — see Al4_2minus). Min Al-Al 2.20 Angstrom.",
+  "source_xyz": "structures/Al4_4minus_triplet_structure.xyz",
+  "source_comment": "Rectangular Al4(4-) triplet (D2h), min Al-Al 2.20 Angstrom",
   "n_atoms": 4
 }

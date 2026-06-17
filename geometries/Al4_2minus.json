@@ -1,11 +1,12 @@
 {
   "name": "Al4_2minus",
-  "geometry": "Al     0.000000     0.000000     0.000000\nAl     4.724315     0.000000     0.000000\nAl     4.724315     4.724315     0.000000\nAl     0.000000     4.724315     0.000000",
+  "geometry": "Al  0.000000  0.000000  0.000000\nAl  2.500000  0.000000  0.000000\nAl  2.500000  2.500000  0.000000\nAl  0.000000  2.500000  0.000000",
+  "unit": "angstrom",
   "charge": -2,
   "spin": 0,
   "basis": "def2-SVP",
-  "notes": "D4h square planar, aromatic (2\u03c0 e\u207b). Li & Boldyrev 2003.",
-  "source_xyz": "/home/ardac/Projects/Chemistry/Quantum Chemistry/Chemical Bonding Framework/fbond-superatom-aromaticity/structures/Al4_2minus_structure.xyz",
-  "source_comment": "Square planar Al4(2-) (D4h, aromatic)",
+  "notes": "D4h square planar, aromatic (2π e⁻). Li & Boldyrev 2003. Coordinates in Angstrom (corrected 2026-06: the originals stored these values in Bohr without a unit label, so the workflow read them as Angstrom and over-stretched the cluster ~1.89x).",
+  "source_xyz": "structures/Al4_2minus_structure.xyz",
+  "source_comment": "Square planar Al4(2-) (D4h, aromatic), edge 2.50 Angstrom",
   "n_atoms": 4
 }
