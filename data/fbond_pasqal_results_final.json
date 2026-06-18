@@ -15,8 +15,8 @@
       0.49761730339567445
     ],
     "max_mutual_info": 0.023914090358251316,
-    "classical_Fbond_B": 3.84,
-    "classical_fe": 0.071
+    "classical_Fbond_B": 2.54,
+    "classical_fe": 0.055
   },
   {
     "system": "Al4_antiaromatic",
@@ -34,8 +34,8 @@
       0.60215168259268
     ],
     "max_mutual_info": 0.06642112009018541,
-    "classical_Fbond_B": 4.03,
-    "classical_fe": 0.072
+    "classical_Fbond_B": 2.53,
+    "classical_fe": 0.053
   },
   {
     "system": "B12_planar",
@@ -62,7 +62,7 @@
     ],
     "max_mutual_info": 0.07788167584533268,
     "classical_Fbond_B": 4.42,
-    "classical_fe": 0.074
+    "classical_fe": 0.123
   },
   {
     "system": "B6N6_planar",
@@ -89,7 +89,7 @@
     ],
     "max_mutual_info": 0.06163592491702219,
     "classical_Fbond_B": 5.11,
-    "classical_fe": 0.071
+    "classical_fe": 0.106
   },
   {
     "system": "Cs3Al8",
@@ -115,6 +115,6 @@
     ],
     "max_mutual_info": 0.09437908727055877,
     "classical_Fbond_B": 5.58,
-    "classical_fe": 0.042
+    "classical_fe": 0.048
   }
 ]

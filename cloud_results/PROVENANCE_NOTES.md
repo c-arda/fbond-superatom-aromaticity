@@ -16,15 +16,31 @@ used in the paper.)
 
 ## System-specific provenance and superseded files
 
-### Al4(4-) triplet  (Table 1: N_D = 4.17, f_e = 0.087)
-- Reported value comes from the lower-energy converged CCSD solution,
-  E_CCSD = -966.7326 Ha. `Al4_4minus_triplet_results_FINAL_4.17.json` carries the
-  full 72-orbital natural `occupation_numbers` and `fbond_total` = 4.1676;
-  `N_D = sum_i n_i (2 - n_i)` over those occupations reproduces 4.17 directly.
-  The raw CCSD checkpoint (26 MB) is archived on Zenodo.
-- SUPERSEDED: `Al4_4minus_triplet_results_corrected.json` (N_D = 5.196,
-  E_CCSD = -966.6999 Ha) is a HIGHER-energy CCSD solution and is **not** the
-  reported value. It is retained for transparency only; do not use it.
+### Al4 systems (all three)  —  2026-06 geometry-units correction
+The three Al4 input geometries were stored in Bohr but read as Angstrom,
+stretching the clusters ~1.89x (near-dissociated). Corrected compact
+(equilibrium-geometry) CCSD values are now reported in Table 1:
+  - Al4(2-)     N_D = 2.54, f_e = 0.055   (was 3.84)
+  - Al4(4-) S   N_D = 2.53, f_e = 0.053   (was 4.03)
+  - Al4(4-) T   N_D = 4.34, f_e = 0.090   (was 4.17 / 5.196), UCCSD, E_CCSD = -966.7322 Ha
+
+**Single source of truth for Al4:** `Al4_corrected_table1_results.json` (full
+natural occupations; reproduces via `recompute_al4_table1.py`) and the corrected
+Zenodo Tier-1 checkpoints `Al4_*_checkpoint_ccsd.pkl` in
+`manuscript/v6/al4_correction_2026-06-14/corrected_checkpoints/`. Full impact map:
+`manuscript/v6/AL4_CORRECTION_SCOPE_2026-06-14.md`.
+
+SUPERSEDED (pre-correction, stretched geometry — retained for transparency only,
+do NOT use for reported values):
+  - `Al4_2minus_results_corrected.json` (N_D 3.84) and
+    `Al4_4minus_results_corrected.json` (N_D 4.03)
+  - `Al4_4minus_triplet_results_corrected.json` (N_D 5.196, higher-energy soln)
+    and `Al4_4minus_triplet_results_FINAL_4.17.json` (N_D 4.17)
+  - the three Al4 entries in `fbond_results_corrected.json`. That file is the
+    **cached combined output** of `extract_fe_from_checkpoints.py` (written at its
+    line 315), not a hand-maintained source; re-running that script over the
+    corrected checkpoints regenerates it with the right Al4 arrays. Non-Al4
+    entries (B / C / Cs3Al / Au13 / B12N12) are unaffected by the units bug.
 
 ### Au13-  (Table 1: N_D = 6.76, f_e = 0.030)
 - Reported values use LANL2DZ with the Hay-Wadt LANL2DZ-ECP. Au13- is the only

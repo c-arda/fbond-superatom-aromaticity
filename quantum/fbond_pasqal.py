@@ -76,9 +76,9 @@ SYSTEMS = {
             [ 1.270,  1.270, 0.0],
             [-1.270,  1.270, 0.0],
         ]),
-        # Classical reference values (CCSD/def2-SVP)
-        "classical_Fbond_B": 3.84,
-        "classical_fe": 0.071,
+        # Classical reference values (CCSD/def2-SVP); f_e = N_D / N_corr, matches Table 1 (2026-06 units correction)
+        "classical_Fbond_B": 2.54,
+        "classical_fe": 0.055,
         "classical_SE_max": 0.028,
     },
 
@@ -91,8 +91,8 @@ SYSTEMS = {
             [ 1.400,  1.100, 0.0],
             [-1.400,  1.100, 0.0],
         ]),
-        "classical_Fbond_B": 4.03,
-        "classical_fe": 0.072,
+        "classical_Fbond_B": 2.53,
+        "classical_fe": 0.053,
         "classical_SE_max": 0.019,
     },
 
@@ -105,7 +105,7 @@ SYSTEMS = {
             for i in range(12)
         ]),
         "classical_Fbond_B": 4.42,
-        "classical_fe": 0.074,
+        "classical_fe": 0.123,
         "classical_SE_max": 0.030,
     },
 
@@ -118,7 +118,7 @@ SYSTEMS = {
             for i in range(12)
         ]),
         "classical_Fbond_B": 5.11,
-        "classical_fe": 0.071,
+        "classical_fe": 0.106,
         "classical_SE_max": 0.035,
     },
 
@@ -141,7 +141,7 @@ SYSTEMS = {
             [ 0.000, -4.400,  3.000],
         ]),
         "classical_Fbond_B": 5.58,
-        "classical_fe": 0.042,
+        "classical_fe": 0.048,
         "classical_SE_max": 0.013,
     },
 }
