@@ -27,8 +27,8 @@ stretching the clusters ~1.89x (near-dissociated). Corrected compact
 **Single source of truth for Al4:** `Al4_corrected_table1_results.json` (full
 natural occupations; reproduces via `recompute_al4_table1.py`) and the corrected
 Zenodo Tier-1 checkpoints `Al4_*_checkpoint_ccsd.pkl` in
-`manuscript/v6/al4_correction_2026-06-14/corrected_checkpoints/`. Full impact map:
-`manuscript/v6/AL4_CORRECTION_SCOPE_2026-06-14.md`.
+`manuscript/v6/al4_correction_2026-06-14/corrected_checkpoints/`. The geometry-units
+correction is described in the manuscript SI.
 
 SUPERSEDED (pre-correction, stretched geometry — retained for transparency only,
 do NOT use for reported values):
