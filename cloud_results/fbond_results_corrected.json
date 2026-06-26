@@ -1200,7 +1200,7 @@
     "homo_no_idx": 20,
     "lumo_no_idx": 27,
     "max_memory_mb": 121024,
-    "N_D": 5.195937965328167,
+    "N_D": 4.340585193251275,
     "f_e": 0.10824870761100348,
     "S_E_max_noon": 0.6931364013048777,
     "n_corr": 48,
@@ -1452,7 +1452,8 @@
       1.9993991628922916,
       1.9993976896506844,
       1.9993959711999614
-    ]
+    ],
+    "geometry_note": "N_D recomputed at the corrected def2-SVP equilibrium geometry (Bohr-to-Angstrom fix, 2026-06; see Al4_corrected_table1_results.json and Table 1). F_bond, O_MOS, S_E_max and entropy_values in this entry retain the pre-correction geometry and are superseded."
   },
   {
     "system": "B6N6_planar",
@@ -2074,7 +2075,7 @@
     "homo_no_idx": 20,
     "lumo_no_idx": 28,
     "max_memory_mb": 121024,
-    "N_D": 4.028951645261175,
+    "N_D": 2.5284341120471336,
     "f_e": 0.08393649260960782,
     "S_E_max_noon": 0.3772026218762271,
     "n_corr": 48,
@@ -2326,7 +2327,8 @@
       1.9993969170844572,
       1.999396772176692,
       1.9993965166916787
-    ]
+    ],
+    "geometry_note": "N_D recomputed at the corrected def2-SVP equilibrium geometry (Bohr-to-Angstrom fix, 2026-06; see Al4_corrected_table1_results.json and Table 1). F_bond, O_MOS, S_E_max and entropy_values in this entry retain the pre-correction geometry and are superseded."
   },
   {
     "system": "Al4_2minus",
@@ -2367,7 +2369,7 @@
     "homo_no_idx": 20,
     "lumo_no_idx": 27,
     "max_memory_mb": 121024,
-    "N_D": 3.840213735264331,
+    "N_D": 2.538148920010253,
     "f_e": 0.08348290728835503,
     "S_E_max_noon": 0.38120200355044137,
     "n_corr": 46,
@@ -2619,7 +2621,8 @@
       1.9993616530744023,
       1.9993615762714878,
       1.9993615100117006
-    ]
+    ],
+    "geometry_note": "N_D recomputed at the corrected def2-SVP equilibrium geometry (Bohr-to-Angstrom fix, 2026-06; see Al4_corrected_table1_results.json and Table 1). F_bond, O_MOS, S_E_max and entropy_values in this entry retain the pre-correction geometry and are superseded."
   },
   {
     "system": "C6H6_benzene",

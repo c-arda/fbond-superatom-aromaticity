@@ -249,3 +249,7 @@ manuscript/
 *_CHANGES.tex
 response_to_reviewers*
 COUNCIL_REVIEW*
+# Paper / SI PDFs anywhere (figures live in figures/ and are kept)
+**/Supporting_Information.pdf
+**/Supplementary_Information.pdf
+f_bond_extended/**/F_bond*.pdf
