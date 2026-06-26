@@ -240,3 +240,12 @@ Dockerfile
 
 13-Feb-2026
 SESSION-*.md
+
+# ── Manuscript & paper artifacts (PRIVATE) ──
+# The paper, SI, cover letter, response-to-reviewers and review notes live in
+# the local manuscript git (molecular_F_bond_structure/manuscript/v6), NOT in
+# this public data/reproducibility repo. This repo carries DATA + CODE only.
+manuscript/
+*_CHANGES.tex
+response_to_reviewers*
+COUNCIL_REVIEW*
