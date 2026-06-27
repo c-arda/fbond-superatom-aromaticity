@@ -8,11 +8,18 @@ entanglement values (Table 4).
 
 ## Canonical extracted metrics
 
-`*_results_corrected.json` carry `natural_occupations_full`, `N_D`, `n_corr`,
-and `f_e`. The index is reproduced by `N_D = sum_i n_i (2 - n_i)` over
-`natural_occupations_full`; 8 of the 11 Table 1 rows reproduce to within 0.01
-directly from these files. (C6H6 = 2.48 from the `_corrected` file is the value
-used in the paper.)
+The primary reproducibility artifact is
+`../example_output/fbond_results_combined.json`, which carries all 11 Table 1
+systems with their per-orbital natural-orbital occupations
+(`natural_orbital_occupations_n_i`), plus `N_D`, `n_correlated` and `f_e`. The
+index reproduces by `N_D = sum_i n_i (2 - n_i)` over the occupation array; all
+11 Table 1 rows match to better than 0.001 (verified).
+
+Per-system `*_results_corrected.json` files in this directory carry the same
+`natural_occupations_full` arrays for the six non-Al4 systems (B12 planar and
+icosahedral, B6N6, C6H6, Cs3Al8, Cs3Al12). Al4 uses
+`Al4_corrected_table1_results.json` (see below); Au13- and B12N12 use the
+backing files named in their sections.
 
 ## System-specific provenance and superseded files
 
@@ -30,17 +37,22 @@ Zenodo Tier-1 checkpoints `Al4_*_checkpoint_ccsd.pkl` in
 `manuscript/v6/al4_correction_2026-06-14/corrected_checkpoints/`. The geometry-units
 correction is described in the manuscript SI.
 
-SUPERSEDED (pre-correction, stretched geometry — retained for transparency only,
-do NOT use for reported values):
-  - `Al4_2minus_results_corrected.json` (N_D 3.84) and
-    `Al4_4minus_results_corrected.json` (N_D 4.03)
-  - `Al4_4minus_triplet_results_corrected.json` (N_D 5.196, higher-energy soln)
-    and `Al4_4minus_triplet_results_FINAL_4.17.json` (N_D 4.17)
-  - the three Al4 entries in `fbond_results_corrected.json`. That file is the
-    **cached combined output** of `extract_fe_from_checkpoints.py` (written at its
-    line 315), not a hand-maintained source; re-running that script over the
-    corrected checkpoints regenerates it with the right Al4 arrays. Non-Al4
-    entries (B / C / Cs3Al / Au13 / B12N12) are unaffected by the units bug.
+SUPERSEDED (pre-correction, stretched geometry). The per-system Al4 files below
+were computed on the old geometry and contradicted the corrected Table 1, so
+they have been REMOVED from the repository (they remain in git history). For the
+record they were:
+  - `Al4_2minus_results_corrected.json` (N_D 3.84),
+    `Al4_4minus_results_corrected.json` (N_D 4.03),
+    `Al4_4minus_triplet_results_corrected.json` (N_D 5.196, higher-energy soln)
+    and `Al4_4minus_triplet_results_FINAL_4.17.json` (N_D 4.17).
+
+The three Al4 entries in `fbond_results_corrected.json` have been corrected in
+place to the Table-1 values (2.54 / 2.53 / 4.34), each carrying a `geometry_note`
+recording that its `F_bond` / `O_MOS` / `entropy_values` still reflect the
+pre-correction geometry and are superseded. That file is the cached combined
+output of `extract_fe_from_checkpoints.py`; re-running the script over the
+corrected checkpoints regenerates it cleanly. Non-Al4 entries
+(B / C / Cs3Al / Au13 / B12N12) were never affected by the units bug.
 
 ### Au13-  (Table 1: N_D = 6.76, f_e = 0.030)
 - Reported values use LANL2DZ with the Hay-Wadt LANL2DZ-ECP. Au13- is the only
@@ -56,7 +68,7 @@ do NOT use for reported values):
   7.183). The converged CCSD run log and a 20 MB CCSD checkpoint are archived on
   Zenodo; the full CCSD amplitudes were not retained, as disclosed in the SI.
 
-## Quantum entanglement (Table 4, ten systems)
+## Quantum entanglement (Table 4: ten states, nine distinct registers)
 
 All tabulated S_E^Q values are Pasqal **cloud-emulator** (device-level
 simulation) measurements at **500 shots** per system: EMU_FREE for the
@@ -81,10 +93,16 @@ the B6N6 row of SI Table S3. SI Table S3 is an independent replicate EMU_FREE
 batch (500 shots) of five <=12-qubit registers; for Al4(2-), Al4(4-) and
 planar B12 its values differ from Table 4 by 1-2% (finite-shot sampling),
 while B6N6 and Cs3Al8- have a single cloud measurement shared by both tables.
-The ten-system graph-connectivity Spearman statistics (mean coordination
-rho = -0.06, p = 0.88; interaction heterogeneity rho = 0.57, p = 0.08; qubit
-count rho = 0.01, p = 0.97; none significant) are reproduced by
-`molecular_F_bond_structure/manuscript/v5/scripts/graph_connectivity_analysis.py`.
+The graph-connectivity Spearman statistics are computed over the **nine distinct
+registers** (the Al4(4-) singlet and triplet share one graph register and are
+counted once): mean coordination rho = -0.01, p = 0.98; interaction
+heterogeneity rho = 0.68, p = 0.042; qubit count rho = 0.06, p = 0.88.
+Interaction heterogeneity reaches nominal significance but does not survive
+multiple-comparison correction (three metrics; Bonferroni alpha = 0.017). These
+match the corrected Section 3.7 / Table 4 of the manuscript; the input values
+are in `../quantum/pasqal_results/table4_quantum_results_10systems.json` and the
+result is plotted in `../figures/fig_graph_connectivity.pdf` (analysis script
+available from the authors).
 
 ## Large checkpoints
 

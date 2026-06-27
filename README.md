@@ -158,6 +158,12 @@ If you use this code or data, please cite:
 
 ## Version History
 
+### v2.1.1 (2026-06-27)
+- **Repository hygiene:** this archive now carries reproducibility **data and code only**. The manuscript and Supporting Information are hosted on ChemRxiv and (under review) ACS Omega, and are no longer mirrored in this repository.
+- **Deposit enriched:** `example_output/fbond_results_combined.json` now includes the per-orbital natural-orbital occupation array (`natural_orbital_occupations_n_i`) for all 11 systems, so every Table 1 N<sub>D</sub> reproduces exactly via N<sub>D</sub> = Σ<sub>i</sub> n<sub>i</sub>(2 − n<sub>i</sub>).
+- **Removed superseded pre-correction Al₄ files** from `cloud_results/` (computed on the old Bohr-mislabeled geometry; they contradicted the corrected Table 1). The authoritative `Al4_corrected_table1_results.json` and its generator `recompute_al4_table1.py` are retained; removed files remain in git history.
+- **Provenance notes** updated to the corrected nine-distinct-register graph statistics (Section 3.7 / Table 4): interaction heterogeneity ρ = 0.68, p = 0.042 (nominal only, does not survive multiple-comparison correction).
+
 ### v2.1.0 (2026-06-16)
 - **Reproducibility deposit:** added `cloud_results/` (complete CCSD natural-orbital occupation arrays + `extract_fe_from_checkpoints.py`) and `cloud_results/PROVENANCE_NOTES.md`, so the full N<sub>D</sub> / f<sub>e</sub> column reproduces from the deposited wavefunctions.
 - **Correction — Al₄ geometry units:** the three Al₄ structures were stored in Bohr but read as Ångström, stretching the clusters ~1.9×. Recomputed at the equilibrium geometry: Al₄²⁻ N<sub>D</sub> 3.84 → 2.54 (f<sub>e</sub> 0.083 → 0.055), Al₄⁴⁻ singlet 4.03 → 2.53 (0.084 → 0.053), Al₄⁴⁻ triplet 4.17 → 4.34 (0.087 → 0.090). All other systems are genuine Ångström and unchanged.
@@ -170,7 +176,7 @@ If you use this code or data, please cite:
 - **Major upgrade:** Added quantum hardware validation (Pasqal neutral-atom simulation)
 - Added `quantum/` directory with `fbond_pasqal.py` and `plot_pasqal_results.py`
 - Added `data/fbond_pasqal_results_final.json` (500-shot MPS emulator results)
-- Added `manuscript/Supporting_Information.tex` and `.pdf`
+- Added `manuscript/Supporting_Information.tex` and `.pdf` *(removed in v2.1.1; the paper and SI live on ChemRxiv / ACS Omega, not this data repo)*
 - Updated README to reflect v4 manuscript (ACS Omega submission)
 - Expanded scope from superatoms-only to unified framework (Al₄, B₁₂, B₆N₆, Cs₃Al_n⁻)
 
