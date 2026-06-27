@@ -61,7 +61,7 @@ fbond-superatom-aromaticity/
 ├── optimize_geometry.py               # B3LYP geometry optimization
 ├── visualize_orbitals.py              # Generate orbital cube files and HTML
 │
-├── quantum/                           # Quantum hardware validation
+├── quantum/                           # Quantum topology probe (exploratory)
 │   ├── fbond_pasqal.py                # Pasqal neutral-atom simulation script
 │   └── plot_pasqal_results.py         # Visualization of quantum results
 │
@@ -69,13 +69,11 @@ fbond-superatom-aromaticity/
 │   └── fbond_pasqal_results_final.json# Quantum simulation results (500 shots)
 │
 ├── example_output/                    # Classical calculation outputs
-│   ├── fbond_results_combined.json    # Complete F_bond results
-│   ├── Cs3Al8_structure.xyz           # Optimized Cs₃Al₈⁻ geometry
-│   └── Cs3Al12_structure.xyz          # Optimized Cs₃Al₁₂⁻ geometry
+│   └── fbond_results_combined.json    # All 11 systems: N_D, f_e, n_i arrays
 │
-└── manuscript/                        # Supporting Information
-    ├── Supporting_Information.tex      # SI LaTeX source
-    └── Supporting_Information.pdf      # Compiled SI
+├── structures/                        # Molecular geometries (.xyz)
+├── geometries/                        # Molecular geometries (.json)
+└── cloud_results/                     # CCSD occupation archive (+ PROVENANCE_NOTES.md)
 ```
 
 ---
@@ -104,7 +102,7 @@ pip install -r requirements.txt
 python automated_fbond_workflow.py
 ```
 
-### Quantum Hardware Validation
+### Quantum Topology Simulation (Exploratory)
 ```bash
 # Local simulation (no cloud credentials needed)
 python quantum/fbond_pasqal.py --mode local --shots 100
@@ -160,13 +158,13 @@ the per-system backing files are documented in
 - **Software:** PySCF 2.12.1
 - **Key insight:** Complete natural orbital space retention is essential.
   Truncating to a small active space underestimates N<sub>D</sub>
-  by up to 8,200×.
+  by up to 5,400×.
 
 ### Quantum Methods
 - **Platform:** Pasqal neutral-atom (Rydberg) cloud emulators
 - **Protocol:** Adiabatic Rydberg blockade evolution
 - **Backend:** EMU_FREE (≤12-qubit registers) and EMU_TN tensor-network (largest registers), 500 shots per system
-- **Mapping:** Force-directed 2D layout preserving bonding topology (R > 5 μm)
+- **Mapping:** Uniform coordinate scaling preserving the true molecular geometry, including unequal bond lengths (R > 5 μm)
 
 ---
 
