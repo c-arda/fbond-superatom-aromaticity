@@ -121,6 +121,38 @@ python quantum/plot_pasqal_results.py
 
 ---
 
+## Reproducing Table 1
+
+The full correlation diagnostics in **Table 1** (the Takatsuka-Head-Gordon index
+N<sub>D</sub> and the per-electron correlation density f<sub>e</sub>) reproduce
+directly from the deposited CCSD natural-orbital occupations, with no
+recomputation required.
+
+`example_output/fbond_results_combined.json` holds, for each of the 11 systems,
+the full per-orbital occupation array `natural_orbital_occupations_n_i` together
+with the derived `N_D`, `n_correlated`, and `f_e`. The index is the sum over
+those occupations, N<sub>D</sub> = Σ<sub>i</sub> n<sub>i</sub>(2 - n<sub>i</sub>),
+and f<sub>e</sub> = N<sub>D</sub> / N<sub>corr</sub>, so every row of Table 1
+follows from a few lines:
+
+```python
+import json
+
+for s in json.load(open("example_output/fbond_results_combined.json")):
+    n   = s["natural_orbital_occupations_n_i"]
+    N_D = sum(x * (2 - x) for x in n)      # Takatsuka-Head-Gordon index
+    f_e = N_D / s["n_correlated"]          # per-electron correlation density
+    print(f"{s['system']:20s} N_D={N_D:6.3f}  f_e={f_e:.3f}")
+```
+
+This reproduces every Table 1 value to better than 0.001. To regenerate the
+occupations from scratch, run the CCSD workflow (see **Usage**) on the input
+geometries in `geometries/` and `structures/`; the corrected Al₄ geometries and
+the per-system backing files are documented in
+`cloud_results/PROVENANCE_NOTES.md`.
+
+---
+
 ## Computational Details
 
 ### Classical Methods
@@ -163,6 +195,7 @@ If you use this code or data, please cite:
 - **Deposit enriched:** `example_output/fbond_results_combined.json` now includes the per-orbital natural-orbital occupation array (`natural_orbital_occupations_n_i`) for all 11 systems, so every Table 1 N<sub>D</sub> reproduces exactly via N<sub>D</sub> = Σ<sub>i</sub> n<sub>i</sub>(2 − n<sub>i</sub>).
 - **Removed superseded pre-correction Al₄ files** from `cloud_results/` (computed on the old Bohr-mislabeled geometry; they contradicted the corrected Table 1). The authoritative `Al4_corrected_table1_results.json` and its generator `recompute_al4_table1.py` are retained; removed files remain in git history.
 - **Provenance notes** updated to the corrected nine-distinct-register graph statistics (Section 3.7 / Table 4): interaction heterogeneity ρ = 0.68, p = 0.042 (nominal only, does not survive multiple-comparison correction).
+- **Added a "Reproducing Table 1" section** with the exact N<sub>D</sub> = Σ<sub>i</sub> n<sub>i</sub>(2 − n<sub>i</sub>) recompute from the deposit.
 
 ### v2.1.0 (2026-06-16)
 - **Reproducibility deposit:** added `cloud_results/` (complete CCSD natural-orbital occupation arrays + `extract_fe_from_checkpoints.py`) and `cloud_results/PROVENANCE_NOTES.md`, so the full N<sub>D</sub> / f<sub>e</sub> column reproduces from the deposited wavefunctions.
