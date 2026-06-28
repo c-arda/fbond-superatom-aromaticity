@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20493151.svg)](https://doi.org/10.5281/zenodo.20493151)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20493150.svg)](https://doi.org/10.5281/zenodo.20493150)
 [![Preprint: ChemRxiv](https://img.shields.io/badge/Preprint-ChemRxiv-orange.svg)](https://doi.org/10.26434/chemrxiv-2025-bnp0l-v2)
 [![ACS Omega: ao-2026-06677s](https://img.shields.io/badge/ACS%20Omega-ao--2026--06677s-b30000.svg)](https://pubs.acs.org/journal/acsodf)
 
@@ -200,7 +200,7 @@ If you use this code or data, please cite:
 - **Correction — Al₄ geometry units:** the three Al₄ structures were stored in Bohr but read as Ångström, stretching the clusters ~1.9×. Recomputed at the equilibrium geometry: Al₄²⁻ N<sub>D</sub> 3.84 → 2.54 (f<sub>e</sub> 0.083 → 0.055), Al₄⁴⁻ singlet 4.03 → 2.53 (0.084 → 0.053), Al₄⁴⁻ triplet 4.17 → 4.34 (0.087 → 0.090). All other systems are genuine Ångström and unchanged.
 - **Reframed** the correlation-density trend accordingly: the Al₄ singlets are now an informative **boundary** case (superatom-like f<sub>e</sub> with multireference character); the trend rests on the regime extremes, and the earlier "matched-element ≈2×" comparison was removed.
 - Added multireference characterization (CASSCF / AVAS active space, leading-weight analysis) to the Supporting Information.
-- Raw CCSD checkpoints archived on Zenodo (DOI [10.5281/zenodo.20493151](https://doi.org/10.5281/zenodo.20493151)).
+- Raw CCSD checkpoints archived on Zenodo (DOI [10.5281/zenodo.20493150](https://doi.org/10.5281/zenodo.20493150)).
 - Added DOI, preprint, and journal-status banners.
 
 ### v2.0.0 (2026-02-17)

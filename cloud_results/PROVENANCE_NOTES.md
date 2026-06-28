@@ -108,4 +108,4 @@ available from the authors).
 
 CCSD checkpoints exceeding GitHub's practical file-size limit (Al4(4-) triplet,
 26 MB; B12N12 cage, 20 MB) are not stored in git. They are archived on Zenodo
-(DOI 10.5281/zenodo.20493151) and available from the authors on request.
+(DOI 10.5281/zenodo.20493150) and available from the authors on request.
