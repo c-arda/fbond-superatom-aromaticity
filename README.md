@@ -149,7 +149,7 @@ geometries in `geometries/` and `structures/`; the corrected Al₄ geometries an
 the per-system backing files are documented in
 `cloud_results/PROVENANCE_NOTES.md`.
 
-**Canonical data.** `example_output/fbond_results_combined.json` is the authoritative source for every value in Table 1 and is the file the paper and SI reference. Intermediate compute outputs under `batch_output/` (and earlier exploratory rounds) are development scratch, are **not** used in the manuscript, and may contain superseded energies or truncated active-window arrays; they should not be used for verification.
+**Canonical data.** `example_output/fbond_results_combined.json` is the authoritative source for every value in Table 1 and is the file the paper and SI reference. Earlier-round intermediate compute outputs (which can contain superseded energies or truncated active-window arrays) are not part of the deposit and should not be used for verification.
 
 ---
 
