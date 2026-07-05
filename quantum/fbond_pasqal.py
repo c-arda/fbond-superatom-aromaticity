@@ -85,11 +85,14 @@ SYSTEMS = {
     "Al4_antiaromatic": {
         "description": "Al4(4-), D2h rectangular, antiaromatic (4π e⁻)",
         "charge": -4,
+        # 2.20 x 2.70 A rectangle, matching the Methods / classical CCSD geometry.
+        # Corrected 2026-07-05 from a 2.20 x 2.80 A register (x half-width 1.400 -> 1.350);
+        # re-emulation showed the 0.1 A change shifts S_E^Q by <0.01 nats (within 500-shot noise).
         "coords_angstrom": np.array([
-            [-1.400, -1.100, 0.0],
-            [ 1.400, -1.100, 0.0],
-            [ 1.400,  1.100, 0.0],
-            [-1.400,  1.100, 0.0],
+            [-1.350, -1.100, 0.0],
+            [ 1.350, -1.100, 0.0],
+            [ 1.350,  1.100, 0.0],
+            [-1.350,  1.100, 0.0],
         ]),
         "classical_Fbond_B": 2.53,
         "classical_fe": 0.053,
