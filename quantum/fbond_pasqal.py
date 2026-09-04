@@ -572,18 +572,25 @@ def main():
         # Extract entanglement
         ent = extract_entanglement(bitstrings, n_atoms)
 
-        # Compare with classical
-        agreement = (ent["S_E_max"] / sys_data["classical_SE_max"] * 100
-                     if sys_data["classical_SE_max"] > 0 else float("nan"))
+        # Scale ratio between the two entropies. NOT an agreement or fidelity:
+        # the quantum S_E,max is a Rydberg-register entanglement entropy over
+        # n_atoms qubits, the classical one is an orbital entropy over the
+        # correlated MO space. Different Hilbert spaces, different normalisation,
+        # so the ratio is a scale factor and routinely far from 1. Reporting it
+        # as "agreement %" produced meaningless ~2000% figures.
+        se_ratio = (ent["S_E_max"] / sys_data["classical_SE_max"]
+                    if sys_data["classical_SE_max"] > 0 else float("nan"))
 
         print(f"\n  ╔══════════════════════════════════════════╗")
         print(f"  ║  Results: {name:<32s}║")
         print(f"  ╠══════════════════════════════════════════╣")
         print(f"  ║  Quantum  S_E,max = {ent['S_E_max']:>10.6f}  nats   ║")
         print(f"  ║  Classic  S_E,max = {sys_data['classical_SE_max']:>10.6f}  nats   ║")
-        print(f"  ║  Agreement        = {agreement:>10.1f}  %      ║")
+        print(f"  ║  Ratio Q/C        = {se_ratio:>10.3f}  (scale)║")
         print(f"  ║  Max mutual info  = {ent['max_mutual_info']:>10.6f}         ║")
         print(f"  ╚══════════════════════════════════════════╝")
+        print("  note: Q/C is a scale ratio across different Hilbert spaces,")
+        print("        not a fidelity or agreement measure.")
 
         result_entry = {
             "system": name,
@@ -593,7 +600,9 @@ def main():
             "mode": args.mode,
             "quantum_SE_max": ent["S_E_max"],
             "classical_SE_max": sys_data["classical_SE_max"],
-            "agreement_pct": round(agreement, 1),
+            "SE_ratio_quantum_over_classical": round(se_ratio, 4),
+            "SE_ratio_note": ("scale ratio between register and orbital entropies; "
+                              "different Hilbert spaces, not a fidelity/agreement"),
             "quantum_entropies": ent["entropies"],
             "max_mutual_info": ent["max_mutual_info"],
             "classical_Fbond_B": sys_data["classical_Fbond_B"],
@@ -612,11 +621,13 @@ def main():
     print(f"\n{'='*65}")
     print("  SUMMARY")
     print(f"{'='*65}")
-    print(f"  {'System':<22s} {'Q S_E,max':>10s} {'C S_E,max':>10s} {'Agree%':>8s}")
+    print(f"  {'System':<22s} {'Q S_E,max':>10s} {'C S_E,max':>10s} {'Q/C':>8s}")
     print(f"  {'─'*52}")
     for r in all_results:
         print(f"  {r['system']:<22s} {r['quantum_SE_max']:>10.6f} "
-              f"{r['classical_SE_max']:>10.6f} {r['agreement_pct']:>7.1f}%")
+              f"{r['classical_SE_max']:>10.6f} "
+              f"{r['SE_ratio_quantum_over_classical']:>8.3f}")
+    print("  Q/C is a scale ratio across different Hilbert spaces, not a fidelity.")
     print()
 
 

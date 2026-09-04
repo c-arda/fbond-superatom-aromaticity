@@ -1,0 +1,62 @@
+{
+  "al4_series": [
+    {
+      "basis": "def2-SVP",
+      "nao": 72,
+      "N_D": 2.54,
+      "f_e": 0.05521739130434783,
+      "diffuse": false,
+      "X": 2
+    },
+    {
+      "basis": "def2-SVPD",
+      "nao": 96,
+      "N_D": 2.7114192753558557,
+      "f_e": 0.05894389729034469,
+      "diffuse": true,
+      "X": 2
+    },
+    {
+      "basis": "def2-TZVP",
+      "nao": 148,
+      "N_D": 2.921,
+      "f_e": 0.0635,
+      "diffuse": false,
+      "X": 3
+    },
+    {
+      "basis": "def2-TZVPD",
+      "nao": 172,
+      "N_D": 2.940357622340318,
+      "f_e": 0.06392081787696344,
+      "diffuse": true,
+      "X": 3
+    },
+    {
+      "basis": "def2-QZVP",
+      "nao": 280,
+      "N_D": 2.998089006678142,
+      "f_e": 0.06517584797126395,
+      "diffuse": false,
+      "X": 4
+    }
+  ],
+  "diffuse_decomposition": {
+    "SVP_to_TZVP": 0.3809999999999998,
+    "SVP_to_SVPD": 0.17141927535585566,
+    "diffuse_fraction_of_shift": 0.4499193578893852,
+    "TZVP_to_TZVPD": 0.019357622340318237,
+    "TZVP_to_QZVP": 0.077089006678142
+  },
+  "cbs_estimates": {
+    "M^(-5/3), TZVP+QZVP": 3.03879136805901,
+    "geometric increments": 3.017643136279268,
+    "Helgaker X^(-3) [not applicable]": 3.0543431466865156
+  },
+  "cbs_bracket": [
+    3.017643136279268,
+    3.03879136805901
+  ],
+  "f_e_ordering_preserved": true,
+  "reviewer": "R1, ACS Omega ao-2026-06677s"
+}

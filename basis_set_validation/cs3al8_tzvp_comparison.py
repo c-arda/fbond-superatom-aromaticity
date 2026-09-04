@@ -15,9 +15,8 @@ import numpy as np
 import os
 
 # Redirect PySCF scratch to /data (avoids /tmp tmpfs overflow)
-os.environ['PYSCF_TMPDIR'] = '/data/pyscf_scratch'
-os.environ['TMPDIR'] = '/data/pyscf_scratch'
-
+os.environ.setdefault('PYSCF_TMPDIR', '/data/pyscf_scratch')
+os.environ.setdefault('TMPDIR', '/data/pyscf_scratch')
 from pyscf import gto, scf, cc, lib
 import json
 from datetime import datetime
