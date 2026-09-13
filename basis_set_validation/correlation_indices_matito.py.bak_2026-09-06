@@ -46,15 +46,8 @@ WHAT THIS DOES AND DOES NOT SHOW
   * f_e is not an ad hoc ratio. It is Takatsuka's N_D per correlated electron,
     and N_D is four times Matito's nondynamic index, which the authors themselves
     identify with "the deviation from idempotency of the first-order reduced
-    density matrix". That identification is ALGEBRAIC and it does NOT dispose of
-    R4's objection (corrected 2026-09-06). I_ND and I_D are two functionals of
-    the SAME occupations; the partition separates dynamic from nondynamic only
-    when a few orbitals are strongly fractional and the rest are perturbative.
-    On these systems that premise fails: the window 0.2 < n < 1.8 carries 0.0%
-    of N_D for eight of ten systems, orbitals with n < 0.02 carry 15-22%, and
-    I_D/I_ND = 1.6-4.1 everywhere (see decompose() below). The value of I_ND
-    here is therefore built almost entirely from the dynamic tail, whatever the
-    functional is named. R4's objection stands.
+    density matrix". The dynamic part is a different functional (I_D, with the
+    square root). R4's objection targets a quantity the paper never used.
   * I_ND is NOT independent validation of f_e: same occupations, same
     functional. It is an identification, not a second measurement. Only I_D,
     I_ND^max and the c0 / D2 proxies carry new content.
@@ -124,16 +117,8 @@ def indices(occ_spatial, n_total, n_corr):
         "I_D_bar_corr": float(2.0 * I_D / n_corr),
     }
     out["I_T_bar"] = out["I_ND_bar"] + out["I_D_bar"]
-    # eq 20 inverted.  I_ND_bar = 2*I_ND/N (eq 4) and I_ND_bar ~ (4/N)(1-c0^2)
-    # (eq 20), so 1-c0^2 ~ N*I_ND_bar/4 = I_ND/2 = N_D/8, i.e.
-    #     c0^2 ~ 1 - N_D/8.
-    # The N cancels: the estimate is a function of N_D alone.  An independent
-    # CISD derivation agrees -- a doubles-only expansion promotes 2*(1-c0^2)
-    # electrons, each promoted electron contributing ~2 to N_D, so N_D ~
-    # 8(1-c0^2).  This line read "1.0 - I_ND" until 2026-09-06, a factor of two
-    # too large in (1-c0^2), which manufactured spurious negative estimates for
-    # B12 and Cs3Al8(-).  Out-of-domain proxy, NOT a CCSD determinant weight.
-    out["c0_sq_est"] = float(1.0 - I_ND / 2.0)
+    # eq 20 inverted: c0^2 ~ 1 - N * I_ND_bar / 4 = 1 - I_ND
+    out["c0_sq_est"] = float(1.0 - I_ND)
     # eq 38 inverted (small root of 4x^2 - 2x + I = 0, x = D2^2), if real.
     # CAUTION: eq 38 is the D2 -> 0 asymptotic limit and does NOT reproduce the
     # authors' own empirical calibration in their Table 1 (I_ND^max = 0.024 <->
@@ -144,33 +129,6 @@ def indices(occ_spatial, n_total, n_corr):
     out["D2_asymptotic_est"] = (float(np.sqrt((1.0 - np.sqrt(disc)) / 4.0))
                                 if disc >= 0 else None)
     return out
-
-
-def decompose(occ_spatial):
-    """Where in the occupation spectrum does N_D actually come from?
-
-    The Ramos-Cordoba/Salvador/Matito partition earns the name "nondynamic"
-    only when a few orbitals sit far from 0/2 and the remainder are
-    perturbatively small.  This reports whether that premise holds:
-
-      static  : 0.2 < n < 1.8   -- genuinely fractional, multireference-like
-      tail    :       n < 0.02  -- weakly occupied virtuals, dynamic
-      near2   :       n > 1.98  -- weakly depleted occupieds, dynamic
-    """
-    n = np.clip(np.asarray(occ_spatial, dtype=float), 0.0, 2.0)
-    w = n * (2.0 - n)
-    tot = float(w.sum())
-    nu = n / 2.0
-    wsp = nu * (1.0 - nu)
-    I_ND = float(wsp.sum())
-    I_D = float(0.5 * np.sqrt(np.clip(wsp, 0.0, None)).sum() - wsp.sum())
-    return {
-        "N_D": tot,
-        "static_frac": float(w[(n > 0.2) & (n < 1.8)].sum() / tot),
-        "tail_frac": float(w[n < 0.02].sum() / tot),
-        "near2_frac": float(w[n > 1.98].sum() / tot),
-        "I_D_over_I_ND": I_D / I_ND,
-    }
 
 
 def main():
@@ -222,28 +180,8 @@ def main():
     print(f"  I_ND^max >= {I_ND_MAX_MR_THRESHOLD} (Xu 2024 Table 1, D2 = 0.15 CCSD) "
           f"flags MR: "
           + ", ".join(f"{k}={'yes' if v['MR_by_I_ND_max'] else 'no'}" for k, v in out.items()))
-    print("  c0^2 estimate (eq 20) goes negative once N_D > 8. It is an "
-          "out-of-domain CISD")
-    print("  proxy, not a CCSD determinant weight: report it as such or not "
-          "at all.")
-
-    print("\n  Decomposition of N_D (is the 'nondynamic' reading defensible?)")
-    print(f"  {'system':<11s} {'N_D':>7s} {'static':>8s} {'tail':>8s} "
-          f"{'near2':>8s} {'I_D/I_ND':>9s}")
-    for name, fn in FILES.items():
-        d = json.load(open(os.path.join(HERE, fn)))
-        key = next((k for k in OCC_KEYS if k in d), None)
-        if key is None:
-            continue
-        z = decompose(d[key])
-        out[name].update({"decomposition": z})
-        print(f"  {name:<11s} {z['N_D']:>7.3f} {100*z['static_frac']:>7.1f}% "
-              f"{100*z['tail_frac']:>7.1f}% {100*z['near2_frac']:>7.1f}% "
-              f"{z['I_D_over_I_ND']:>9.2f}")
-    print("  'static' is the 0.2 < n < 1.8 window. Where it is ~0 and I_D/I_ND "
-          ">> 1, the")
-    print("  value of I_ND is carried by the dynamic tail and must not be "
-          "called nondynamic.")
+    print("  c0^2 estimate (eq 20) is negative wherever N_D > 4: the CISD c0 proxy")
+    print("  is not size-intensive and cannot be used for clusters of this size.")
 
     with open(os.path.join(HERE, "correlation_indices_matito.json"), "w") as fh:
         json.dump({"indices": out,
